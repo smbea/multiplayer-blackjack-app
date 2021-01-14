@@ -7,18 +7,18 @@
 
     <fragment
         android:id="@+id/WelcomeMenu"
-        android:name="com.example.blackjack.WelcomeMenu"
+        android:name="com.example.blackjack.fragments.WelcomeMenu"
         android:label="@string/welcome_menu"
-        tools:layout="@layout/welcome_menu">
+        tools:layout="@layout/frag_welcome_menu">
 
         <action
-            android:id="@+id/action_WelcomeMenu_to_SecondFragment"
-            app:destination="@id/SecondFragment" />
+            android:id="@+id/action_WelcomeMenu_to_JoinRoom"
+            app:destination="@id/JoinRoom" />
     </fragment>
     <fragment
-        android:id="@+id/SecondFragment"
-        android:name="com.example.blackjack.SecondFragment"
+        android:id="@+id/JoinRoom"
+        android:name="com.example.blackjack.fragments.JoinRoom"
         android:label="@string/second_fragment_label"
-        tools:layout="@layout/fragment_second">
+        tools:layout="@layout/frag_join_room_menu">
     </fragment>
 </navigation>

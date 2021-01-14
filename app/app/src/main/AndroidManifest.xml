@@ -10,15 +10,19 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.BlackJack">
         <activity
-            android:name=".MainActivity"
-            android:label="@string/app_name"
-            android:theme="@style/Theme.BlackJack.NoActionBar">
+            android:name=".activities.LoggedInActivity"
+            android:label="@string/title_activity_logged_in"
+            android:theme="@style/Theme.BlackJack.NoActionBar"></activity>
+        <activity
+            android:name=".activities.MainActivity"
+            android:label="@string/app_name">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity android:name=".activities.PlayingRoom" />
     </application>
 
 </manifest>
