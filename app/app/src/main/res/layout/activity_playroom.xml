@@ -5,64 +5,10 @@
     android:layout_height="match_parent"
     android:background="@drawable/table_background">
 
-    <RelativeLayout
+    <androidx.fragment.app.FragmentContainerView
+        android:id="@+id/fragment_container_view"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
-
-        <TextView
-            android:id="@+id/bet_ammount"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_centerInParent="true"
-            android:layout_marginStart="174dp"
-            android:layout_marginBottom="8dp"
-            android:text="0€"
-            android:textColor="@color/white"
-            android:textSize="50sp"
-            android:textStyle="bold" />
-
-        <GridLayout
-            android:id="@+id/grid"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_alignParentBottom="true"
-            android:layout_marginTop="0dp"
-            android:useDefaultMargins="true">
-
-            <ImageButton
-                android:id="@+id/poker_chip_5"
-                android:layout_width="95dp"
-                android:layout_height="95dp"
-                android:background="@android:color/transparent"
-                android:scaleType="fitCenter"
-                app:srcCompat="@drawable/poker_chip_5" />
-
-            <ImageButton
-                android:id="@+id/poker_chip_10"
-                android:layout_width="95dp"
-                android:layout_height="95dp"
-                android:background="@android:color/transparent"
-                android:scaleType="fitCenter"
-                app:srcCompat="@drawable/poker_chip_10" />
-
-            <ImageButton
-                android:id="@+id/poker_chip_50"
-                android:layout_width="95dp"
-                android:layout_height="95dp"
-                android:background="@android:color/transparent"
-                android:scaleType="fitCenter"
-                app:srcCompat="@drawable/poker_chip_50" />
-
-            <ImageButton
-                android:id="@+id/poker_chip_100"
-                android:layout_width="95dp"
-                android:layout_height="95dp"
-                android:background="@android:color/transparent"
-                android:scaleType="fitCenter"
-                app:srcCompat="@drawable/poker_chip_100"/>
-        </GridLayout>
-
-    </RelativeLayout>
+        android:layout_height="match_parent" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -1,17 +1,20 @@
 package com.example.blackjack.activities
 
-import android.content.Intent
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
-import androidx.navigation.fragment.findNavController
 import com.example.blackjack.R
-import kotlinx.android.synthetic.main.activity_playroom.*
+import com.example.blackjack.fragments.Bet
+
 
 class PlayingRoom : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_playroom)
         //setSupportActionBar(findViewById(R.id.toolbar))
+
+        val ft = supportFragmentManager.beginTransaction()
+        ft.replace(R.id.fragment_container_view, Bet())
+        ft.commit()
 
     }
 }

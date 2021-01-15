@@ -21,4 +21,12 @@
         android:label="@string/second_fragment_label"
         tools:layout="@layout/frag_join_room_menu">
     </fragment>
+
+    <fragment
+        android:id="@+id/Bet"
+        android:name="com.example.blackjack.fragments.Bet"
+        android:label="@string/second_fragment_label"
+        tools:layout="@layout/frag_bet">
+    </fragment>
+
 </navigation>

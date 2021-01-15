@@ -5,46 +5,65 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".fragments.WelcomeMenu"
-    android:layout_marginHorizontal="50dp"
-    android:background="@android:color/transparent">
+    android:background="#E6E5E3">
 
 
-    <Button
-        android:id="@+id/btn_login"
-        android:layout_width="match_parent"
-        android:layout_height="70sp"
-        android:layout_above="@id/btn_join_room"
+    <ImageView
+        android:id="@+id/imageView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:layout_alignParentStart="true"
-        android:layout_alignParentBottom="true"
-        android:layout_marginStart="0dp"
-        android:layout_marginBottom="218dp"
-        android:text="@string/login">
+        android:layout_centerVertical="true"
+        android:src="@drawable/game_art" />
 
-    </Button>
-
-    <Button
-        android:id="@+id/btn_join_room"
-        android:layout_width="match_parent"
-        android:layout_height="70sp"
-        android:layout_above="@id/btn_create_room"
+    <ImageView
+        android:id="@+id/imageView3"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:layout_alignParentStart="true"
-        android:layout_alignParentEnd="true"
-        android:layout_alignParentBottom="true"
         android:layout_centerHorizontal="true"
-        android:layout_marginStart="-1dp"
-        android:layout_marginEnd="3dp"
-        android:layout_marginBottom="135dp"
-        android:text="@string/enter_room" />
+        android:adjustViewBounds="true"
+        android:scaleType="centerInside"
+        android:src="@drawable/title" />
 
-    <Button
-        android:id="@+id/btn_create_room"
+
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="70sp"
-        android:layout_alignParentStart="true"
+        android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
-        android:layout_marginStart="0dp"
-        android:layout_marginBottom="52dp"
-        android:text="@string/create_room" />
+        android:orientation="vertical"
+        android:layout_marginHorizontal="50dp"
+        >
+
+        <Button
+            android:id="@+id/btn_login"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_above="@id/btn_join_room"
+            android:text="@string/login">
+
+        </Button>
+
+        <Button
+            android:id="@+id/btn_join_room"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_above="@id/btn_create_room"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentEnd="true"
+            android:layout_centerHorizontal="true"
+            android:text="@string/enter_room" />
+
+        <Button
+            android:id="@+id/btn_create_room"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentBottom="true"
+            android:layout_marginBottom="50dp"
+            android:text="@string/create_room" />
+    </LinearLayout>
+
 
 
 </RelativeLayout>
