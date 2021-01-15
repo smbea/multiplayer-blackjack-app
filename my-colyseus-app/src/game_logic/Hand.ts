@@ -2,7 +2,7 @@
 import {Card} from "./Card";
 
 
-class Hand{
+export class Hand{
 
     cards:Array<Card>
     can_hit:boolean

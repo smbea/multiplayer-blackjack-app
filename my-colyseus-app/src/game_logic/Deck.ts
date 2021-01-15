@@ -1,4 +1,5 @@
 import {Card} from "./Card";
+import {Hand} from "./Hand";
  
 
 class Deck{    
@@ -33,7 +34,7 @@ class Deck{
     }
 
     getTopDeck(){
-        let top = this.cards_deck.pop()
+        let top = {...this.cards_deck.pop()}
         return top
     }
 
@@ -43,6 +44,29 @@ class Deck{
             this.cards_deck = this.cards_deck.concat(this.one_deck)
      
         this.shuffleDeck()
+    }
+
+    drawHands(num_players:number){
+        let hands = []
+        let dealerHand 
+        let c1:Card, c2:Card
+        
+        for(let i = 0; i < (num_players); i++)
+        {
+            c1 = this.getTopDeck()
+            c2 = this.getTopDeck()
+            
+            hands.push(new Hand([c1, c2]))
+        }
+
+        let cd1 = this.getTopDeck()
+        let cd2 = this.getTopDeck()
+
+        cd2.show = false
+        
+        dealerHand = new Hand([cd1,cd2])
+
+        return {hands, dealerHand}
     }
 }
 
