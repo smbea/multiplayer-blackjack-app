@@ -5,12 +5,16 @@
     <!-- Strings used for fragments for navigation -->
     <string name="welcome_menu">Welcome Menu</string>
     <string name="second_fragment_label">Second Fragment</string>
-    <string name="login">Login with G</string>
-    <string name="enter_room">Join room</string>
-    <string name="create_room">Create room</string>
     <string name="blackjack">BLACKJACK</string>
     <string name="insert_code">Insert playroom ID</string>
     <string name="playroom_code">code</string>
+
+
+    <!-- buttons -->
+    <string name="login">Login with G</string>
+    <string name="enter_room">Join room</string>
+    <string name="create_room">Create room</string>
     <string name="join">Join</string>
+    <string name="ready">Ready</string>
 
 </resources>
