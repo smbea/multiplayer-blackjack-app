@@ -1,6 +1,6 @@
 
 
-class Card{
+ export class Card{
 
     value:string
     suit:string

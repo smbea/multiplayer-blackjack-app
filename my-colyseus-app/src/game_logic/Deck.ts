@@ -1,8 +1,10 @@
+import {Card} from "./Card";
+ 
 
-
-class Deck{
+class Deck{    
+    
     cards_deck:Array<Card> = []
-    one_deck:Array<Card>
+    one_deck:Array<Card> = []
     num_decks:number
 
     values = ['A','K','Q','J','10','9','8','7','6','5','4','3','2']
@@ -25,7 +27,7 @@ class Deck{
         })
 
         for(let i = 0; i < num_decks; i++)
-            this.cards_deck.concat(this.one_deck)
+            this.cards_deck = this.cards_deck.concat(this.one_deck)
      
         this.shuffleDeck()
     }
@@ -38,8 +40,10 @@ class Deck{
     resetDeck(){
         this.cards_deck = []
         for(let i = 0; i < this.num_decks; i++)
-            this.cards_deck.concat(this.one_deck)
+            this.cards_deck = this.cards_deck.concat(this.one_deck)
      
         this.shuffleDeck()
     }
 }
+
+
