@@ -10,7 +10,7 @@
         android:layout_height="match_parent">
 
         <TextView
-            android:id="@+id/bet_ammount"
+            android:id="@+id/bet_amount"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerInParent="true"
@@ -65,7 +65,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerHorizontal="true"
-            android:layout_below="@id/bet_ammount"
+            android:layout_below="@id/bet_amount"
             android:layout_marginTop="10dp"
             android:text="@string/ready" />
 

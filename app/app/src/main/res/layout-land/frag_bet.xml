@@ -6,7 +6,7 @@
     android:background="@android:color/transparent">
 
     <TextView
-            android:id="@+id/bet_ammount"
+            android:id="@+id/bet_amount"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerInParent="true"
@@ -22,7 +22,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_centerHorizontal="true"
-        android:layout_below="@id/bet_ammount"
+        android:layout_below="@id/bet_amount"
         android:text="@string/ready" />
 
 

@@ -48,5 +48,38 @@
 
     </GridLayout>
 
+    <GridLayout
+        android:layout_width="200dp"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_above="@id/my_cards"
+        android:layout_centerHorizontal="true"
+        android:useDefaultMargins="true"
+        >
+
+        <TextView
+            android:id="@+id/bet_amount"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="@dimen/fab_margin"
+            android:layout_gravity="start"
+            android:textSize="25sp"
+            android:text=""
+            android:textStyle="bold"
+            android:textColor="@color/white"
+            />
+
+        <TextView
+            android:id="@+id/my_points"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="@dimen/fab_margin"
+            android:textSize="25sp"
+            android:layout_gravity="end"
+            android:text=""
+            android:textColor="@color/white"
+            android:textStyle="bold"/>
+    </GridLayout>
+
 
 </RelativeLayout>

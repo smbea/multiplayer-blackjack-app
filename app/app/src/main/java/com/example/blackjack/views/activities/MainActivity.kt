@@ -1,4 +1,4 @@
-package com.example.blackjack.activities
+package com.example.blackjack.views.activities
 
 import android.content.res.Configuration
 import android.os.Bundle
