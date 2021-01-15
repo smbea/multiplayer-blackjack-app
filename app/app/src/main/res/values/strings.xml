@@ -16,5 +16,6 @@
     <string name="create_room">Create room</string>
     <string name="join">Join</string>
     <string name="ready">Ready</string>
-
+    <string name="hit">Hit</string>
+    <string name="stand">Stand</string>
 </resources>

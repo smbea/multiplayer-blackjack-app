@@ -12,9 +12,6 @@ class PlayingRoom : AppCompatActivity() {
         setContentView(R.layout.activity_playroom)
         //setSupportActionBar(findViewById(R.id.toolbar))
 
-        val ft = supportFragmentManager.beginTransaction()
-        ft.replace(R.id.fragment_container_view, Bet())
-        ft.commit()
 
     }
 }

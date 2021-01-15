@@ -8,7 +8,6 @@
     <fragment
         android:id="@+id/WelcomeMenu"
         android:name="com.example.blackjack.fragments.WelcomeMenu"
-        android:label="@string/welcome_menu"
         tools:layout="@layout/frag_welcome_menu">
 
         <action
@@ -18,15 +17,9 @@
     <fragment
         android:id="@+id/JoinRoom"
         android:name="com.example.blackjack.fragments.JoinRoom"
-        android:label="@string/second_fragment_label"
         tools:layout="@layout/frag_join_room_menu">
     </fragment>
 
-    <fragment
-        android:id="@+id/Bet"
-        android:name="com.example.blackjack.fragments.Bet"
-        android:label="@string/second_fragment_label"
-        tools:layout="@layout/frag_bet">
-    </fragment>
+
 
 </navigation>
