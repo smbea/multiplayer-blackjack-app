@@ -18,4 +18,6 @@
     <string name="ready">Ready</string>
     <string name="hit">Hit</string>
     <string name="stand">Stand</string>
+    <string name="quit">Quit</string>
+
 </resources>

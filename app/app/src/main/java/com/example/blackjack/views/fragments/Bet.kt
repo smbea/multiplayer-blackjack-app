@@ -18,13 +18,11 @@ class Bet : Fragment() {
 
     var tempBetAmount = 0
     var tempAmountAvailable = Game.amountAvailable
-    lateinit var parentActivity : PlayingRoom
 
     override fun onCreateView(
             inflater: LayoutInflater, container: ViewGroup?,
             savedInstanceState: Bundle?
     ): View? {
-        this.parentActivity = (activity as PlayingRoom)
         // Inflate the layout for this fragment
         return inflater.inflate(R.layout.frag_bet, container, false)
     }
@@ -50,9 +48,7 @@ class Bet : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         button_ready.setOnClickListener {
-            parentActivity.gameInstance = GameInstance(this.tempBetAmount)
-            parentActivity.gameInstanceController = GameInstanceController(parentActivity.gameInstance, parentActivity)
-            Game.amountAvailable = this.tempAmountAvailable
+            Game.newGame(this.tempBetAmount)
             findNavController().navigate(R.id.action_ready_to_play)
         }
 

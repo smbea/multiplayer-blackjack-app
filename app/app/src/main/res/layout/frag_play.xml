@@ -34,13 +34,20 @@
         >
 
         <Button
-            android:id="@+id/button"
+            android:id="@+id/btn_quit"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+
+            android:text="@string/quit" />
+
+        <Button
+            android:id="@+id/btn_stand"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/stand"/>
 
         <Button
-            android:id="@+id/button2"
+            android:id="@+id/btn_hit"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
 
