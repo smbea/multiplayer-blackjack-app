@@ -48,7 +48,7 @@ class Bet : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         button_ready.setOnClickListener {
-            Game.newGame(this.tempBetAmount)
+            Game.ready(this.tempBetAmount)
             findNavController().navigate(R.id.action_ready_to_play)
         }
 

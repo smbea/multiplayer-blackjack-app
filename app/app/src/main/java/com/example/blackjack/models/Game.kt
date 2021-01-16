@@ -1,7 +1,6 @@
 package com.example.blackjack.models
 
 import com.example.blackjack.controllers.GameInstanceController
-import org.java_websocket.client.WebSocketClient
 
 object Game {
     var amountAvailable = 500
@@ -15,6 +14,16 @@ object Game {
 
     fun quit(){
         amountAvailable = currentGame.bet
+    }
+
+    fun joinRoom(roomId:Int): Boolean {
+        //send message and wait
+        return true
+    }
+
+    fun ready(bet:Int) {
+        //send message  and wait
+        this.newGame(bet)
     }
 
 }
