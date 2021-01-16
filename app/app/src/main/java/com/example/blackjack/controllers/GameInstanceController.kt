@@ -5,6 +5,7 @@ import com.example.blackjack.views.activities.PlayingRoom
 
 class GameInstanceController(var model:GameInstance) {
 
+
     fun getBet(): Int {
         return model.bet
     }
@@ -18,6 +19,11 @@ class GameInstanceController(var model:GameInstance) {
     }
 
     fun hit(){
+        model.myCards.add("c")
+    }
 
+    fun updateCards(){
+        model.myCards.add("a")
+        model.myCards.add("b")
     }
 }
