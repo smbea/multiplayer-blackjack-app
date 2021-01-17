@@ -1,7 +1,10 @@
 package com.example.blackjack.views.fragments
 
 import CardsAdapter
+import android.hardware.Sensor
+import android.hardware.SensorManager
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -11,6 +14,7 @@ import androidx.recyclerview.widget.DefaultItemAnimator
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.blackjack.DeckDecorator
 import com.example.blackjack.R
+import com.example.blackjack.SensorsManager
 import com.example.blackjack.models.Card
 import com.example.blackjack.models.Game
 import kotlinx.android.synthetic.main.frag_play.*
@@ -20,25 +24,29 @@ class Play : Fragment() {
 
     private lateinit var myCardsAdapter: CardsAdapter
     private lateinit var opponentCardsAdapter: CardsAdapter
+    private lateinit var sensorManager: SensorsManager
 
     override fun onCreateView(
             inflater: LayoutInflater, container: ViewGroup?,
             savedInstanceState: Bundle?
     ): View? {
 
+
         initObservers()
+
+        sensorManager = SensorsManager(requireContext())
 
         return inflater.inflate(R.layout.frag_play, container, false)
     }
 
 
-    private fun initObservers(){
+    private fun initObservers() {
         val pointsObserver = Observer<Int> { updatedPoints ->
             my_score.text = updatedPoints.toString()
         }
         Game.currentGame.myPoints.observe(viewLifecycleOwner, pointsObserver)
 
-        val opponentCardsObserver = Observer<ArrayList<Card>>{ updatedCards ->
+        val opponentCardsObserver = Observer<ArrayList<Card>> { updatedCards ->
             recycler_view_cards_opponent.adapter!!.notifyDataSetChanged()
         }
 
@@ -64,12 +72,12 @@ class Play : Fragment() {
         opponentCardsAdapter.notifyDataSetChanged()
     }
 
-    private fun initViewValues(){
+    private fun initViewValues() {
         bet_amount.text = (Game.currentGameController.getBet().toString() + "€")
         my_score.text = Game.currentGameController.getPoints().toString()
     }
 
-    private fun setListeners(){
+    private fun setListeners() {
         btn_quit.setOnClickListener {
             val quitDialog = QuitFragment()
             quitDialog.show(parentFragmentManager, "quit")
@@ -77,14 +85,13 @@ class Play : Fragment() {
 
         btn_hit.setOnClickListener {
             Game.currentGameController.hit()
-            myCardsAdapter.notifyItemInserted(Game.currentGame.myCards.size-1)
+            myCardsAdapter.notifyItemInserted(Game.currentGame.myCards.size - 1)
         }
 
         btn_stand.setOnClickListener {
             Game.currentGameController.stand()
         }
     }
-
 
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -95,8 +102,6 @@ class Play : Fragment() {
         setListeners()
 
     }
-
-
 
 
 }
