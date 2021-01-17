@@ -6,7 +6,7 @@ class Deck {
     constructor(num_decks) {
         this.cards_deck = [];
         this.one_deck = [];
-        this.values = ['A', 'K', 'Q', 'J', '10', '9', '8', '7', '6', '5', '4', '3', '2'];
+        this.values = ['a', 'k', 'q', 'j', '10', '9', '8', '7', '6', '5', '4', '3', '2'];
         this.suits = ['spades', 'clubs', 'diamonds', 'hearts'];
         this.num_decks = num_decks;
         this.values.forEach(value => {
