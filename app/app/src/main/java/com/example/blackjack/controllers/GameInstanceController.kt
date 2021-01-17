@@ -1,5 +1,7 @@
 package com.example.blackjack.controllers
 
+import androidx.lifecycle.MutableLiveData
+import com.example.blackjack.models.Game
 import com.example.blackjack.models.GameInstance
 import com.example.blackjack.views.activities.PlayingRoom
 
@@ -10,20 +12,18 @@ class GameInstanceController(var model:GameInstance) {
         return model.bet
     }
 
-    fun getPoints():Int {
+    fun getPoints(): MutableLiveData<Int> {
         return model.myPoints
-    }
-
-    fun stand(){
-
     }
 
     fun hit(){
         model.myCards.add("c")
     }
 
-    fun updateCards(){
-        model.myCards.add("a")
-        model.myCards.add("b")
+    fun stand(){
+        val cards = model.opponentCards.value
+        cards!!.add("i")
+        model.opponentCards.value = cards
     }
+
 }

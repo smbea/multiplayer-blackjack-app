@@ -14,13 +14,13 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerInParent="true"
-            android:text="0€"
             android:textColor="@color/white"
             android:textSize="50sp"
+            android:text="@string/_0"
             android:textStyle="bold" />
 
         <GridLayout
-            android:id="@+id/grid"
+            android:id="@+id/chips_grid"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_alignParentBottom="true"
@@ -60,14 +60,52 @@
                 app:srcCompat="@drawable/poker_chip_100"/>
         </GridLayout>
 
-        <Button
-            android:id="@+id/button_ready"
+        <GridLayout
+            android:id="@+id/buttons_grid"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerHorizontal="true"
+            android:useDefaultMargins="true"
             android:layout_below="@id/bet_amount"
-            android:layout_marginTop="10dp"
-            android:text="@string/ready" />
+            android:layout_marginTop="10dp">
+            <Button
+                android:id="@+id/btn_reset"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/reset" />
+            <Button
+                android:id="@+id/btn_ready"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/ready" />
+        </GridLayout>
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_alignParentTop="true"
+            android:layout_marginTop="20dp"
+            android:layout_centerHorizontal="true"
+            >
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/balance"
+                android:textSize="25sp"
+                android:textStyle="bold"
+                android:textColor="@color/black"/>
+            <TextView
+                android:id="@+id/balance"
+                android:text=""
+                android:textSize="25sp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textStyle="bold"
+                android:textColor="@color/black"/>
+
+        </LinearLayout>
 
     </RelativeLayout>
 

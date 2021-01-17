@@ -19,5 +19,8 @@
     <string name="hit">Hit</string>
     <string name="stand">Stand</string>
     <string name="quit">Quit</string>
+    <string name="reset">Reset</string>
+    <string name="_0">0€</string>
+    <string name="balance">Balance:</string>
 
 </resources>

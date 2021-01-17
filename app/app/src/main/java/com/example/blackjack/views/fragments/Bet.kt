@@ -46,10 +46,17 @@ class Bet : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        balance.text = (Game.amountAvailable.toString() + "€")
 
-        button_ready.setOnClickListener {
+        btn_ready.setOnClickListener {
             Game.ready(this.tempBetAmount)
             findNavController().navigate(R.id.action_ready_to_play)
+        }
+
+        btn_reset.setOnClickListener {
+            this.tempBetAmount = 0
+            bet_amount.text = "0€"
+            this.tempAmountAvailable = Game.amountAvailable
         }
 
         poker_chip_5.setOnClickListener {
