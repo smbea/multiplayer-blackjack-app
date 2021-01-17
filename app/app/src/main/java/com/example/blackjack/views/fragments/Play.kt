@@ -11,6 +11,7 @@ import androidx.recyclerview.widget.DefaultItemAnimator
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.blackjack.DeckDecorator
 import com.example.blackjack.R
+import com.example.blackjack.models.Card
 import com.example.blackjack.models.Game
 import kotlinx.android.synthetic.main.frag_play.*
 
@@ -37,7 +38,7 @@ class Play : Fragment() {
         }
         Game.currentGame.myPoints.observe(viewLifecycleOwner, pointsObserver)
 
-        val opponentCardsObserver = Observer<ArrayList<String>>{ updatedCards ->
+        val opponentCardsObserver = Observer<ArrayList<Card>>{ updatedCards ->
             recycler_view_cards_opponent.adapter!!.notifyDataSetChanged()
         }
 

@@ -1,6 +1,7 @@
 package com.example.blackjack.controllers
 
 import androidx.lifecycle.MutableLiveData
+import com.example.blackjack.models.Card
 import com.example.blackjack.models.Game
 import com.example.blackjack.models.GameInstance
 import com.example.blackjack.views.activities.PlayingRoom
@@ -17,12 +18,15 @@ class GameInstanceController(var model:GameInstance) {
     }
 
     fun hit(){
-        model.myCards.add("c")
+        // replace
+        model.myCards.add(Card("4", "diamonds", false))
     }
 
     fun stand(){
         val cards = model.opponentCards.value
-        cards!!.add("i")
+
+        //testing only
+        cards!!.add(Card("4", "diamonds",false))
         model.opponentCards.value = cards
     }
 

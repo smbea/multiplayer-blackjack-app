@@ -7,7 +7,7 @@ object Game {
     lateinit var currentGame : GameInstance
     lateinit var currentGameController : GameInstanceController
 
-    private fun newGame(bet: Int, cards: ArrayList<String>){
+    private fun newGame(bet: Int, cards: ArrayList<Card>){
         currentGame = GameInstance(bet, cards)
         currentGameController = GameInstanceController(currentGame)
     }
@@ -23,9 +23,9 @@ object Game {
 
     fun ready(bet:Int) {
         //send message  and wait
-        val cards = ArrayList<String>()
-        cards.add("a")
-        cards.add("a")
+        val cards = ArrayList<Card>()
+        cards.add(Card("a", "spades", false))
+        cards.add(Card("a", "spades", false))
         this.newGame(bet, cards)
     }
 

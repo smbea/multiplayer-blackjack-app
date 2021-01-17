@@ -6,9 +6,10 @@ import android.widget.ImageView
 import androidx.annotation.NonNull
 import androidx.recyclerview.widget.RecyclerView
 import com.example.blackjack.R
+import com.example.blackjack.models.Card
 
 
-internal class CardsAdapter(private var cardsList: ArrayList<String>, private var mine:Boolean) :
+internal class CardsAdapter(private var cardsList: ArrayList<Card>, private var mine:Boolean) :
 
     RecyclerView.Adapter<CardsAdapter.MyViewHolder>() {
     internal inner class MyViewHolder(view: View) : RecyclerView.ViewHolder(view) {
@@ -33,11 +34,16 @@ internal class CardsAdapter(private var cardsList: ArrayList<String>, private va
     }
     override fun onBindViewHolder(holder: MyViewHolder, position: Int) {
         val card = cardsList[position]
-        //val cardImage = something
-        holder.image.setImageResource(R.drawable.c2)
+        matchCardResource(holder, card)
     }
     override fun getItemCount(): Int {
         return cardsList.size
+    }
+
+    private fun matchCardResource(holder: MyViewHolder, card:Card){
+        val imageName = card.getCardImageName()
+        val resource = context.resources.getIdentifier(imageName, "drawable", context.packageName)
+        holder.image.setImageResource(resource)
     }
 
 }
