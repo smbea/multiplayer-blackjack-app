@@ -19,7 +19,7 @@ class WelcomeMenu : Fragment() {
     ): View? {
 
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.frag_join_room_menu, container, false)
+        return inflater.inflate(R.layout.frag_welcome_menu, container, false)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {

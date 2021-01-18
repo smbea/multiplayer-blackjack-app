@@ -23,7 +23,7 @@ class Login : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        btn_join_room.setOnClickListener {
+        btn_login.setOnClickListener {
             findNavController().navigate(R.id.action_login_to_welcome)
         }
     }
