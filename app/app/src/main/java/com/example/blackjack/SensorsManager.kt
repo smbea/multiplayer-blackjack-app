@@ -17,15 +17,17 @@ class SensorsManager(context: Context) : SensorEventListener {
     private val valuesMagnometer = FloatArray(3)
     private var rightEvent = false
     private var leftEvent = false
+    private var leftTilt = false
+    private var rightTilt = false
 
     init {
         Log.v("aqui", "created")
         sensorManager.getDefaultSensor(Sensor.TYPE_GYROSCOPE)?.also { gyroscope ->
-            sensorManager.registerListener(this, gyroscope, SensorManager.SENSOR_DELAY_FASTEST, SensorManager.SENSOR_DELAY_GAME)
+            sensorManager.registerListener(this, gyroscope, SensorManager.SENSOR_DELAY_FASTEST, 10000)
         }
 
         sensorManager.getDefaultSensor(Sensor.TYPE_MAGNETIC_FIELD)?.also { magnometer ->
-            sensorManager.registerListener(this, magnometer, SensorManager.SENSOR_DELAY_FASTEST, SensorManager.SENSOR_DELAY_GAME)
+            sensorManager.registerListener(this, magnometer, SensorManager.SENSOR_DELAY_FASTEST, 10000)
         }
 
     }
@@ -43,12 +45,10 @@ class SensorsManager(context: Context) : SensorEventListener {
                 valuesGyroscope[2] = event.values[2]
 
                 if (!rightEvent && !leftEvent) {
-                    if (valuesGyroscope[1] < 0) {
-                        Log.v("r", "tilted left")
+                    if (valuesGyroscope[1] < 0 && !rightTilt) {
                         Game.currentGameController.stand()
                         leftEvent = true
-                    } else if (valuesGyroscope[1] > 0) {
-                        Log.v("r", "tilted right")
+                    } else if (valuesGyroscope[1] > 0 && !leftTilt) {
                         Game.currentGameController.hit()
                         rightEvent = true
                     }
@@ -60,26 +60,31 @@ class SensorsManager(context: Context) : SensorEventListener {
                 valuesMagnometer[1] = event.values[1]
                 valuesMagnometer[2] = event.values[2]
 
-                if (leftEvent) {
-                    if (valuesMagnometer[0] >= 0) {
-                        Log.v("r", valuesMagnometer[0].toString())
-                        leftEvent = false
+                when {
+                    valuesMagnometer[0] >10f -> {
+                        rightTilt=true
                     }
-                } else if (rightEvent) {
-                    if (valuesMagnometer[0] <= 0) {
-                        Log.v("r", valuesMagnometer[0].toString())
-                        rightEvent = false
+                    valuesMagnometer[0] < -10f -> {
+                        leftTilt = true
+                    }
+                    else -> {
+
+                        rightTilt = false
+                        leftTilt = false
                     }
                 }
 
+                if (leftEvent) {
+                    if (!leftTilt && !rightTilt) {
+                        leftEvent = false
+                    }
+                } else if (rightEvent) {
+                    if (!leftTilt && !rightTilt) {
+                        rightEvent = false
+                    }
+                }
             }
         }
 
     }
-
-    fun getSensorManager(): SensorManager {
-        return sensorManager
-    }
-
-
 }

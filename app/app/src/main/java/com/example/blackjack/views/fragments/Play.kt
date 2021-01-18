@@ -1,10 +1,7 @@
 package com.example.blackjack.views.fragments
 
 import CardsAdapter
-import android.hardware.Sensor
-import android.hardware.SensorManager
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -46,6 +43,12 @@ class Play : Fragment() {
         }
         Game.currentGame.myPoints.observe(viewLifecycleOwner, pointsObserver)
 
+        val myCardsObserver = Observer<ArrayList<Card>> { updatedCards ->
+            recycler_view_cards.adapter!!.notifyDataSetChanged()
+        }
+
+        Game.currentGame.myCards.observe(viewLifecycleOwner, myCardsObserver)
+
         val opponentCardsObserver = Observer<ArrayList<Card>> { updatedCards ->
             recycler_view_cards_opponent.adapter!!.notifyDataSetChanged()
         }
@@ -55,12 +58,12 @@ class Play : Fragment() {
 
 
     private fun initCardsView() {
-        val my_recyclerView = recycler_view_cards
-        myCardsAdapter = CardsAdapter(Game.currentGame.myCards, true)
-        my_recyclerView.layoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
-        my_recyclerView.itemAnimator = DefaultItemAnimator()
-        my_recyclerView.addItemDecoration(DeckDecorator())
-        my_recyclerView.adapter = myCardsAdapter
+        val myRecyclerView = recycler_view_cards
+        myCardsAdapter = CardsAdapter(Game.currentGame.myCards.value!!, true)
+        myRecyclerView.layoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
+        myRecyclerView.itemAnimator = DefaultItemAnimator()
+        myRecyclerView.addItemDecoration(DeckDecorator())
+        myRecyclerView.adapter = myCardsAdapter
         myCardsAdapter.notifyDataSetChanged()
 
         val opRecyclerView = recycler_view_cards_opponent
@@ -85,7 +88,7 @@ class Play : Fragment() {
 
         btn_hit.setOnClickListener {
             Game.currentGameController.hit()
-            myCardsAdapter.notifyItemInserted(Game.currentGame.myCards.size - 1)
+            //myCardsAdapter.notifyItemInserted(Game.currentGame.myCards.value!!.size - 1)
         }
 
         btn_stand.setOnClickListener {

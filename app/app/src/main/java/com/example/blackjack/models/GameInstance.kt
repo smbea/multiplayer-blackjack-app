@@ -8,16 +8,16 @@ data class GameInstance( val bet:Int, val cards:ArrayList<Card>){
         MutableLiveData<Int>()
     }
     val opponentCards : MutableLiveData<ArrayList<Card>> by lazy {MutableLiveData<ArrayList<Card>>()}
-    var myCards: ArrayList<Card> = ArrayList()
+    val myCards: MutableLiveData<ArrayList<Card>> by lazy {MutableLiveData<ArrayList<Card>>()}
 
     init {
-        myCards = cards
+        myCards.value = cards
 
         //testing
-        val cards = ArrayList<Card>()
-        cards.add(Card("j", "spades", true))
-        cards.add(Card("j", "spades", false))
-        opponentCards.value=cards
+        val tempCards = ArrayList<Card>()
+        tempCards.add(Card("j", "spades", true))
+        tempCards.add(Card("j", "spades", false))
+        opponentCards.value=tempCards
         //end testing
 
         //change for new score

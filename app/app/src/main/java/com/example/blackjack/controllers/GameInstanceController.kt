@@ -19,7 +19,9 @@ class GameInstanceController(var model:GameInstance) {
 
     fun hit(){
         // replace
-        model.myCards.add(Card("4", "diamonds", false))
+        val tempCards =  model.myCards.value
+        tempCards!!.add(Card("4", "diamonds", false))
+        model.myCards.value=tempCards
     }
 
     fun stand(){
