@@ -11,13 +11,13 @@ data class GameInstance( val bet:Int, val cards:ArrayList<Card>){
     val myCards: MutableLiveData<ArrayList<Card>> by lazy {MutableLiveData<ArrayList<Card>>()}
 
     init {
-        myCards.value = cards
+        myCards.postValue(cards)
 
         //testing
         val tempCards = ArrayList<Card>()
         tempCards.add(Card("j", "spades", true))
         tempCards.add(Card("j", "spades", false))
-        opponentCards.value=tempCards
+        opponentCards.postValue(tempCards)
         //end testing
 
         //change for new score
