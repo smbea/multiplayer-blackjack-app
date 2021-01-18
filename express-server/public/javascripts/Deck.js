@@ -2,7 +2,7 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 const Card_1 = require("./Card");
 const Hand_1 = require("./Hand");
-class Deck {
+export class Deck {
     constructor(num_decks) {
         this.cards_deck = [];
         this.one_deck = [];

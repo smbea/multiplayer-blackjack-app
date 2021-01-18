@@ -8,6 +8,14 @@ class User {
         this.money = 500;
         this.current_bet = 0;
     }
+
+    giveHand(hand) {
+        this.hand = hand
+    }
+
+    addCardToHand(card) {
+        this.hand.addCard(card)
+    }
 }
 exports.User = User;
 //# sourceMappingURL=User.js.map
