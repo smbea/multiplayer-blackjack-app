@@ -23,6 +23,11 @@ object Game {
 
     fun ready(bet:Int) {
         //send message  and wait
+        var coisa = true
+        while(coisa){
+            Thread.sleep(3000)
+            coisa = false
+        }
         val cards = ArrayList<Card>()
         cards.add(Card("a", "spades", false))
         cards.add(Card("a", "spades", false))

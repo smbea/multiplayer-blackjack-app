@@ -15,6 +15,7 @@ import com.example.blackjack.SensorsManager
 import com.example.blackjack.models.Card
 import com.example.blackjack.models.Game
 import kotlinx.android.synthetic.main.frag_play.*
+import kotlinx.android.synthetic.main.frag_play.balance
 
 
 class Play : Fragment() {
@@ -76,6 +77,7 @@ class Play : Fragment() {
     }
 
     private fun initViewValues() {
+        balance.text = (Game.amountAvailable.toString() + "€")
         bet_amount.text = (Game.currentGameController.getBet().toString() + "€")
         my_score.text = Game.currentGameController.getPoints().toString()
     }

@@ -12,6 +12,7 @@ import com.example.blackjack.models.Game
 import com.example.blackjack.R
 import com.example.blackjack.models.GameInstance
 import com.example.blackjack.views.activities.PlayingRoom
+import kotlinx.android.synthetic.main.activity_playroom.*
 import kotlinx.android.synthetic.main.frag_bet.*
 
 class Bet : Fragment() {
@@ -49,6 +50,8 @@ class Bet : Fragment() {
         balance.text = (Game.amountAvailable.toString() + "€")
 
         btn_ready.setOnClickListener {
+            bet_view.visibility=View.GONE
+            loader.visibility=View.VISIBLE
             Game.ready(this.tempBetAmount)
             findNavController().navigate(R.id.action_ready_to_play)
         }
