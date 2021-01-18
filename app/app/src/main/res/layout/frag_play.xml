@@ -6,13 +6,74 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
+
+
+    <ImageView
+        android:id="@+id/userBar"
+        android:layout_width="match_parent"
+        android:layout_height="68dp"
+        android:layout_marginStart="-20dp"
+        android:layout_marginEnd="-20dp"
+        android:layout_marginBottom="-5dp"
+        android:layout_alignParentBottom="true"
+        android:scaleType="fitXY"
+        app:srcCompat="@drawable/purple_frame" />
+
+    <TextView
+        android:id="@+id/username"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentBottom="true"
+        android:layout_marginStart="20dp"
+        android:layout_marginBottom="15dp"
+        android:textSize="25sp"
+        android:textStyle="bold"
+        android:textColor="@color/white"
+        android:text="user" />
+
+    <TextView
+        android:id="@+id/balance"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentBottom="true"
+        android:layout_marginEnd="20dp"
+        android:layout_marginBottom="15dp"
+        android:textSize="25sp"
+        android:textStyle="bold"
+        android:textColor="@color/white" />
+
+    <ImageView
+        android:id="@+id/oppnentUserBar"
+        android:layout_width="match_parent"
+        android:layout_height="68dp"
+        android:layout_marginStart="-20dp"
+        android:layout_marginEnd="-20dp"
+        android:layout_marginTop="-5dp"
+        android:layout_alignParentTop="true"
+        android:scaleType="fitXY"
+        app:srcCompat="@drawable/purple_frame" />
+
+    <TextView
+        android:id="@+id/opponentUsername"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_marginEnd="-20dp"
+        android:layout_marginTop="10dp"
+        android:textSize="25sp"
+        android:textStyle="bold"
+        android:textColor="@color/white"
+        android:text="user" />
+
     <LinearLayout
         android:id="@+id/opponent_cards"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignParentTop="true"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="10dp">
+        android:layout_marginTop="10dp"
+        android:layout_below="@id/oppnentUserBar">
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/recycler_view_cards_opponent"
             android:layout_width="wrap_content"
@@ -23,9 +84,8 @@
         android:id="@+id/my_cards"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
         android:layout_centerHorizontal="true"
-        android:layout_marginBottom="80dp">
+        android:layout_above="@+id/buttons">
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/recycler_view_cards"
             android:layout_width="wrap_content"
@@ -33,12 +93,13 @@
     </LinearLayout>
 
     <GridLayout
+        android:id="@+id/buttons"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_centerHorizontal="true"
-        android:layout_alignParentBottom="true"
-        android:layout_marginBottom="10dp"
+        android:layout_marginBottom="-10dp"
         android:useDefaultMargins="true"
+        android:layout_above="@id/userBar"
         >
 
         <Button
@@ -72,17 +133,17 @@
         android:useDefaultMargins="true"
         >
 
-        <TextView
-            android:id="@+id/bet_amount"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="@dimen/fab_margin"
-            android:layout_gravity="start"
-            android:textSize="25sp"
-            android:text=""
-            android:textStyle="bold"
-            android:textColor="@color/white"
-            />
+    <TextView
+        android:id="@+id/bet_amount"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="@dimen/fab_margin"
+        android:layout_gravity="start"
+        android:textSize="25sp"
+        android:text=""
+        android:textStyle="bold"
+        android:textColor="@color/white"
+        />
 
         <TextView
             android:id="@+id/my_score"
@@ -93,7 +154,10 @@
             android:layout_gravity="end"
             android:text=""
             android:textColor="@color/white"
-            android:textStyle="bold"/>
+            android:textStyle="bold"
+            android:layout_above="@id/my_cards"
+            android:layout_centerHorizontal="true"
+            />
     </GridLayout>
 
 

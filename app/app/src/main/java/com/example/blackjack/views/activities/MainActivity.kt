@@ -13,8 +13,14 @@ class MainActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_main)
-        //setSupportActionBar(findViewById(R.id.toolbar))
+
+        val beginning = intent.getStringExtra("beginning")
+
+        if(beginning.equals("false"))
+            setContentView(R.layout.frag_welcome_menu)
+        else setContentView(R.layout.activity_main)
+
+
 
     }
 

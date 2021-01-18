@@ -19,7 +19,7 @@
         android:id="@+id/Play"
         android:name="com.example.blackjack.views.fragments.Play"
         tools:layout="@layout/frag_play">
-
     </fragment>
+
 
 </navigation>

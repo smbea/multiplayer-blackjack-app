@@ -28,5 +28,9 @@ class WelcomeMenu : Fragment() {
         btn_join_room.setOnClickListener {
             findNavController().navigate(R.id.action_WelcomeMenu_to_JoinRoom)
         }
+
+        btn_create_room.setOnClickListener {
+            findNavController().navigate(R.id.action_WelcomeMenu_to_CreateRoom)
+        }
     }
 }
