@@ -13,11 +13,20 @@
         <action
             android:id="@+id/action_WelcomeMenu_to_JoinRoom"
             app:destination="@id/JoinRoom" />
+        <action
+            android:id="@+id/action_WelcomeMenu_to_CreateRoom"
+            app:destination="@id/CreateRoom" />
     </fragment>
     <fragment
         android:id="@+id/JoinRoom"
         android:name="com.example.blackjack.views.fragments.JoinRoom"
         tools:layout="@layout/frag_join_room_menu">
+    </fragment>
+
+    <fragment
+        android:id="@+id/CreateRoom"
+        android:name="com.example.blackjack.views.fragments.CreateRoom"
+        tools:layout="@layout/frag_create_room_menu">
     </fragment>
 
     <fragment
