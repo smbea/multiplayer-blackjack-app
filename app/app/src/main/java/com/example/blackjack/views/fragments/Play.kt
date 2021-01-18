@@ -42,25 +42,25 @@ class Play : Fragment() {
         val pointsObserver = Observer<Int> { updatedPoints ->
             my_score.text = updatedPoints.toString()
         }
-        Game.currentGame.myPoints.observe(viewLifecycleOwner, pointsObserver)
+        Game.currentGame.value!!.myPoints.observe(viewLifecycleOwner, pointsObserver)
 
-        val myCardsObserver = Observer<ArrayList<Card>> { updatedCards ->
+        val myCardsObserver = Observer<ArrayList<Card>> { _ ->
             recycler_view_cards.adapter!!.notifyDataSetChanged()
         }
 
-        Game.currentGame.myCards.observe(viewLifecycleOwner, myCardsObserver)
+        Game.currentGame.value!!.myCards.observe(viewLifecycleOwner, myCardsObserver)
 
-        val opponentCardsObserver = Observer<ArrayList<Card>> { updatedCards ->
+        val opponentCardsObserver = Observer<ArrayList<Card>> { _ ->
             recycler_view_cards_opponent.adapter!!.notifyDataSetChanged()
         }
 
-        Game.currentGame.opponentCards.observe(viewLifecycleOwner, opponentCardsObserver)
+        Game.currentGame.value!!.opponentCards.observe(viewLifecycleOwner, opponentCardsObserver)
     }
 
 
     private fun initCardsView() {
         val myRecyclerView = recycler_view_cards
-        myCardsAdapter = CardsAdapter(Game.currentGame.myCards.value!!, true)
+        myCardsAdapter = CardsAdapter(Game.currentGame.value!!.myCards.value!!, true)
         myRecyclerView.layoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
         myRecyclerView.itemAnimator = DefaultItemAnimator()
         myRecyclerView.addItemDecoration(DeckDecorator())
@@ -68,7 +68,7 @@ class Play : Fragment() {
         myCardsAdapter.notifyDataSetChanged()
 
         val opRecyclerView = recycler_view_cards_opponent
-        opponentCardsAdapter = CardsAdapter(Game.currentGame.opponentCards.value!!, false)
+        opponentCardsAdapter = CardsAdapter(Game.currentGame.value!!.opponentCards.value!!, false)
         opRecyclerView.layoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
         opRecyclerView.itemAnimator = DefaultItemAnimator()
         opRecyclerView.addItemDecoration(DeckDecorator())
@@ -90,7 +90,6 @@ class Play : Fragment() {
 
         btn_hit.setOnClickListener {
             Game.currentGameController.hit()
-            //myCardsAdapter.notifyItemInserted(Game.currentGame.myCards.value!!.size - 1)
         }
 
         btn_stand.setOnClickListener {
