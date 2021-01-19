@@ -1,2 +1,4 @@
-
+express_server/node_modules
 .DS_Store
+
+express-server/node_modules/
