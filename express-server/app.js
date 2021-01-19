@@ -6,6 +6,10 @@ var logger = require('morgan');
 
 var indexRouter = require('./routes/index');
 var usersRouter = require('./routes/users');
+var http = require('http')
+var WebSocket = require('ws')
+
+const Game = require('./public/javascripts/Game');
 
 var app = express();
 
@@ -43,18 +47,32 @@ console.log("Server started")
 
 const httpS = http.createServer(app)
 
+
 const wsServer = new WebSocket.Server({ port: 8080 })
 
 wsServer.on('connection', (ws) => {
   console.log("Connection started!")
 
   ws.on('message', (message) => {
-    console.log('Message received. Content', message)
+
+    let msg_data = JSON.parse(message)
+    const { type, username } = msg_data
+    if (type == 'new_player')
+      app.locals.game.gameEmitter.emit('new_player', username)
+
+    console.log(`Message received. TYPE:${type} username:${username}`)
     setTimeout(() => ws.send("Message received. Content:" + message))
   })
 
   ws.send("You are now connected to the game server")
 
 })
+
+
+
+app.locals.game = new Game(1, 1)
+//app.locals.game.startGameLoop()
+
+
 
 module.exports = app;

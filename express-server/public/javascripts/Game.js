@@ -1,20 +1,67 @@
-var { Deck } = require('./Deck')
+var Deck  = require('./Deck')
 const { User } = require('./User')
 
-export class Game {
+const EventEmitter = require('events');
+
+class MyEmitter extends EventEmitter { }
+
+gamestates = {
+    startGame: 2,
+    waitPlayer: 1,
+    waitRoom: 0,
+    updateBoard: 3,
+    endRound: 4
+}
+
+
+
+
+
+
+class Game {
     constructor(id, num_decks) {
+        
         this.id = id
         this.deck = new Deck(num_decks)
         this.players = {}
-        this.state = 'wait_for_players'
+        // this.state = waitRoom
         this.gameOn = true
+
+        this.gameEmitter = new MyEmitter();
+        this.setupEmitter();
+        
     }
 
-    gameLoop(){
 
-        while(this.gameOn){
-            
+    setupEmitter(){
+
+        this.gameEmitter.on('new_player', (username) => {
+            //this.addNewPlayer(username, key)
+            console.log(`A new player has joined. Username:${username}`);
+        });
+
+        this.gameEmitter.on('hit', (username, key) =>{
+            //this.hitPlayer(username, key)
+            console.log(`Player ${username} has hit!`)
+        })
+
+        this.gameEmitter.on('stand', (username, key) =>{
+            //this.standPlayer(username, key)
+            console.log(`Player ${username} has stand!`)
+        })
+
+        this.gameEmitter.on('make_bet', (username, key, bet_value) =>{
+            //this.makeBetPlayer(username, key, bet_value)
+            console.log(`Player ${username} has changed its bet to ${bet_value}!`)
+        })
+    }
+
+    async startGameLoop() {
+
+        while (this.gameOn) {
+
         }
+        
     }
 
     addNewPlayer(username, key) {
@@ -38,15 +85,15 @@ export class Game {
     }
 
     standPlayer(username, key) {
-        if(this.checkKey(username,key)){
+        if (this.checkKey(username, key)) {
             this.players[username].hand.hold()
             return true
         }
         return false
     }
 
-    makeBetPlayer(username,key, bet_value){
-        if(this.checkKey(username,key) && current_bet <= this.players[username].money){
+    makeBetPlayer(username, key, bet_value) {
+        if (this.checkKey(username, key) && current_bet <= this.players[username].money) {
             this.players[username].current_bet = bet_value
             this.players[username].money -= bet_value
             return this.players[username].money
@@ -54,3 +101,5 @@ export class Game {
         return -1
     }
 }
+
+module.exports = Game

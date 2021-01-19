@@ -1,8 +1,10 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
+
 const Card_1 = require("./Card");
 const Hand_1 = require("./Hand");
-export class Deck {
+
+class Deck {
     constructor(num_decks) {
         this.cards_deck = [];
         this.one_deck = [];
@@ -56,5 +58,5 @@ export class Deck {
         return { hands, dealerHand };
     }
 }
-
+module.exports = Deck
 //# sourceMappingURL=Deck.js.map
