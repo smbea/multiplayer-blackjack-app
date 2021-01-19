@@ -57,9 +57,17 @@ wsServer.on('connection', (ws) => {
 
     let msg_data = JSON.parse(message)
     const { type, username } = msg_data
-    if (type == 'new_player')
-      app.locals.game.gameEmitter.emit('new_player', username)
-
+    switch(type){
+      case 'new_player':
+        app.locals.game.gameEmitter.emit('new_player', username)
+        break;
+      case 'hit':
+        app.locals.game.gameEmitter.emit('hit', username)
+        break;
+      case 'stand':
+          app.locals.game.gameEmitter.emit('stand', username)
+          break;
+    }
     console.log(`Message received. TYPE:${type} username:${username}`)
     setTimeout(() => ws.send("Message received. Content:" + message))
   })
