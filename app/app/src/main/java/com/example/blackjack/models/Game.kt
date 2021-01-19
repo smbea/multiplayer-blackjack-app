@@ -1,8 +1,10 @@
 package com.example.blackjack.models
 
+import android.util.Log
 import androidx.lifecycle.MutableLiveData
+import com.example.blackjack.CommunicationManager
 import com.example.blackjack.controllers.GameInstanceController
-import kotlinx.coroutines.delay
+import kotlinx.coroutines.*
 
 
 object Game {
@@ -11,6 +13,23 @@ object Game {
         MutableLiveData<GameInstance>()
     }
     lateinit var currentGameController : GameInstanceController
+    private val communicationManager = CommunicationManager()
+
+     fun establishCommunication(){
+        Log.v("WSS", "connecting2")
+
+        GlobalScope.launch {
+            try {
+                coroutineScope {
+                    val task = async {
+                        communicationManager.connect()
+                    }
+                }
+            } catch (e: Throwable) {
+                Log.e("Erro!", e.message.toString())
+            }
+        }
+    }
 
     private fun newGame(bet: Int, cards: ArrayList<Card>){
         currentGame.postValue(GameInstance(bet, cards))
@@ -40,7 +59,6 @@ object Game {
 
         return true
     }
-
 
 
 }
