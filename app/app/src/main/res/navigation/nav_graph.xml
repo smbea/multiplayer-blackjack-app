@@ -16,6 +16,9 @@
         <action
             android:id="@+id/action_WelcomeMenu_to_CreateRoom"
             app:destination="@id/CreateRoom" />
+        <action
+            android:id="@+id/action_LogOut"
+            app:destination="@id/Login" />
     </fragment>
     <fragment
         android:id="@+id/JoinRoom"

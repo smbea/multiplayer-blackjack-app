@@ -19,6 +19,8 @@ class QuitFragment : DialogFragment() {
                 .setPositiveButton(
                     "Yes"
                 ) { _, _ ->
+
+
                     val intent = Intent(activity, MainActivity::class.java).apply {
                         putExtra("beginning", "false")
                     }

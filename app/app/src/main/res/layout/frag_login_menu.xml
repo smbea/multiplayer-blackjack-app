@@ -36,14 +36,12 @@
         android:layout_marginBottom="80dp"
         >
 
-        <Button
-            android:id="@+id/btn_login"
+
+        <com.google.android.gms.common.SignInButton
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-
-            android:text="@string/login">
-
-        </Button>
+            android:id="@+id/btn_login">
+        </com.google.android.gms.common.SignInButton>
 
     </LinearLayout>
 

@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "956715309798",
+    "project_id": "macc-blackjack",
+    "storage_bucket": "macc-blackjack.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:956715309798:android:f11b1637e0098b59993927",
+        "android_client_info": {
+          "package_name": "com.example.blackjack"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "956715309798-d9rfgq9adit1s8frelipj6oqcr8kiif3.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.blackjack",
+            "certificate_hash": "1cb4d7e0f6f94fdc420b996f9f4baa190b6e9a15"
+          }
+        },
+        {
+          "client_id": "956715309798-v2at19c0rfr7f5d8b0a82hlckc89ushg.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBknJkBpVKnmgjxyk5yAc5GJJwmG96zUJs"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "956715309798-v2at19c0rfr7f5d8b0a82hlckc89ushg.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

@@ -7,6 +7,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.DefaultItemAnimator
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.blackjack.DeckDecorator
@@ -25,8 +26,8 @@ class Play : Fragment() {
     private lateinit var sensorManager: SensorsManager
 
     override fun onCreateView(
-            inflater: LayoutInflater, container: ViewGroup?,
-            savedInstanceState: Bundle?
+        inflater: LayoutInflater, container: ViewGroup?,
+        savedInstanceState: Bundle?
     ): View? {
 
 
@@ -55,13 +56,28 @@ class Play : Fragment() {
         }
 
         Game.currentGame.value!!.opponentCards.observe(viewLifecycleOwner, opponentCardsObserver)
+
+        val turnObserver = Observer<Boolean> { turn ->
+            if (turn) {
+                opponent_turn.visibility=View.INVISIBLE
+                btn_hit.isEnabled = turn
+                //btn_stand.isEnabled = true
+            } else {
+                opponent_turn.visibility=View.VISIBLE
+                btn_hit.isEnabled = turn
+                //btn_stand.isEnabled = false
+            }
+        }
+
+        Game.currentGame.value!!.turn.observe(viewLifecycleOwner, turnObserver)
     }
 
 
     private fun initCardsView() {
         val myRecyclerView = recycler_view_cards
         myCardsAdapter = CardsAdapter(Game.currentGame.value!!.myCards.value!!, true)
-        myRecyclerView.layoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
+        myRecyclerView.layoutManager =
+            LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
         myRecyclerView.itemAnimator = DefaultItemAnimator()
         myRecyclerView.addItemDecoration(DeckDecorator())
         myRecyclerView.adapter = myCardsAdapter
@@ -69,7 +85,8 @@ class Play : Fragment() {
 
         val opRecyclerView = recycler_view_cards_opponent
         opponentCardsAdapter = CardsAdapter(Game.currentGame.value!!.opponentCards.value!!, false)
-        opRecyclerView.layoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
+        opRecyclerView.layoutManager =
+            LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
         opRecyclerView.itemAnimator = DefaultItemAnimator()
         opRecyclerView.addItemDecoration(DeckDecorator())
         opRecyclerView.adapter = opponentCardsAdapter
@@ -83,9 +100,15 @@ class Play : Fragment() {
     }
 
     private fun setListeners() {
-        btn_quit.setOnClickListener {
+
+        /*btn_quit.setOnClickListener {
             val quitDialog = QuitFragment()
             quitDialog.show(parentFragmentManager, "quit")
+        }*/
+
+        btn_fold.setOnClickListener {
+            Game.end()
+            findNavController().navigate(R.id.action_results)
         }
 
         btn_hit.setOnClickListener {

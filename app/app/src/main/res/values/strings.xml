@@ -18,9 +18,11 @@
     <string name="ready">Ready</string>
     <string name="hit">Hit</string>
     <string name="stand">Stand</string>
-    <string name="quit">Quit</string>
+    <string name="fold">Fold</string>
     <string name="reset">Reset</string>
     <string name="_0">0€</string>
     <string name="balance">Balance:</string>
+    <string name="opponents_turn">Opponent turn</string>
+    <string name="back_to_menu">Back to menu</string>
 
 </resources>

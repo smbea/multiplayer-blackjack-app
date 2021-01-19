@@ -7,6 +7,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.navigation.fragment.findNavController
 import com.example.blackjack.R
+import com.example.blackjack.models.Game
 import kotlinx.android.synthetic.main.frag_welcome_menu.*
 /**
  * A simple [Fragment] subclass as the default destination in the navigation.
@@ -24,6 +25,12 @@ class WelcomeMenu : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+        welcome.text = "Welcome, ${Game.username}"
+
+        btn_logout.setOnClickListener {
+            findNavController().navigate(R.id.action_LogOut)
+        }
 
         btn_join_room.setOnClickListener {
             findNavController().navigate(R.id.action_WelcomeMenu_to_JoinRoom)

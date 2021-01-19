@@ -22,6 +22,7 @@ class GameInstanceController(var model:GameInstance) {
         val tempCards =  model.myCards.value
         tempCards!!.add(Card("4", "diamonds", false))
         model.myCards.value=tempCards
+        model.turn.value = false
     }
 
     fun stand(){
@@ -30,6 +31,15 @@ class GameInstanceController(var model:GameInstance) {
         //testing only
         cards!!.add(Card("4", "diamonds",false))
         model.opponentCards.value = cards
+        model.turn.value = true
+    }
+
+    fun getOutcome(): String {
+        return model.outcome
+    }
+
+    fun getFinalBalance(): Int {
+        return model.finalBalance
     }
 
 }

@@ -1,14 +1,20 @@
 package com.example.blackjack.models
 
 import androidx.lifecycle.MutableLiveData
+import kotlin.properties.Delegates
 
 data class GameInstance( val bet:Int, val cards:ArrayList<Card>){
 
+    var finalBalance by Delegates.notNull<Int>()
     val myPoints: MutableLiveData<Int> by lazy {
         MutableLiveData<Int>()
     }
+    var outcome:String = String()
     val opponentCards : MutableLiveData<ArrayList<Card>> by lazy {MutableLiveData<ArrayList<Card>>()}
     val myCards: MutableLiveData<ArrayList<Card>> by lazy {MutableLiveData<ArrayList<Card>>()}
+    val turn: MutableLiveData<Boolean> by lazy {
+        MutableLiveData<Boolean>()
+    }
 
     init {
         myCards.postValue(cards)

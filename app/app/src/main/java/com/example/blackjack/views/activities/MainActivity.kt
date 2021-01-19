@@ -1,5 +1,6 @@
 package com.example.blackjack.views.activities
 
+import android.R.attr.password
 import android.content.res.Configuration
 import android.os.Bundle
 import android.util.Log
@@ -8,9 +9,12 @@ import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.example.blackjack.R
 import com.example.blackjack.models.Game
+import com.google.firebase.auth.FirebaseAuth
+
 
 class MainActivity : AppCompatActivity() {
 
+    lateinit var mAuth: FirebaseAuth
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -22,6 +26,7 @@ class MainActivity : AppCompatActivity() {
         else setContentView(R.layout.activity_main)
 
         Game.establishCommunication()
+
     }
 
     override fun onConfigurationChanged(newConfig: Configuration) {

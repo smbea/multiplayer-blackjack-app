@@ -29,8 +29,7 @@
         android:layout_marginBottom="15dp"
         android:textSize="25sp"
         android:textStyle="bold"
-        android:textColor="@color/white"
-        android:text="user" />
+        android:textColor="@color/white" />
 
     <TextView
         android:id="@+id/balance"
@@ -65,7 +64,7 @@
         android:textSize="25sp"
         android:textStyle="bold"
         android:textColor="@color/white"
-        android:text="user" />
+        android:text="username345" />
 
     <LinearLayout
         android:id="@+id/opponent_cards"
@@ -103,17 +102,17 @@
         >
 
         <Button
-            android:id="@+id/btn_quit"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-
-            android:text="@string/quit" />
-
-        <Button
             android:id="@+id/btn_stand"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/stand"/>
+        <Button
+            android:id="@+id/btn_fold"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+
+            android:text="@string/fold" />
+
 
         <Button
             android:id="@+id/btn_hit"
@@ -159,6 +158,19 @@
             android:layout_centerHorizontal="true"
             />
     </GridLayout>
+
+    <TextView
+        android:id="@+id/opponent_turn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="315dp"
+        android:text="@string/opponents_turn"
+        android:textSize="30sp"
+        android:padding="@dimen/fab_margin"
+        android:background="@color/purple_700"
+        android:textColor="@color/white"/>
 
 
 </RelativeLayout>

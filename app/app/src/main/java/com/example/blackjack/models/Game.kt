@@ -5,11 +5,14 @@ import androidx.lifecycle.MutableLiveData
 import com.example.blackjack.CommunicationManager
 import com.example.blackjack.controllers.GameInstanceController
 import kotlinx.coroutines.*
+import kotlinx.coroutines.delay
 
 
 object Game {
     var amountAvailable = 500
-    val currentGame :  MutableLiveData<GameInstance> by lazy {
+    var token: String = String()
+    var username: String = String()
+    val currentGame: MutableLiveData<GameInstance> by lazy {
         MutableLiveData<GameInstance>()
     }
     lateinit var currentGameController : GameInstanceController
@@ -31,23 +34,31 @@ object Game {
         }
     }
 
-    private fun newGame(bet: Int, cards: ArrayList<Card>){
+    private fun newGame(bet: Int, cards: ArrayList<Card>) {
         currentGame.postValue(GameInstance(bet, cards))
         currentGameController = GameInstanceController(currentGame.value!!)
 
     }
 
-    fun quit(){
-        amountAvailable = currentGame.value!!.bet
-        //currentGame.value=null
+    fun quit() {
+        currentGame.value!!.finalBalance = 500
+        amountAvailable -= currentGame.value!!.bet
+        currentGame.value!!.outcome = "folded"
+
     }
 
-    fun joinRoom(roomId:Int): Boolean {
+    fun end(){
+        currentGame.value!!.finalBalance = 500
+        amountAvailable -= currentGame.value!!.finalBalance
+        currentGame.value!!.outcome = "win"
+    }
+
+    fun joinRoom(roomId: Int): Boolean {
         //send message and wait
         return true
     }
 
-    suspend fun ready(bet:Int): Boolean {
+    suspend fun ready(bet: Int): Boolean {
 
         delay(3000)
 
