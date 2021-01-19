@@ -73,7 +73,7 @@ class Bet : Fragment() {
             loader.visibility = View.VISIBLE
         }
 
-        username.text=Game.username
+        username.text=Game.myUsername
 
 
         btn_reset.setOnClickListener {

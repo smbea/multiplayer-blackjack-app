@@ -58,15 +58,14 @@ class Play : Fragment() {
         Game.currentGame.value!!.opponentCards.observe(viewLifecycleOwner, opponentCardsObserver)
 
         val turnObserver = Observer<Boolean> { turn ->
-            if (turn) {
+            btn_hit.isEnabled = turn
+            btn_stand.isEnabled = turn
+
+            if (turn)
                 opponent_turn.visibility=View.INVISIBLE
-                btn_hit.isEnabled = turn
-                //btn_stand.isEnabled = true
-            } else {
+            else
                 opponent_turn.visibility=View.VISIBLE
-                btn_hit.isEnabled = turn
-                //btn_stand.isEnabled = false
-            }
+
         }
 
         Game.currentGame.value!!.turn.observe(viewLifecycleOwner, turnObserver)
@@ -107,7 +106,7 @@ class Play : Fragment() {
         }*/
 
         btn_fold.setOnClickListener {
-            Game.end()
+            Game.currentGameController.fold()
             findNavController().navigate(R.id.action_results)
         }
 

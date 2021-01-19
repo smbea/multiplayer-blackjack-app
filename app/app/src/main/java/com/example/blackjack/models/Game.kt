@@ -1,6 +1,5 @@
 package com.example.blackjack.models
 
-import android.util.JsonToken
 import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import com.example.blackjack.CommunicationManager
@@ -13,14 +12,18 @@ import org.json.JSONObject
 object Game {
     var amountAvailable = 500
     var token: String = String()
-    var username: String = String()
+    var myUsername: String = String()
     val currentGame: MutableLiveData<GameInstance> by lazy {
         MutableLiveData<GameInstance>()
     }
-    lateinit var currentGameController : GameInstanceController
-    private val communicationManager = CommunicationManager()
+    lateinit var currentGameController: GameInstanceController
+    val communicationManager = CommunicationManager()
+    var responseStatus = false
+    var response = JSONObject()
+    var gameID = String()
+    var tempBet = 0
 
-     fun establishCommunication(){
+    fun establishCommunication() {
         Log.v("WSS", "connecting2")
 
         GlobalScope.launch {
@@ -36,49 +39,60 @@ object Game {
         }
     }
 
-    private fun newGame(bet: Int, cards: ArrayList<Card>) {
-        currentGame.postValue(GameInstance(bet, cards))
-        currentGameController = GameInstanceController(currentGame.value!!)
-
-    }
-
     fun quit() {
         currentGame.value!!.finalBalance = 500
-        amountAvailable -= currentGame.value!!.bet
         currentGame.value!!.outcome = "folded"
 
     }
 
-    fun end(){
-        currentGame.value!!.finalBalance = 500
-        amountAvailable -= currentGame.value!!.finalBalance
-        currentGame.value!!.outcome = "win"
+
+    fun joinRoom(roomId: Int): String {
+        this.responseStatus = false
+        val msg = JSONObject("""{"type":"join_room", "room_id":"$roomId"}""")
+        communicationManager.sendMessage(msg)
+        while (!this.responseStatus) {
+        }
+
+        if (response.opt("status") == "success") {
+            gameID = response.opt("key") as String
+            return "ok"
+        } else return response.opt("error_message") as String
     }
 
-    fun joinRoom(roomId: Int): Boolean {
-        //send message and wait
+    fun createRoom(): String {
+        this.responseStatus = false
+        val msg = JSONObject("""{"type":"create_room"}""")
+        communicationManager.sendMessage(msg)
+        while (!this.responseStatus) {
+        }
+
+        if (response.opt("status") == "success") {
+            gameID = response.opt("key") as String
+            return response.opt("room_id") as String
+        } else return "error"
+    }
+
+
+    fun ready(bet: Int): Boolean {
+
+        val msg = JSONObject("""{"type":"bet", "username":"$bet"}""")
+        communicationManager.sendMessage(msg)
+        tempBet = bet
         return true
     }
 
-    suspend fun ready(bet: Int): Boolean {
 
-        delay(3000)
+    fun login(token: String, username: String) {
 
-        //send message  and wait
-        val cards = ArrayList<Card>()
-        cards.add(Card("a", "spades", false))
-        cards.add(Card("a", "spades", false))
-        this.newGame(bet, cards)
-
-        return true
-    }
-
-    fun login(token: String, username:String){
-
-        Game.username = username
-        Game.token = token
+        this.myUsername = username
+        this.token = token
         val msg = JSONObject("""{"type":"new_player", "username":$username}""")
         communicationManager.sendMessage(msg)
+    }
+
+    fun startGame(opponentUsername: String) {
+        currentGame.postValue(GameInstance(tempBet,opponentUsername))
+        currentGameController = GameInstanceController(currentGame.value!!)
     }
 
 
