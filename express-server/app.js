@@ -10,6 +10,9 @@ var http = require('http')
 var WebSocket = require('ws')
 
 const Game = require('./public/javascripts/Game');
+const GameManager = require('./public/javascripts/GameManager');
+const { ppid } = require('process');
+
 
 var app = express();
 
@@ -48,17 +51,72 @@ console.log("Server started")
 const httpS = http.createServer(app)
 
 
-const wsServer = new WebSocket.Server({ port: 8080 })
+const wsServer = new WebSocket.Server({ port: 8080, clientTracking: true })
+
+wsServer.getUniqueID = function () {
+  function s4() {
+    return Math.floor((1 + Math.random()) * 0x10000).toString(16).substring(1);
+  }
+  return s4() + s4() + '-' + s4();
+};
+
+
+function handleMessages(message, ws_id) {
+
+  const { action, room_id } = message
+  let room = app.locals.game_manager.getRoom(room_id)
+
+  switch (action) {
+
+    case "join_room":
+      const { username } = message
+      res = room.addPlayer(username, ws_id)
+      return res; //dont just return string, create response msg
+
+    case "create_room":
+      const { username } = message
+      app.locals.game_manager.createRoom();
+      res = room.addPlayer(username, ws_id)
+      return res
+
+    case "ready_up":
+      const { username, key } = message
+      res = room.readyPlayer(username, key)
+      return res
+
+    case "hit":
+      const { username, key } = message
+      res = room.hitPlayer(username, key)
+      return
+
+    case "hold":
+      const { username, key } = message
+      res = room.standPlayer(username, key)
+      return
+
+    case "bet":
+      const { username, key, value } = message
+      res = room.makeBetPlayer(username, key, value)
+      return
+
+    case "exit":
+      const { username, key } = message
+      res = room.removePlayer(username, key)
+      return 
+
+  }
+}
 
 wsServer.on('connection', (ws) => {
+
   console.log("Connection started!")
+  ws.id = wsServer.getUniqueID()
+
 
   ws.on('message', (message) => {
 
     let msg_data = JSON.parse(message)
-    const { type, username } = msg_data
-    if (type == 'new_player')
-      app.locals.game.gameEmitter.emit('new_player', username)
+    handleMessages(msg_data)
 
     console.log(`Message received. TYPE:${type} username:${username}`)
     setTimeout(() => ws.send("Message received. Content:" + message))
@@ -68,11 +126,6 @@ wsServer.on('connection', (ws) => {
 
 })
 
-
-
-app.locals.game = new Game(1, 1)
-//app.locals.game.startGameLoop()
-
-
+app.locals.game_manager = new GameManager()
 
 module.exports = app;

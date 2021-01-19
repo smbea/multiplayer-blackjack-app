@@ -1,75 +1,57 @@
-var Deck  = require('./Deck')
+var Deck = require('./Deck')
 const { User } = require('./User')
 
-const EventEmitter = require('events');
 
-class MyEmitter extends EventEmitter { }
 
-gamestates = {
-    startGame: 2,
-    waitPlayer: 1,
-    waitRoom: 0,
-    updateBoard: 3,
-    endRound: 4
+
+function generateKey() {
+    let r = Math.random().toString(36).substring(12);
+    return r
 }
 
-
-
-
+//JUST use string and make check before action
+gamestates = ['startGame','waitPlayers','waitRoom', 'updateBoard','endRound']
 
 
 class Game {
     constructor(id, num_decks) {
-        
+
         this.id = id
         this.deck = new Deck(num_decks)
         this.players = {}
-        // this.state = waitRoom
-        this.gameOn = true
+        this.state = 'waitRoom'
+        this.ready = {}
 
-        this.gameEmitter = new MyEmitter();
-        this.setupEmitter();
-        
     }
 
-
-    setupEmitter(){
-
-        this.gameEmitter.on('new_player', (username) => {
-            //this.addNewPlayer(username, key)
-            console.log(`A new player has joined. Username:${username}`);
-        });
-
-        this.gameEmitter.on('hit', (username, key) =>{
-            //this.hitPlayer(username, key)
-            console.log(`Player ${username} has hit!`)
-        })
-
-        this.gameEmitter.on('stand', (username, key) =>{
-            //this.standPlayer(username, key)
-            console.log(`Player ${username} has stand!`)
-        })
-
-        this.gameEmitter.on('make_bet', (username, key, bet_value) =>{
-            //this.makeBetPlayer(username, key, bet_value)
-            console.log(`Player ${username} has changed its bet to ${bet_value}!`)
-        })
+    setState(state) {
+        this.state = state
     }
 
-    async startGameLoop() {
+    
 
-        while (this.gameOn) {
 
-        }
-        
-    }
-
-    addNewPlayer(username, key) {
-        let new_player = new User(key, username)
-        if (this.players[username] == null)
+    addNewPlayer(username, ws_id) {
+        key = generateKey()
+        let new_player = new User(key, username, ws_id)
+        if (this.players[username] == null) {
             this.players[username] = new_player
-        else
-            console.log("Connection refused: Attempted connection had equal username to already existing player")
+            this.ready[username] = false
+            return "Successfully joined game"
+        }
+        else {
+            err = "Connection refused: Attempted connection had equal username to already existing player"
+            console.log(err)
+            return err
+        }
+    }
+
+    readyPlayer(username, key) {
+        if (this.checkKey(username, key)) {
+            this.ready[username] = true
+            return "success"
+        }
+        return "Error: Key check failed"
     }
 
     checkKey(username, key) {
@@ -99,6 +81,17 @@ class Game {
             return this.players[username].money
         }
         return -1
+    }
+
+    removePlayer(username, key) {
+        if (this.checkKey(username, key)) {
+            if (this.players[username] != null) {
+                delete this.players[username]
+                return 0
+            }
+            return 2
+        }
+        return 1
     }
 }
 
