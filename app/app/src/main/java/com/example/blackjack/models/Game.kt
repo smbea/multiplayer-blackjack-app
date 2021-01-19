@@ -1,11 +1,13 @@
 package com.example.blackjack.models
 
+import android.util.JsonToken
 import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import com.example.blackjack.CommunicationManager
 import com.example.blackjack.controllers.GameInstanceController
 import kotlinx.coroutines.*
 import kotlinx.coroutines.delay
+import org.json.JSONObject
 
 
 object Game {
@@ -69,6 +71,14 @@ object Game {
         this.newGame(bet, cards)
 
         return true
+    }
+
+    fun login(token: String, username:String){
+
+        Game.username = username
+        Game.token = token
+        val msg = JSONObject("""{"type":"new_player", "username":$username}""")
+        communicationManager.sendMessage(msg)
     }
 
 

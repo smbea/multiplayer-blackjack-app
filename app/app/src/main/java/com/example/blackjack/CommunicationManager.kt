@@ -5,6 +5,7 @@ import com.neovisionaries.ws.client.WebSocket
 import com.neovisionaries.ws.client.WebSocketAdapter
 import com.neovisionaries.ws.client.WebSocketFactory
 import com.neovisionaries.ws.client.WebSocketFrame
+import org.json.JSONObject
 
 class CommunicationManager {
 
@@ -36,11 +37,9 @@ class CommunicationManager {
         ws.connect()
     }
 
-    fun sendAliveMessage(){
-        //ws.sendText("hello !")
-    }
 
-    fun sendMessage(){
+    fun sendMessage(msg:JSONObject){
+        ws.sendText(msg.toString())
     }
 
     fun parseMessage(message:String){

@@ -39,8 +39,7 @@ class Login : Fragment() {
 
         val randomString = getRandomString(10)
         btn_login.setOnClickListener {
-            Game.token=randomString
-            Game.username="username123"
+            Game.login("token","username123")
             findNavController().navigate(R.id.action_login_to_welcome)
         }
     }
