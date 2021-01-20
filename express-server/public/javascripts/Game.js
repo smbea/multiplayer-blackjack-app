@@ -139,7 +139,7 @@ class Game {
 
     makeBetPlayer(username, key, bet_value) {
         if (this.checkKey(username, key)) {
-            if (current_bet <= this.players[username].money) {
+            if (bet_value <= this.players[username].money) {
                 this.players[username].current_bet = bet_value
                 this.players[username].money -= bet_value
                 this.ready[username] = true
