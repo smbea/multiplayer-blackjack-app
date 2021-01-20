@@ -6,7 +6,7 @@ const { User } = require('./User')
 
 
 function generateKey() {
-    let r = Math.random().toString(36).substring(12);
+    let r = (Math.random()).toString().substring(12);
     return r
 }
 
@@ -92,7 +92,7 @@ class Game {
     }
 
     addNewPlayer(username, ws_id) {
-        key = generateKey()
+        let key = generateKey()
         let new_player = new User(key, username, ws_id)
         if (this.players[username] == null) {
             this.players[username] = new_player
