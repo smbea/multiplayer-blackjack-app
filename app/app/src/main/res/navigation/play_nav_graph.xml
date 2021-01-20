@@ -28,7 +28,6 @@
     <fragment
         android:id="@+id/Results"
         android:name="com.example.blackjack.views.fragments.Results"
-        tools:layout="@layout/frag_results">
-    </fragment>
+        tools:layout="@layout/frag_results"/>
 
 </navigation>

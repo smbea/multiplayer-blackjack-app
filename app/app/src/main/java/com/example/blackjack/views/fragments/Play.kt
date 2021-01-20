@@ -1,7 +1,9 @@
 package com.example.blackjack.views.fragments
 
 import CardsAdapter
+import android.content.Context
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -61,10 +63,13 @@ class Play : Fragment() {
             btn_hit.isEnabled = turn
             btn_stand.isEnabled = turn
 
-            if (turn)
-                opponent_turn.visibility=View.INVISIBLE
-            else
-                opponent_turn.visibility=View.VISIBLE
+            if (Game.currentGame.value!!.started) {
+
+                if (turn)
+                    opponent_turn.visibility = View.INVISIBLE
+                else
+                    opponent_turn.visibility = View.VISIBLE
+            }
 
         }
 
@@ -74,6 +79,9 @@ class Play : Fragment() {
 
     private fun initCardsView() {
         val myRecyclerView = recycler_view_cards
+
+        Log.i("initview", Game.currentGame.value!!.myCards.value.toString())
+
         myCardsAdapter = CardsAdapter(Game.currentGame.value!!.myCards.value!!, true)
         myRecyclerView.layoutManager =
             LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
@@ -99,11 +107,6 @@ class Play : Fragment() {
     }
 
     private fun setListeners() {
-
-        /*btn_quit.setOnClickListener {
-            val quitDialog = QuitFragment()
-            quitDialog.show(parentFragmentManager, "quit")
-        }*/
 
         btn_fold.setOnClickListener {
             Game.currentGameController.fold()

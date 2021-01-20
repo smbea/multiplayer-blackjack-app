@@ -67,6 +67,8 @@ object Game {
         this.responseStatus = false
         val msg = JSONObject("""{"username":${myUsername},"type":"create_room"}""")
         communicationManager.sendMessage(msg)
+        Log.i("oi", "before")
+
         while (!this.responseStatus) {
         }
 
@@ -78,13 +80,13 @@ object Game {
     }
 
 
-    fun ready(bet: Int): Boolean {
-
+    fun ready(bet: Int) {
+        this.responseStatus = false
         val msg = JSONObject("""{"username":${myUsername},"type":"bet", "username":"$bet"}""")
         communicationManager.sendMessage(msg)
         tempBet = bet
-        return true
     }
+
 
 
     fun login(token: String, username: String) {
@@ -97,8 +99,19 @@ object Game {
     }
 
     fun startGame(opponentUsername: String) {
-        currentGame.postValue(GameInstance(tempBet, opponentUsername))
+
+        Log.i("game_start", "what")
+
+
+        val game  =  GameInstance(tempBet, opponentUsername)
+        Log.i("game_start", "after game")
+        game.initGame()
+
+        currentGame.postValue(game)
+        Log.i("game_start", "post value")
+
         currentGameController = GameInstanceController(currentGame.value!!)
+        responseStatus = true
     }
 
 

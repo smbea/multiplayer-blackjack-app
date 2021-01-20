@@ -24,7 +24,6 @@ class CreateRoom:Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
 
-        welcome.text = "MUDEI"
        playroom_id_field.setText(Game.roomId.toString())
 
         btn_join_room.setOnClickListener {
