@@ -1,4 +1,5 @@
-var Deck = require('./Deck')
+var Deck = require('./Deck');
+const { Hand } = require('./Hand');
 const { User } = require('./User')
 
 
@@ -36,6 +37,20 @@ class Game {
                 return false
         }
         return true
+    }
+
+    dealCards(){
+        ret = {}
+        for(player in this.players){
+            c1 = deck.getTopDeck()
+            c2 = deck.getTopDeck()
+            let player_hand = new Hand([c1,c2])
+
+            player.hand = player_hand
+
+            ret[username] = player_hand
+        }
+        return ret
     }
 
     resetReady(){

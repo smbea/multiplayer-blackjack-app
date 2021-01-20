@@ -192,6 +192,11 @@ wsServer.on('connection', (ws) => {
         if (room.checkAllReady()) {
           room.state = 'waitPlayers'
           console.log("All bets were made. Current turn:")
+          let cards = room.dealCards()
+          for (player in room.player){
+            wsServer.getById(player.ws_id).send({type:"deal_card", cards:cards})
+          }
+
           let current_player_username = room.getUsernames()[room.current_player]
           let current_player = room.players[current_player_username]
           room.resetReady()
@@ -221,8 +226,9 @@ wsServer.on('connection', (ws) => {
             for (player in room.players) {
               wsServer.getById(player.ws_id).send({ type: "round_end", new_balance: player.money })
             }
-          }
-          room.state = 'startGame'
+            room.state = 'startGame'
+            room.deck.resetDeck()
+          }  
           break;
         }
     }
