@@ -49,29 +49,30 @@ object Game {
 
     fun joinRoom(roomId: Int): String {
         this.responseStatus = false
-        val msg = JSONObject("""{"type":"join_room", "room_id":"$roomId"}""")
+        val msg =
+            JSONObject("""{"username":${Game.myUsername},"type":"join_room", "room_id":"$roomId"}""")
         communicationManager.sendMessage(msg)
         while (!this.responseStatus) {
         }
 
-        if (response.opt("status") == "success") {
-            gameID = response.opt("key") as String
+        Log.i("aqui", response.opt("status").toString() )
+
+        if (response.opt("status")!!.toString() == "success") {
+            gameID = response.opt("key")!!.toString()
             return "ok"
-        } else return response.opt("error_message") as String
+        } else return response.opt("error_message")!!.toString()
     }
 
     fun createRoom(): String {
         this.responseStatus = false
-        val msg = JSONObject("""{"type":"create_room"}""")
+        val msg = JSONObject("""{"username":${myUsername},"type":"create_room"}""")
         communicationManager.sendMessage(msg)
         while (!this.responseStatus) {
         }
-        Log.i("ok", response.opt("status").toString() )
 
         if (response.opt("status")!!.toString() == "success") {
             gameID = response.opt("key")!!.toString()
             roomId = response.opt("room_id")!!.toString().toInt()
-            Log.i("ok", "ok")
             return "ok"
         } else return "error"
     }
@@ -79,7 +80,7 @@ object Game {
 
     fun ready(bet: Int): Boolean {
 
-        val msg = JSONObject("""{"type":"bet", "username":"$bet"}""")
+        val msg = JSONObject("""{"username":${myUsername},"type":"bet", "username":"$bet"}""")
         communicationManager.sendMessage(msg)
         tempBet = bet
         return true
@@ -90,12 +91,13 @@ object Game {
 
         this.myUsername = username
         this.token = token
-        val msg = JSONObject("""{"type":"new_player", "username":$username}""")
+        val msg =
+            JSONObject("""{"username":${myUsername},"type":"new_player", "username":$username}""")
         communicationManager.sendMessage(msg)
     }
 
     fun startGame(opponentUsername: String) {
-        currentGame.postValue(GameInstance(tempBet,opponentUsername))
+        currentGame.postValue(GameInstance(tempBet, opponentUsername))
         currentGameController = GameInstanceController(currentGame.value!!)
     }
 

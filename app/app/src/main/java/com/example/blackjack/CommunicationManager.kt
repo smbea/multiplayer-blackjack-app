@@ -70,12 +70,15 @@ class CommunicationManager {
             }
             "res_join_room"->{
                 val status = msg.opt("status") as String
+                Game.responseStatus = true
+                Game.response = msg
+                Log.i("res_join_room", msg.toString())
             }
             "res_create_room"->{
                 val status = msg.opt("status") as String
                 Game.responseStatus = true
                 Game.response = msg
-                Log.i("oi", "ready")
+                Log.i("res_create_room", "ready")
             }
             "your_turn"->{
                 Game.currentGameController.updateTurn()

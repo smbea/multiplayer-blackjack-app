@@ -8,10 +8,7 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import com.example.blackjack.R
 import com.example.blackjack.models.Game
-import com.example.blackjack.views.activities.MainActivity
 import com.example.blackjack.views.activities.PlayingRoom
-import com.google.android.material.textfield.TextInputEditText
-import com.google.android.material.textview.MaterialTextView
 import kotlinx.android.synthetic.main.frag_create_room_menu.*
 import java.lang.NumberFormatException
 
