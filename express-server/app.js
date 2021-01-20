@@ -161,10 +161,20 @@ wsServer.on('connection', (ws) => {
   ws.on('message', (message) => {
 
     let msg_data = JSON.parse(message)
-    handleMessages(msg_data)
+   // let room = app.locals.game_manager.getRoom(msg_data.room_id)
+    response = handleMessages(msg_data)
 
-    console.log(`Message received. TYPE:${type} username:${username}`)
-    setTimeout(() => ws.send("Message received. Content:" + message))
+    console.log(`Message received. Content: ${msg_data}`)
+    ws.send(JSON.stringify(response))
+
+    // switch(room.state)
+    // {
+    //   case 'waitRoom':
+    //     if(room.checkAllReady())
+    //       game_start_info = room.getStartInfo()
+
+    // }
+    
   })
 
   ws.send("You are now connected to the game server")
