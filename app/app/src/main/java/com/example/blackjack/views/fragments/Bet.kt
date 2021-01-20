@@ -2,6 +2,7 @@ package com.example.blackjack.views.fragments
 
 import android.content.Context
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -16,6 +17,10 @@ import kotlinx.android.synthetic.main.frag_bet.bet_amount
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 import androidx.lifecycle.Observer
+import com.example.blackjack.models.Card
+import kotlinx.android.synthetic.main.frag_bet.username
+import kotlinx.android.synthetic.main.frag_play.*
+import kotlinx.coroutines.runBlocking
 
 class Bet : Fragment() {
 
@@ -26,8 +31,6 @@ class Bet : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-
-        initObservers()
 
         return inflater.inflate(R.layout.frag_bet, container, false)
     }
@@ -50,30 +53,22 @@ class Bet : Fragment() {
 
     private fun initObservers() {
 
+
         val gameInstance = Observer<GameInstance> { _ ->
+            Log.i("initObservers", "oi")
+            findNavController().navigateUp()
             findNavController().navigate(R.id.action_ready_to_play)
+            loader.visibility = View.INVISIBLE
+
+            Log.i("initObservers", "oi")
         }
 
         Game.currentGame.observe(viewLifecycleOwner, gameInstance)
     }
 
+    fun initListeners(){
 
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
-        balance.text = (Game.amountAvailable.toString() + "€")
-
-        btn_ready.setOnClickListener {
-            bet_view.visibility = View.GONE
-            loader.visibility = View.VISIBLE
-
-            GlobalScope.launch { // launch a new coroutine in background and continue
-
-                Game.ready(tempBetAmount)
-            }
-            loader.visibility = View.VISIBLE
-        }
-
-        username.text=Game.username
+        initObservers()
 
 
         btn_reset.setOnClickListener {
@@ -98,6 +93,30 @@ class Bet : Fragment() {
             this.addAmount(100)
         }
 
+        btn_ready.setOnClickListener {
+            bet_view.visibility = View.GONE
+            loader.visibility = View.VISIBLE
+
+            runBlocking {
+                val job = GlobalScope.launch { // launch a new coroutine in background and continue
+
+                    Game.ready(tempBetAmount)
+                }
+                job.join()
+            }
+
+        }
+    }
+
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        balance.text = (Game.amountAvailable.toString() + "€")
+
+        initListeners()
+        initObservers()
+
+        username.text=Game.myUsername
 
     }
 }

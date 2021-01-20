@@ -9,9 +9,7 @@ import androidx.fragment.app.Fragment
 import com.example.blackjack.R
 import com.example.blackjack.models.Game
 import com.example.blackjack.views.activities.PlayingRoom
-import com.google.android.material.textfield.TextInputEditText
-import com.google.android.material.textview.MaterialTextView
-import kotlinx.android.synthetic.main.frag_join_room_menu.*
+import kotlinx.android.synthetic.main.frag_create_room_menu.*
 import java.lang.NumberFormatException
 
 class CreateRoom:Fragment() {
@@ -26,10 +24,10 @@ class CreateRoom:Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
 
+       playroom_id_field.setText(Game.roomId.toString())
+
         btn_join_room.setOnClickListener {
             try {
-                //val toInt = playroom_id_field.toString() as MaterialTextView
-                Game.joinRoom(14)
                 val intent = Intent(activity, PlayingRoom::class.java)
                 startActivity(intent)
 
