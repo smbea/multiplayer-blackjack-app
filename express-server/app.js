@@ -60,10 +60,9 @@ wsServer.getUniqueID = function () {
   return s4() + s4() + '-' + s4();
 };
 
-wsServer.getById = function (id){
-  for(client in this.clients)
-  {
-    if(client.id == id)
+wsServer.getById = function (id) {
+  for (client in this.clients) {
+    if (client.id == id)
       return client
   }
 }
@@ -102,7 +101,7 @@ function handleMessages(message, ws_id) {
       const { username, key } = message
       const ret = room.readyPlayer(username, key)
       let res;
-      if (ret == 0){
+      if (ret == 0) {
         res = { type: "res_ready", status: "success" }
       }
       else
@@ -133,16 +132,16 @@ function handleMessages(message, ws_id) {
       const { username, key, value } = message
       const [ret, balance] = room.makeBetPlayer(username, key, value)
       let res;
-        if (ret == 0){
-          res = {type:"res_bet", status:"success", new_balance: balance}
-        }
-        else if(ret ==2){
-          res = { type: "res_exit", status: "fail", error_message: "Invalid bet amount" }
-        }
-        else{
-          res = { type: "res_exit", status: "fail", error_message: "Key check fail" }
-        }
-      
+      if (ret == 0) {
+        res = { type: "res_bet", status: "success", new_balance: balance }
+      }
+      else if (ret == 2) {
+        res = { type: "res_exit", status: "fail", error_message: "Invalid bet amount" }
+      }
+      else {
+        res = { type: "res_exit", status: "fail", error_message: "Key check fail" }
+      }
+
       return res
 
     case "exit":
@@ -171,37 +170,55 @@ wsServer.on('connection', (ws) => {
 
     let msg_data = JSON.parse(message)
     let room = app.locals.game_manager.getRoom(msg_data.room_id)
-    response = handleMessages(msg_data)
+    let response = handleMessages(msg_data)
 
     console.log(`Message received. Content: ${msg_data}`)
     ws.send(JSON.stringify(response))
 
-    switch(room.state)
-    {
+    switch (room.state) {
       case 'waitRoom':
-        if(room.checkAllReady()){
+        if (room.checkAllReady()) {
           game_start_info = room.getStartInfo()
-          for(ws_client in wsServer.clients){
-              if(game_start_info[ws_client.id] != null)
-                ws_client.send(JSON.stringify({type:"game_start", players: game_start_info[ws_client.id]}))    
+          for (ws_client in wsServer.clients) {
+            if (game_start_info[ws_client.id] != null)
+              ws_client.send(JSON.stringify({ type: "game_start", players: game_start_info[ws_client.id] }))
           }
           room.state = 'startGame'
           console.log("All players ready. Waiting for bets...")
           room.resetReady()
         }
-      break;
+        break;
       case 'startGame':
-        if(room.checkAllReady()){
+        if (room.checkAllReady()) {
           room.state = 'waitPlayers'
           console.log("All bets were made. Current turn:")
           let current_player_username = room.getUsernames()[room.current_player]
           let current_player = room.players[current_player_username]
-          wsServer.getById(current_player.ws_id).send(JSON.stringify({type:"your_turn"}))
+          room.resetReady()
+          wsServer.getById(current_player.ws_id).send(JSON.stringify({ type: "your_turn" }))
         }
         break;
-      
+      case 'waitPlayers':
+        if (response.status == 'success') {
+          if (response.type == 'res_hit') {
+            let all_sockets = room.getSockets()
+            for (socket in all_sockets) {
+              wsServer.getById(socket).send(JSON.stringify({
+                type: "update_op", username: msg_data.username, new_card: response.new_card, hand_value: response.hand_value
+              }))
+            }
+          }
+          if (!room.checkAllReady()) {
+            room.current_turn += 1
+            while (!room.getCurrentPlayer().hand.can_hit)
+              room.current_turn += 1
+            wsServer.getById(room.getCurrentPlayer().ws_id).send(JSON.stringify({ type: "your_turn" }))
+          }
+          else
+            room.state = 'endRound'
+        }
     }
-    
+
   })
 
   ws.send("You are now connected to the game server")

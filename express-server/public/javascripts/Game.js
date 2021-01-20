@@ -44,6 +44,13 @@ class Game {
         }
     }
 
+    getSockets(){
+        let sockets = []
+        for(player in this.players)
+            sockets.push(player.ws_id)
+        return sockets;
+    }
+
     getStartInfo() {
         let game_info = {}
         for (player in this.players) {
@@ -55,6 +62,18 @@ class Game {
 
     getUsernames(){
         return this.players.keys()
+    }
+
+    getCurrentPlayer(){
+        let current_username = this.players.keys()[this.current_turn]
+
+        return this.players[current_username]
+    }
+
+    checkTurn(username){
+        if(this.players.keys()[this.current_turn] == username)
+            return true
+        return false
     }
 
     addNewPlayer(username, ws_id) {
@@ -83,7 +102,7 @@ class Game {
     }
 
     hitPlayer(username, key) {
-        if (this.checkKey(username, key) && this.players[username].hand.can_hit) {
+        if (this.checkKey(username, key) && this.players[username].hand.can_hit && this.checkTurn(username)) {
             let new_card = this.deck.getTopDeck()
             this.players[username].hand.addCardToHand(new_card)
             const hand_value = this.players[username].hand.getCount()
@@ -93,7 +112,7 @@ class Game {
     }
 
     standPlayer(username, key) {
-        if (this.checkKey(username, key)) {
+        if (this.checkKey(username, key) && this.checkTurn(username)) {
             this.players[username].hand.hold()
             return 0
         }
