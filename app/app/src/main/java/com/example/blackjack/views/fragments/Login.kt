@@ -44,9 +44,10 @@ class Login : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        firebaseAuth = FirebaseAuth.getInstance()
-        configureGoogleSignIn()
-        setupUI()
+        //firebaseAuth = FirebaseAuth.getInstance()
+        //configureGoogleSignIn()
+        //setupUI()
+        updateInfo("username@gmail.com")
     }
 
     private fun configureGoogleSignIn() {
