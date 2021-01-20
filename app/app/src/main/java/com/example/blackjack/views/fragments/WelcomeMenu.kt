@@ -11,6 +11,7 @@ import androidx.navigation.fragment.findNavController
 import com.example.blackjack.R
 import com.example.blackjack.models.Game
 import com.example.blackjack.views.activities.PlayingRoom
+import com.google.firebase.auth.FirebaseAuth
 import kotlinx.android.synthetic.main.frag_welcome_menu.*
 /**
  * A simple [Fragment] subclass as the default destination in the navigation.
@@ -32,6 +33,7 @@ class WelcomeMenu : Fragment() {
         welcome.text = "Welcome, ${Game.myUsername}"
 
         btn_logout.setOnClickListener {
+            logOut()
             findNavController().navigate(R.id.action_LogOut)
         }
 
@@ -48,5 +50,9 @@ class WelcomeMenu : Fragment() {
                 Toast.makeText(requireContext(), "An error occurred. Try again", Toast.LENGTH_LONG).show()
             }
         }
+    }
+
+    private fun logOut(){
+        FirebaseAuth.getInstance().signOut()
     }
 }
