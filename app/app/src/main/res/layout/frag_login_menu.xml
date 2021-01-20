@@ -33,43 +33,17 @@
         android:layout_alignParentBottom="true"
         android:orientation="vertical"
         android:layout_marginHorizontal="50dp"
-        android:layout_marginBottom="30dp"
-
+        android:layout_marginBottom="80dp"
         >
 
-        <TextView
-            android:id="@+id/welcome"
+
+        <com.google.android.gms.common.SignInButton
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginHorizontal="80dp"
-            android:layout_marginBottom="10dp"
-            android:textAlignment="center"
-            android:textStyle="italic"
-            android:textSize="20dp"
-            android:textColor="@color/black"
-            />
+            android:id="@+id/btn_login">
+        </com.google.android.gms.common.SignInButton>
 
-        <Button
-            android:id="@+id/btn_join_room"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="@string/enter_room" />
-
-        <Button
-            android:id="@+id/btn_create_room"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="@string/create_room" />
-
-        <Button
-            android:id="@+id/btn_logout"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Logout">
-
-        </Button>
     </LinearLayout>
-
 
 
 

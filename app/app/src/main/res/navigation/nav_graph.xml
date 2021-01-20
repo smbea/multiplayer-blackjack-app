@@ -3,22 +3,45 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/nav_graph"
-    app:startDestination="@id/WelcomeMenu">
+    app:startDestination="@id/Login">
 
     <fragment
         android:id="@+id/WelcomeMenu"
-        android:name="com.example.blackjack.fragments.WelcomeMenu"
-        android:label="@string/welcome_menu"
+        android:name="com.example.blackjack.views.fragments.WelcomeMenu"
         tools:layout="@layout/frag_welcome_menu">
 
         <action
             android:id="@+id/action_WelcomeMenu_to_JoinRoom"
             app:destination="@id/JoinRoom" />
+        <action
+            android:id="@+id/action_WelcomeMenu_to_CreateRoom"
+            app:destination="@id/CreateRoom" />
+        <action
+            android:id="@+id/action_LogOut"
+            app:destination="@id/Login" />
     </fragment>
     <fragment
         android:id="@+id/JoinRoom"
-        android:name="com.example.blackjack.fragments.JoinRoom"
-        android:label="@string/second_fragment_label"
+        android:name="com.example.blackjack.views.fragments.JoinRoom"
         tools:layout="@layout/frag_join_room_menu">
     </fragment>
+
+    <fragment
+        android:id="@+id/CreateRoom"
+        android:name="com.example.blackjack.views.fragments.CreateRoom"
+        tools:layout="@layout/frag_create_room_menu">
+    </fragment>
+
+    <fragment
+        android:id="@+id/Login"
+        android:name="com.example.blackjack.views.fragments.Login"
+        tools:layout="@layout/frag_login_menu">
+
+        <action
+            android:id="@+id/action_login_to_welcome"
+            app:destination="@id/WelcomeMenu" />
+    </fragment>
+
+
+
 </navigation>

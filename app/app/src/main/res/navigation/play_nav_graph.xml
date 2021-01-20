@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/play_nav_graph"
+    app:startDestination="@id/Bet">
+
+    <fragment
+        android:id="@+id/Bet"
+        android:name="com.example.blackjack.views.fragments.Bet"
+        tools:layout="@layout/frag_bet">
+
+        <action
+            android:id="@+id/action_ready_to_play"
+            app:destination="@id/Play" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/Play"
+        android:name="com.example.blackjack.views.fragments.Play"
+        tools:layout="@layout/frag_play">
+
+        <action
+            android:id="@+id/action_results"
+            app:destination="@id/Results" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/Results"
+        android:name="com.example.blackjack.views.fragments.Results"
+        tools:layout="@layout/frag_results">
+    </fragment>
+
+</navigation>
