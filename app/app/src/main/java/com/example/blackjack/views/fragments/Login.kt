@@ -112,7 +112,7 @@ class Login : Fragment() {
     }
 
     private fun updateInfo(email:String){
-        Game.username=email.replace("@gmail.com", "")
+        Game.myUsername=email.replace("@gmail.com", "")
         findNavController().navigate(R.id.action_login_to_welcome)
     }
 

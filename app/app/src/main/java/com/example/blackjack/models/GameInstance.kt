@@ -1,33 +1,33 @@
 package com.example.blackjack.models
 
+import android.util.Log
 import androidx.lifecycle.MutableLiveData
+import com.example.blackjack.CommunicationManager
 import kotlin.properties.Delegates
 
-data class GameInstance( val bet:Int, val cards:ArrayList<Card>){
+data class GameInstance(val bet:Int,val opponentUsername: String) {
 
     var finalBalance by Delegates.notNull<Int>()
     val myPoints: MutableLiveData<Int> by lazy {
         MutableLiveData<Int>()
     }
-    var outcome:String = String()
-    val opponentCards : MutableLiveData<ArrayList<Card>> by lazy {MutableLiveData<ArrayList<Card>>()}
-    val myCards: MutableLiveData<ArrayList<Card>> by lazy {MutableLiveData<ArrayList<Card>>()}
-    val turn: MutableLiveData<Boolean> by lazy {
-        MutableLiveData<Boolean>()
+    val opponentPoints: MutableLiveData<Int> by lazy {
+        MutableLiveData<Int>()
+    }
+    var outcome: String = String()
+    val opponentCards: MutableLiveData<ArrayList<Card>> = MutableLiveData(ArrayList())
+    val myCards: MutableLiveData<ArrayList<Card>> = MutableLiveData(ArrayList())
+    val turn: MutableLiveData<Boolean> = MutableLiveData()
+    val started = false
+
+
+    init{
+
     }
 
-    init {
-        myCards.postValue(cards)
+    fun initGame(){
 
-        //testing
-        val tempCards = ArrayList<Card>()
-        tempCards.add(Card("j", "spades", true))
-        tempCards.add(Card("j", "spades", false))
-        opponentCards.postValue(tempCards)
-        //end testing
-
-        //change for new score
-        myPoints.postValue(10)
+        myPoints.postValue(0)
     }
 
 }
