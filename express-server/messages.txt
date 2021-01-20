@@ -33,6 +33,6 @@ RES_READY: {type:"res_ready",status: success/fail}
 TIMEOUT: {type: "timeout"}
 ROUND_END: {type:"round_end",new_balance: <balance_of_player>}
 DEAL_CARDS: {type:"deal_card", cards:{username1: <hand1>, username2: <hand2>}} <--Dictionary, key is username, value is a hand object with the player's cards
-GAME_START: {type:"game_start", players:[<list_of_players>], balance: <balance>}
+GAME_START: {type:"game_start", players:[<list_of_players>]}
 BETS_OK: {type: "bets_ok"}
 //UPDATE_DEALER: {dealer_hand: <hand_Object_with_dealer_cards>} <-- se decidirmos implementar dealer

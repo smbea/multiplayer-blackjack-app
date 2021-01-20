@@ -60,6 +60,14 @@ wsServer.getUniqueID = function () {
   return s4() + s4() + '-' + s4();
 };
 
+wsServer.getById(id) = function (){
+  for(client in this.clients)
+  {
+    if(client.id == id)
+      return client
+  }
+}
+
 
 function handleMessages(message, ws_id) {
 
@@ -94,8 +102,9 @@ function handleMessages(message, ws_id) {
       const { username, key } = message
       const ret = room.readyPlayer(username, key)
       let res;
-      if (ret == 0)
+      if (ret == 0){
         res = { type: "res_ready", status: "success" }
+      }
       else
         res = { type: "res_ready", status: "fail", error_message: "Key check fail" }
       return res
@@ -161,19 +170,37 @@ wsServer.on('connection', (ws) => {
   ws.on('message', (message) => {
 
     let msg_data = JSON.parse(message)
-   // let room = app.locals.game_manager.getRoom(msg_data.room_id)
+    let room = app.locals.game_manager.getRoom(msg_data.room_id)
     response = handleMessages(msg_data)
 
     console.log(`Message received. Content: ${msg_data}`)
     ws.send(JSON.stringify(response))
 
-    // switch(room.state)
-    // {
-    //   case 'waitRoom':
-    //     if(room.checkAllReady())
-    //       game_start_info = room.getStartInfo()
-
-    // }
+    switch(room.state)
+    {
+      case 'waitRoom':
+        if(room.checkAllReady()){
+          game_start_info = room.getStartInfo()
+          for(ws_client in wsServer.clients){
+              if(game_start_info[ws_client.id] != null)
+                ws_client.send(JSON.stringify({type:"game_start", players: game_start_info[ws_client.id]}))    
+          }
+          room.state = 'startGame'
+          console.log("All players ready. Waiting for bets...")
+          room.resetReady()
+        }
+      break;
+      case 'startGame':
+        if(room.checkAllReady()){
+          room.state = 'waitPlayers'
+          console.log("All bets were made. Current turn:")
+          let current_player_username = room.getUsernames()[room.current_player]
+          let current_player = room.players[current_player_username]
+          wsServer.getById(current_player.ws_id).send(JSON.stringify({type:"your_turn"}))
+        }
+        break;
+      
+    }
     
   })
 

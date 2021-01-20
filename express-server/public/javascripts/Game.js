@@ -19,6 +19,8 @@ class Game {
         this.id = id
         this.deck = new Deck(num_decks)
         this.players = {}
+        this.current_turn = 0
+        this.current_pot = 0
         this.state = 'waitRoom'
         this.ready = {}
 
@@ -28,8 +30,32 @@ class Game {
         this.state = state
     }
 
+    checkAllReady() {
+        for (let key in this.ready) {
+            if (!this.ready[key])
+                return false
+        }
+        return true
+    }
 
+    resetReady(){
+        for (let key in this.ready) {
+            this.ready[key] = false
+        }
+    }
 
+    getStartInfo() {
+        let game_info = {}
+        for (player in this.players) {
+            const pl_info = { username: player.username, balance: player.money }
+            game_info[player.ws_id] = pl_info
+        }
+        return game_info
+    }
+
+    getUsernames(){
+        return this.players.keys()
+    }
 
     addNewPlayer(username, ws_id) {
         key = generateKey()
@@ -79,9 +105,11 @@ class Game {
             if (current_bet <= this.players[username].money) {
                 this.players[username].current_bet = bet_value
                 this.players[username].money -= bet_value
+                this.ready[username] = true
+                this.current_pot += bet_value
                 return [0, this.players[username].money]
             }
-            return [2,-1]
+            return [2, -1]
         }
         return [1, -1]
     }
