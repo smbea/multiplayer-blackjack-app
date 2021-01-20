@@ -210,12 +210,20 @@ wsServer.on('connection', (ws) => {
           }
           if (!room.checkAllReady()) {
             room.current_turn += 1
+            if (room.current_turn == length(room.players))
+              current_turn == 0
             while (!room.getCurrentPlayer().hand.can_hit)
               room.current_turn += 1
             wsServer.getById(room.getCurrentPlayer().ws_id).send(JSON.stringify({ type: "your_turn" }))
           }
-          else
+          else {
             room.state = 'endRound'
+            for (player in room.players) {
+              wsServer.getById(player.ws_id).send({ type: "round_end", new_balance: player.money })
+            }
+          }
+          room.state = 'startGame'
+          break;
         }
     }
 

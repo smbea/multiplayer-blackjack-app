@@ -106,6 +106,8 @@ class Game {
             let new_card = this.deck.getTopDeck()
             this.players[username].hand.addCardToHand(new_card)
             const hand_value = this.players[username].hand.getCount()
+            if (hand_value > 21)
+                this.ready[username] = true
             return [0, new_card, hand_value]
         }
         return [1, -1, -1]
@@ -114,6 +116,7 @@ class Game {
     standPlayer(username, key) {
         if (this.checkKey(username, key) && this.checkTurn(username)) {
             this.players[username].hand.hold()
+            this.ready[username] = true
             return 0
         }
         return 1
