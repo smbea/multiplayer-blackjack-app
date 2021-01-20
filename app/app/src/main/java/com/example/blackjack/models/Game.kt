@@ -22,6 +22,7 @@ object Game {
     var response = JSONObject()
     var gameID = String()
     var tempBet = 0
+    var roomId = 0
 
     fun establishCommunication() {
         Log.v("WSS", "connecting2")
@@ -65,10 +66,13 @@ object Game {
         communicationManager.sendMessage(msg)
         while (!this.responseStatus) {
         }
+        Log.i("ok", response.opt("status").toString() )
 
-        if (response.opt("status") == "success") {
-            gameID = response.opt("key") as String
-            return response.opt("room_id") as String
+        if (response.opt("status")!!.toString() == "success") {
+            gameID = response.opt("key")!!.toString()
+            roomId = response.opt("room_id")!!.toString().toInt()
+            Log.i("ok", "ok")
+            return "ok"
         } else return "error"
     }
 

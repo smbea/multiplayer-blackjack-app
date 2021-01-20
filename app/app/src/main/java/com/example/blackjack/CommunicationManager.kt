@@ -16,13 +16,14 @@ class CommunicationManager {
         // Create a WebSocket with a socket connection timeout value.
         WebSocketFactory().verifyHostname = false
 
-        Log.v("WSS", "connecting")
 
 
         // Register a listener to receive WebSocket events.
         ws.addListener(object : WebSocketAdapter() {
             override fun onTextMessage(websocket: WebSocket?, text: String?) {
                 super.onTextMessage(websocket, text)
+                Log.i("i", text.toString())
+
                 if (text != null) {
                     parseMessage(text)
                     Log.v("WSS", text)
@@ -43,7 +44,12 @@ class CommunicationManager {
     }
 
     fun parseMessage(message:String){
+
+        Log.i("parseMessage", message)
+
+
         val msg = JSONObject(message)
+        Log.i("parseMessage", msg.toString())
 
         when(msg.opt("type")){
             "res_hit"->{
@@ -64,11 +70,12 @@ class CommunicationManager {
             }
             "res_join_room"->{
                 val status = msg.opt("status") as String
-                Game.responseStatus = true
-                Game.response = msg
             }
             "res_create_room"->{
                 val status = msg.opt("status") as String
+                Game.responseStatus = true
+                Game.response = msg
+                Log.i("oi", "ready")
             }
             "your_turn"->{
                 Game.currentGameController.updateTurn()

@@ -2,6 +2,7 @@ package com.example.blackjack.views.fragments
 
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -30,6 +31,7 @@ class WelcomeMenu : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        Log.i("i", Game.myUsername)
         welcome.text = "Welcome, ${Game.myUsername}"
 
         btn_logout.setOnClickListener {
@@ -45,7 +47,6 @@ class WelcomeMenu : Fragment() {
             val response = Game.createRoom()
             if (response!="error") {
                 findNavController().navigate(R.id.action_WelcomeMenu_to_CreateRoom)
-                (activity as PlayingRoom).room_id = response
             }else{
                 Toast.makeText(requireContext(), "An error occurred. Try again", Toast.LENGTH_LONG).show()
             }
