@@ -4,7 +4,6 @@ import androidx.lifecycle.MutableLiveData
 import com.example.blackjack.models.Card
 import com.example.blackjack.models.Game
 import com.example.blackjack.models.GameInstance
-import com.example.blackjack.views.activities.PlayingRoom
 import org.json.JSONObject
 
 class GameInstanceController(var model:GameInstance) {
@@ -19,7 +18,7 @@ class GameInstanceController(var model:GameInstance) {
     }
 
     fun hit(){
-        val msg = JSONObject("""{"type":"hit", "username":"${Game.myUsername}"}""")
+        val msg = JSONObject("""{"action":"hit", "username":"${Game.myUsername}", "key":"${Game.sessionKey}, "room_id":${Game.roomId}"}""")
         Game.communicationManager.sendMessage(msg)
     }
 
@@ -42,7 +41,7 @@ class GameInstanceController(var model:GameInstance) {
     }
 
     fun stand(){
-        val msg = JSONObject("""{"type":"stand", "username":"${Game.myUsername}"}""")
+        val msg = JSONObject("""{"action":"hold", "username":"${Game.myUsername}", "key":"${Game.sessionKey}, "room_id":${Game.roomId}"}""")
         Game.communicationManager.sendMessage(msg)
     }
 
@@ -54,7 +53,7 @@ class GameInstanceController(var model:GameInstance) {
 
 
     fun fold() {
-        val msg = JSONObject("""{"type":"fold", "username":"${Game.myUsername}"}""")
+        val msg = JSONObject("""{"action":"fold", "username":"${Game.myUsername}", "key":"${Game.sessionKey}, "room_id":${Game.roomId}"}""")
         Game.communicationManager.sendMessage(msg)
     }
 

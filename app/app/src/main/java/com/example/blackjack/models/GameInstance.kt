@@ -26,23 +26,8 @@ data class GameInstance(val bet:Int,val opponentUsername: String) {
     }
 
     fun initGame(){
-        Log.i("game_start", "initing")
-
-
-        Log.i("game_start", "turn")
-
-
-        val tempCards = ArrayList<Card>()
-
-        //myCards.postValue(tempCards)
-
-        Log.i("game_start", "myCards")
-
-        //opponentCards.postValue(tempCards)
 
         myPoints.postValue(0)
-
-        Log.i("game_start", "after initing")
     }
 
 }
