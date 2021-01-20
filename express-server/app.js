@@ -73,8 +73,9 @@ app.locals.game_manager = new GameManager()
 function handleMessages(message, ws_id) {
 
   const { action, room_id } = message
+  let room
   if(action!='create_room')
-    let room = app.locals.game_manager.getRoom(room_id)
+    room = app.locals.game_manager.getRoom(room_id)
   if (true) {
     let { username } = message
     let res, game_id
