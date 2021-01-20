@@ -60,7 +60,7 @@ wsServer.getUniqueID = function () {
   return s4() + s4() + '-' + s4();
 };
 
-wsServer.getById(id) = function (){
+wsServer.getById = function (id){
   for(client in this.clients)
   {
     if(client.id == id)
@@ -209,5 +209,6 @@ wsServer.on('connection', (ws) => {
 })
 
 app.locals.game_manager = new GameManager()
+//app.locals.game_manager.createRoom()
 
 module.exports = app;

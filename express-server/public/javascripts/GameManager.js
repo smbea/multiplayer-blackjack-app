@@ -11,10 +11,8 @@ class GameManager{
     }
 
     createRoom(){
-        id = Math.floor((1 + Math.random()) * 0x10000).toString(16).substring(5);
-        new_game = new Game(id, 1)
-
-        new_game.addPlayer()
+        const id = Math.floor((1 + Math.random()) * 0x10000).toString(16).substring(5);
+        let new_game = new Game(id, 1)
         return id
     }
 }
