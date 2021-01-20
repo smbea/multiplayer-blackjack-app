@@ -11,8 +11,9 @@ class GameManager{
     }
 
     createRoom(){
-        const id = Math.floor((1 + Math.random()) * 0x10000).toString(16).substring(5);
+        let id = Math.floor((1 + Math.random()*1000));
         let new_game = new Game(id, 1)
+        this.game_list[id] = new_game
         return id
     }
 }
