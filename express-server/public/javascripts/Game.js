@@ -10,7 +10,7 @@ function generateKey() {
 }
 
 //JUST use string and make check before action
-gamestates = ['startGame','waitPlayers','waitRoom', 'updateBoard','endRound']
+gamestates = ['startGame', 'waitPlayers', 'waitRoom', 'updateBoard', 'endRound']
 
 
 class Game {
@@ -28,7 +28,7 @@ class Game {
         this.state = state
     }
 
-    
+
 
 
     addNewPlayer(username, ws_id) {
@@ -37,21 +37,19 @@ class Game {
         if (this.players[username] == null) {
             this.players[username] = new_player
             this.ready[username] = false
-            return "Successfully joined game"
+            return [0, key]
         }
         else {
-            err = "Connection refused: Attempted connection had equal username to already existing player"
-            console.log(err)
-            return err
+            return [1, -1]
         }
     }
 
     readyPlayer(username, key) {
         if (this.checkKey(username, key)) {
             this.ready[username] = true
-            return "success"
+            return 0
         }
-        return "Error: Key check failed"
+        return 1
     }
 
     checkKey(username, key) {
@@ -62,25 +60,30 @@ class Game {
         if (this.checkKey(username, key) && this.players[username].hand.can_hit) {
             let new_card = this.deck.getTopDeck()
             this.players[username].hand.addCardToHand(new_card)
-            return this.players[username].hand
+            const hand_value = this.players[username].hand.getCount()
+            return [0, new_card, hand_value]
         }
+        return [1, -1, -1]
     }
 
     standPlayer(username, key) {
         if (this.checkKey(username, key)) {
             this.players[username].hand.hold()
-            return true
+            return 0
         }
-        return false
+        return 1
     }
 
     makeBetPlayer(username, key, bet_value) {
-        if (this.checkKey(username, key) && current_bet <= this.players[username].money) {
-            this.players[username].current_bet = bet_value
-            this.players[username].money -= bet_value
-            return this.players[username].money
+        if (this.checkKey(username, key)) {
+            if (current_bet <= this.players[username].money) {
+                this.players[username].current_bet = bet_value
+                this.players[username].money -= bet_value
+                return [0, this.players[username].money]
+            }
+            return [2,-1]
         }
-        return -1
+        return [1, -1]
     }
 
     removePlayer(username, key) {

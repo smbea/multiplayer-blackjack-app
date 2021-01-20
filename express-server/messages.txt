@@ -19,8 +19,8 @@ EXIT: {action: "exit"}
 
 ---Server --> Client---
 
-RES_JOIN_ROOM: {status: success/fail, key:<key>, error_message:<e.g. room_full>}
-RES_CREATE_ROOM: {status: success/fail, room_id: <room_id>, key:<key>}
+RES_JOIN_ROOM: {type:"res_join_room", status: success/fail, key:<key>, error_message:<e.g. room_full>}
+RES_CREATE_ROOM: {type:"res_create_room", status: success/fail, room_id: <room_id>, key:<key>}
 
 RES_HIT: {type:"res_hit", status: success/fail , new_card: <new_card_object>, hand_value:<updated_value_of_the_hand>}
 UPDATE_OP: {type:"update_op", username: <username>, new_card: <new_card_object>, hand_value:<updated_value_of_the_hand>} <-- updates opponents cards
@@ -29,6 +29,7 @@ RES_HOLD: {type:"res_hold",status: success/fail}
 RES_FOLD: {type:"res_fold",status: success/fail}
 RES_BET: {type:"res_bet",status: success/fail, new_balance:<new_balance>}
 RES_EXIT: {type:"res_exit",status: success/fail}
+RES_READY: {type:"res_ready",status: success/fail}
 TIMEOUT: {type: "timeout"}
 ROUND_END: {type:"round_end",new_balance: <balance_of_player>}
 DEAL_CARDS: {type:"deal_card", cards:{username1: <hand1>, username2: <hand2>}} <--Dictionary, key is username, value is a hand object with the player's cards

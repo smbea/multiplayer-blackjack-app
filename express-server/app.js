@@ -66,43 +66,88 @@ function handleMessages(message, ws_id) {
   const { action, room_id } = message
   let room = app.locals.game_manager.getRoom(room_id)
 
+
   switch (action) {
 
     case "join_room":
       const { username } = message
-      res = room.addPlayer(username, ws_id)
-      return res; //dont just return string, create response msg
+      const [ret, key] = room.addPlayer(username, ws_id)
+      let res;
+      if (ret == 0)
+        res = { type: "res_join_room", status: "success", key: key }
+      else if (ret == 1)
+        res = { type: "res_join_room", status: "fail", error_message: "Username already taken" }
+      return res;
 
     case "create_room":
       const { username } = message
-      app.locals.game_manager.createRoom();
-      res = room.addPlayer(username, ws_id)
+      const game_id = app.locals.game_manager.createRoom();
+      const [ret, key] = room.addPlayer(username, ws_id)
+      let res;
+      if (ret == 0)
+        res = { type: "res_create_room", status: "success", room_id: game_id, key: key }
+      else
+        res = { type: "res_create_room", status: "fail", error_message: "Unknown error :(" }
       return res
 
     case "ready_up":
       const { username, key } = message
-      res = room.readyPlayer(username, key)
+      const ret = room.readyPlayer(username, key)
+      let res;
+      if (ret == 0)
+        res = { type: "res_ready", status: "success" }
+      else
+        res = { type: "res_ready", status: "fail", error_message: "Key check fail" }
       return res
 
     case "hit":
       const { username, key } = message
-      res = room.hitPlayer(username, key)
+      const [ret, card, value] = room.hitPlayer(username, key)
+      let res;
+      if (ret == 0)
+        res = { type: "res_hit", status: "success", new_card: card, hand_value: value }
+      else
+        res = { type: "res_hit", status: "fail", error_message: card }
       return
 
     case "hold":
       const { username, key } = message
-      res = room.standPlayer(username, key)
+      const ret = room.standPlayer(username, key)
+      let res;
+      if (ret == 0)
+        res = { type: "res_hold", status: "success" }
+      else
+        res = { type: "res_hold", status: "fail", error_message: "Key check fail" }
       return
 
     case "bet":
       const { username, key, value } = message
-      res = room.makeBetPlayer(username, key, value)
-      return
+      const [ret, balance] = room.makeBetPlayer(username, key, value)
+      let res;
+        if (ret == 0){
+          res = {type:"res_bet", status:"success", new_balance: balance}
+        }
+        else if(ret ==2){
+          res = { type: "res_exit", status: "fail", error_message: "Invalid bet amount" }
+        }
+        else{
+          res = { type: "res_exit", status: "fail", error_message: "Key check fail" }
+        }
+      
+      return res
 
     case "exit":
       const { username, key } = message
-      res = room.removePlayer(username, key)
-      return 
+      const res = room.removePlayer(username, key)
+      let res;
+      if (ret == 0)
+        res = { type: "res_exit", status: "success" }
+      else if (ret == 2)
+        res = { type: "res_exit", status: "fail", error_message: "Player doesnt exist" }
+      else
+        res = { type: "res_exit", status: "fail", error_message: "Key check fail" }
+      return res;
+
 
   }
 }
