@@ -1,75 +1,115 @@
-var Deck  = require('./Deck')
+var Deck = require('./Deck');
+const { Hand } = require('./Hand');
 const { User } = require('./User')
 
-const EventEmitter = require('events');
 
-class MyEmitter extends EventEmitter { }
 
-gamestates = {
-    startGame: 2,
-    waitPlayer: 1,
-    waitRoom: 0,
-    updateBoard: 3,
-    endRound: 4
+
+function generateKey() {
+    let r = Math.random().toString(36).substring(12);
+    return r
 }
 
-
-
-
+//JUST use string and make check before action
+gamestates = ['startGame', 'waitPlayers', 'waitRoom', 'updateBoard', 'endRound']
 
 
 class Game {
     constructor(id, num_decks) {
-        
+
         this.id = id
         this.deck = new Deck(num_decks)
         this.players = {}
-        // this.state = waitRoom
-        this.gameOn = true
+        this.current_turn = 0
+        this.current_pot = 0
+        this.state = 'waitRoom'
+        this.ready = {}
 
-        this.gameEmitter = new MyEmitter();
-        this.setupEmitter();
-        
     }
 
-
-    setupEmitter(){
-
-        this.gameEmitter.on('new_player', (username) => {
-            //this.addNewPlayer(username, key)
-            console.log(`A new player has joined. Username:${username}`);
-        });
-
-        this.gameEmitter.on('hit', (username, key) =>{
-            //this.hitPlayer(username, key)
-            console.log(`Player ${username} has hit!`)
-        })
-
-        this.gameEmitter.on('stand', (username, key) =>{
-            //this.standPlayer(username, key)
-            console.log(`Player ${username} has stand!`)
-        })
-
-        this.gameEmitter.on('make_bet', (username, key, bet_value) =>{
-            //this.makeBetPlayer(username, key, bet_value)
-            console.log(`Player ${username} has changed its bet to ${bet_value}!`)
-        })
+    setState(state) {
+        this.state = state
     }
 
-    async startGameLoop() {
-
-        while (this.gameOn) {
-
+    checkAllReady() {
+        for (let key in this.ready) {
+            if (!this.ready[key])
+                return false
         }
-        
+        return true
     }
 
-    addNewPlayer(username, key) {
-        let new_player = new User(key, username)
-        if (this.players[username] == null)
+    dealCards(){
+        ret = {}
+        for(player in this.players){
+            c1 = deck.getTopDeck()
+            c2 = deck.getTopDeck()
+            let player_hand = new Hand([c1,c2])
+
+            player.hand = player_hand
+
+            ret[username] = player_hand
+        }
+        return ret
+    }
+
+    resetReady(){
+        for (let key in this.ready) {
+            this.ready[key] = false
+        }
+    }
+
+    getSockets(){
+        let sockets = []
+        for(player in this.players)
+            sockets.push(player.ws_id)
+        return sockets;
+    }
+
+    getStartInfo() {
+        let game_info = {}
+        for (player in this.players) {
+            const pl_info = { username: player.username, balance: player.money }
+            game_info[player.ws_id] = pl_info
+        }
+        return game_info
+    }
+
+    getUsernames(){
+        return this.players.keys()
+    }
+
+    getCurrentPlayer(){
+        let current_username = this.players.keys()[this.current_turn]
+
+        return this.players[current_username]
+    }
+
+    checkTurn(username){
+        if(this.players.keys()[this.current_turn] == username)
+            return true
+        return false
+    }
+
+    addNewPlayer(username, ws_id) {
+        key = generateKey()
+        let new_player = new User(key, username, ws_id)
+        if (this.players[username] == null) {
             this.players[username] = new_player
-        else
-            console.log("Connection refused: Attempted connection had equal username to already existing player")
+            this.ready[username] = false
+            return [0, key]
+        }
+        else {
+            return [1, -1]
+        }
+    }
+
+    readyPlayer(username, key) {
+        if (this.checkKey(username, key)) {
+            this.ready[username] = true
+            return 0
+        }
+        return 1
     }
 
     checkKey(username, key) {
@@ -77,28 +117,49 @@ class Game {
     }
 
     hitPlayer(username, key) {
-        if (this.checkKey(username, key) && this.players[username].hand.can_hit) {
+        if (this.checkKey(username, key) && this.players[username].hand.can_hit && this.checkTurn(username)) {
             let new_card = this.deck.getTopDeck()
             this.players[username].hand.addCardToHand(new_card)
-            return this.players[username].hand
+            const hand_value = this.players[username].hand.getCount()
+            if (hand_value > 21)
+                this.ready[username] = true
+            return [0, new_card, hand_value]
         }
+        return [1, -1, -1]
     }
 
     standPlayer(username, key) {
-        if (this.checkKey(username, key)) {
+        if (this.checkKey(username, key) && this.checkTurn(username)) {
             this.players[username].hand.hold()
-            return true
+            this.ready[username] = true
+            return 0
         }
-        return false
+        return 1
     }
 
     makeBetPlayer(username, key, bet_value) {
-        if (this.checkKey(username, key) && current_bet <= this.players[username].money) {
-            this.players[username].current_bet = bet_value
-            this.players[username].money -= bet_value
-            return this.players[username].money
+        if (this.checkKey(username, key)) {
+            if (current_bet <= this.players[username].money) {
+                this.players[username].current_bet = bet_value
+                this.players[username].money -= bet_value
+                this.ready[username] = true
+                this.current_pot += bet_value
+                return [0, this.players[username].money]
+            }
+            return [2, -1]
         }
-        return -1
+        return [1, -1]
+    }
+
+    removePlayer(username, key) {
+        if (this.checkKey(username, key)) {
+            if (this.players[username] != null) {
+                delete this.players[username]
+                return 0
+            }
+            return 2
+        }
+        return 1
     }
 }
 

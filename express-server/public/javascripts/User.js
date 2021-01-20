@@ -2,9 +2,10 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.User = void 0;
 class User {
-    constructor(key, username) {
+    constructor(key, username, ws_id) {
         this.key = key;
         this.username = username;
+        this.ws_id = ws_id;
         this.money = 500;
         this.current_bet = 0;
     }
