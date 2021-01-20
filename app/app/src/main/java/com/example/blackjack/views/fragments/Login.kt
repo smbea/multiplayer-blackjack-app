@@ -41,15 +41,6 @@ class Login : Fragment() {
     }
 
 
-
-    fun getRandomString(length: Int) : String {
-        val charset = ('a'..'z') + ('A'..'Z') + ('0'..'9')
-        return (1..length)
-            .map { charset.random() }
-            .joinToString("")
-    }
-
-
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
@@ -120,7 +111,8 @@ class Login : Fragment() {
         super.onStart()
         val user = FirebaseAuth.getInstance().currentUser
         if (user != null) {
-            updateInfo(user.email.toString())
+            //updateInfo(user.email.toString())
+            FirebaseAuth.getInstance().signOut()
         }
     }
 }
