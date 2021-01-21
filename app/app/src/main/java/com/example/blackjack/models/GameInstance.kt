@@ -16,12 +16,18 @@ data class GameInstance(val bet:Int,val opponentUsername: String) {
     }
     var outcome: String = String()
     val opponentCards: MutableLiveData<ArrayList<Card>> = MutableLiveData(ArrayList())
-    val myCards: MutableLiveData<ArrayList<Card>> = MutableLiveData(ArrayList())
+    val myCards: MutableLiveData<ArrayList<Card>>  by lazy {
+        MutableLiveData<ArrayList<Card>>()
+    }
     val turn: MutableLiveData<Boolean> = MutableLiveData()
-    val started = false
-
+    var started = false
 
     init{
+        Log.i("init", "failed1")
+        val cards = ArrayList<Card>()
+        cards.add(Card("3","diamonds", false))
+        myCards.postValue(cards)
+        Log.i("init", "failed")
 
     }
 

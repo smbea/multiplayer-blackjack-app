@@ -42,7 +42,6 @@ class Game {
     dealCards(){
         let ret = {}
         let c1, c2;
-        console.log("dc" + this.players)
         for(let player_id in this.players){
             c1 = this.deck.getTopDeck()
             c2 = this.deck.getTopDeck()
@@ -118,9 +117,6 @@ class Game {
     }
 
     checkKey(username, key) {
-        console.log("given key:" + key)
-        console.log("true key:" + this.players[username].key)
-
         return (key === this.players[username].key)
     }
 
@@ -147,9 +143,7 @@ class Game {
 
     makeBetPlayer(username, key, bet_value) {
         if (this.checkKey(username, key)) {
-            console.log("check pass")
             if (bet_value <= this.players[username].money) {
-                console.log("value pass")
                 this.players[username].current_bet = bet_value
                 this.players[username].money -= bet_value
                 this.ready[username] = true

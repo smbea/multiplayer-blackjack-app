@@ -29,6 +29,10 @@ app.use(express.static(path.join(__dirname, 'public')));
 app.use('/', indexRouter);
 app.use('/users', usersRouter);
 
+function sleep(time) {
+  return new Promise((resolve) => setTimeout(resolve, time));
+}
+
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {
   next(createError(404));
@@ -60,14 +64,14 @@ wsServer.getUniqueID = function () {
   return s4() + s4() + '-' + s4();
 };
 
-function getById (id, clientsSet) {
+function getById(id, clientsSet) {
   arrayClients = Array.from(clientsSet)
   let ret
   arrayClients.forEach(client => {
-    
+
     if (client.id == id)
       ret = client
-  }); 
+  });
   return ret
 }
 
@@ -78,7 +82,7 @@ function handleMessages(message, ws_id) {
 
   const { action, room_id } = message
   let room
-  if(action!='create_room')
+  if (action != 'create_room')
     room = app.locals.game_manager.getRoom(room_id)
   if (true) {
     let { username } = message
@@ -101,7 +105,7 @@ function handleMessages(message, ws_id) {
         arr = (app.locals.game_manager.getRoom(game_id)).addNewPlayer(username, ws_id);
         [ret, key] = arr
         if (ret == 0)
-          res = { "type": "res_create_room", "status": "success", "room_id": game_id+'', "key": key }
+          res = { "type": "res_create_room", "status": "success", "room_id": game_id + '', "key": key }
         else
           res = { "type": "res_create_room", "status": "fail", "error_message": "Unknown error :(" }
         return res
@@ -177,7 +181,7 @@ wsServer.on('connection', (ws) => {
 
   console.log("Connection started!")
   ws.id = wsServer.getUniqueID()
-  
+
 
   ws.on('message', (message) => {
 
@@ -188,6 +192,21 @@ wsServer.on('connection', (ws) => {
     let room = app.locals.game_manager.getRoom(msg_data.room_id)
     let response = handleMessages(msg_data, ws.id)
 
+    // if (response.type == "res_bet") {
+    //   sleep(1000).then(() => {
+    //     ws.send(JSON.stringify({ type: "game_start", players: game_start_info[ws.id] }))
+    //     sleep(4000).then(() => {
+    //       ws.send(JSON.stringify({ type: "your_turn" }))
+
+    //       sleep(1000).then(() => {
+    //         let cards = room.dealCards()
+    //         ws.send(JSON.stringify({ type: "deal_card", cards: cards }))
+    //       });
+
+    //     });
+    //   });
+    // }
+
     ws.send(JSON.stringify(response))
     console.log(`Response: ${JSON.stringify(response)}`)
 
@@ -196,11 +215,7 @@ wsServer.on('connection', (ws) => {
       switch (room.state) {
         case 'waitRoom':
           if (room.checkAllReady()) {
-            game_start_info = room.getStartInfo()
-            for (ws_client in wsServer.clients) {
-              if (game_start_info[ws_client.id] != null)
-                ws_client.send(JSON.stringify({ type: "game_start", players: game_start_info[ws_client.id] }))
-            }
+
             room.state = 'startGame'
             console.log("All players ready. Waiting for bets...")
             room.resetReady()
@@ -210,11 +225,20 @@ wsServer.on('connection', (ws) => {
           if (room.checkAllReady()) {
             room.state = 'waitPlayers'
             console.log("All bets were made. Current turn:")
+            let game_start_info = room.getStartInfo()
+
+            Array.from(wsServer.clients).forEach((socket) => {
+              if (game_start_info[socket.id] != null) {
+                msg = { type: "game_start", players: game_start_info[socket.id] }
+                console.log("Message:", msg)
+                socket.send(JSON.stringify(msg))
+              }
+            })
             let cards = room.dealCards()
             let player, socket
             for (player_id in room.players) {
               player = room.players[player_id]
-              
+
               socket = getById(player.ws_id, wsServer.clients)
               socket.send(JSON.stringify({ type: "deal_card", cards: cards }))
             }
@@ -241,7 +265,7 @@ wsServer.on('connection', (ws) => {
                 current_turn == 0
               while (!room.getCurrentPlayer().hand.can_hit)
                 room.current_turn += 1
-              getById(room.getCurrentPlayer().ws_id, wsServer.clients).send(JSON.stringify({ type: "your_turn" }))
+              //getById(room.getCurrentPlayer().ws_id, wsServer.clients).send(JSON.stringify({ type: "your_turn" }))
             }
             else {
               room.state = 'endRound'

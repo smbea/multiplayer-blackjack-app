@@ -1,4 +1,5 @@
 import android.content.Context
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -34,6 +35,7 @@ internal class CardsAdapter(private var cardsList: ArrayList<Card>, private var 
     }
     override fun onBindViewHolder(holder: MyViewHolder, position: Int) {
         val card = cardsList[position]
+        Log.i("oi", "oi")
         matchCardResource(holder, card)
     }
     override fun getItemCount(): Int {

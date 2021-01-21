@@ -6,6 +6,7 @@ import com.example.blackjack.CommunicationManager
 import com.example.blackjack.controllers.GameInstanceController
 import kotlinx.coroutines.*
 import org.json.JSONObject
+import java.lang.Exception
 
 
 object Game {
@@ -74,15 +75,14 @@ object Game {
         } else return "error"
     }
 
-    fun ready_up()
-    {
+    fun readyUp() {
         this.responseStatus = false
         val msg =
             JSONObject("""{"username":${myUsername},"action":"ready_up", "key":"$sessionKey", "room_id":$roomId}}""")
         communicationManager.sendMessage(msg)
     }
+
     fun ready(bet: Int) {
-        this.responseStatus = false
         val msg =
             JSONObject("""{"username":${myUsername},"action":"bet", "key":"$sessionKey", "value":$bet,"room_id":$roomId}}""")
         communicationManager.sendMessage(msg)
@@ -90,20 +90,20 @@ object Game {
     }
 
 
-    fun startGame(opponentUsername: String) {
+    fun startGame(opponentUsername: String, balance: Int) {
+        try {
+            Log.i("ex", "startGame")
 
-        Log.i("game_start", "what")
+            val game = GameInstance(tempBet, opponentUsername)
+            Log.i("ex", "game")
+            game.initGame()
+            Log.i("ex", "initGame")
 
-
-        val game = GameInstance(tempBet, opponentUsername)
-        Log.i("game_start", "after game")
-        game.initGame()
-
-        currentGame.postValue(game)
-        Log.i("game_start", "post value")
-
-        currentGameController = GameInstanceController(currentGame.value!!)
-        responseStatus = true
+            amountAvailable = balance
+            currentGameController = GameInstanceController(game)
+            currentGame.postValue(game)
+        }catch (e:Exception)
+        {Log.e("ex", e.toString())}
     }
 
 
