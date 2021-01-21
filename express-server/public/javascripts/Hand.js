@@ -10,11 +10,11 @@ class Hand {
         let count = 0;
         let aces = 0;
         this.cards.forEach(card => {
-            if (card.value == 'A') {
+            if (card.value == 'a') {
                 count += 11;
                 aces += 1;
             }
-            else if (card.value == 'K' || card.value == 'Q' || card.value == 'J')
+            else if (card.value == 'k' || card.value == 'q' || card.value == 'j')
                 count += 10;
             else
                 count += parseInt(card.value);
