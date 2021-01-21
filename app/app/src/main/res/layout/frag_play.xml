@@ -105,12 +105,12 @@
             android:id="@+id/btn_stand"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/stand"/>
+            android:text="@string/stand"
+            android:enabled="false"/>
         <Button
             android:id="@+id/btn_fold"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-
             android:text="@string/fold" />
 
 
@@ -118,7 +118,7 @@
             android:id="@+id/btn_hit"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-
+            android:enabled="false"
             android:text="@string/hit" />
 
     </GridLayout>

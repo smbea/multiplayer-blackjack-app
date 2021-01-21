@@ -49,6 +49,12 @@ class Play : Fragment() {
 
         val myCardsObserver = Observer<ArrayList<Card>> { _ ->
             recycler_view_cards.adapter!!.notifyDataSetChanged()
+            Log.i("myCardsObserver", "detected")
+
+            if (Game.currentGame.value!!.started) {
+                btn_hit.isEnabled = true
+                btn_stand.isEnabled = true
+            }
         }
 
         Game.currentGame.value!!.myCards.observe(viewLifecycleOwner, myCardsObserver)
@@ -60,15 +66,17 @@ class Play : Fragment() {
         Game.currentGame.value!!.opponentCards.observe(viewLifecycleOwner, opponentCardsObserver)
 
         val turnObserver = Observer<Boolean> { turn ->
+            Log.i("turnObserver", "detected")
+
             btn_hit.isEnabled = turn
             btn_stand.isEnabled = turn
 
             if (Game.currentGame.value!!.started) {
 
-                if (turn)
-                    opponent_turn.visibility = View.INVISIBLE
-                else
-                    opponent_turn.visibility = View.VISIBLE
+            if (turn)
+                opponent_turn.visibility = View.INVISIBLE
+            else
+                opponent_turn.visibility = View.VISIBLE
             }
 
         }

@@ -1,9 +1,11 @@
 package com.example.blackjack.controllers
 
+import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import com.example.blackjack.models.Card
 import com.example.blackjack.models.Game
 import com.example.blackjack.models.GameInstance
+import org.json.JSONArray
 import org.json.JSONObject
 
 class GameInstanceController(var model:GameInstance) {
@@ -29,7 +31,7 @@ class GameInstanceController(var model:GameInstance) {
             val cardType = newCard.opt("value") as String
             val cardHidden = (newCard.opt("value") as String) == "true"
             addCard(cardValue, cardType, cardHidden)
-            model.turn.value = false
+            updateTurn(false)
             model.myPoints.value = handValue.toInt()
         }
     }
@@ -48,7 +50,7 @@ class GameInstanceController(var model:GameInstance) {
 
     fun updateStand(status: String){
         if(status == "success")
-            model.turn.value = false
+            updateTurn(false)
     }
 
 
@@ -57,8 +59,9 @@ class GameInstanceController(var model:GameInstance) {
         Game.communicationManager.sendMessage(msg)
     }
 
-    fun updateTurn() {
-        model.turn.value = true
+    fun updateTurn(value:Boolean) {
+        Log.i("updateTurn", "updateTurn")
+        model.turn.postValue(value)
     }
 
     fun updateOpponent(newCard: JSONObject, handValue: String) {
@@ -71,11 +74,36 @@ class GameInstanceController(var model:GameInstance) {
         model.opponentPoints.value = handValue.toInt()
     }
 
-    fun dealCards(msg: JSONObject) {
-        val myCards = msg.opt(Game.myUsername)
-        val opCards = msg.opt(model.opponentUsername)
+    fun dealCard(msg: JSONObject) {
+        val player = (msg.opt("cards") as JSONObject).opt(Game.myUsername) as JSONObject
+        val cardsObject = player.opt("cards") as JSONArray
 
-        //tbd
+        val cards = ArrayList<Card>()
+
+        for (i in 0 until cardsObject.length()) {
+            val cardObjet = cardsObject[i] as JSONObject
+            Log.i("cardObjet", cardObjet.toString())
+            val value = cardObjet.opt("value") as String
+            val suit = cardObjet.opt("suit") as String
+            val hidden = !(cardObjet.opt("show") as Boolean)
+            cards.add(Card(value, suit, hidden))
+        }
+        Log.i("dealCard", cards.toString())
+        model.myCards.postValue(cards)
+
+        /*val opponentPlayer = msg.opt(model.opponentUsername) as JSONObject
+
+        val opCardsObject = player.opt("cards") as Array<JSONObject>
+        val opCards = ArrayList<Card>()
+
+        for(card in opCardsObject){
+            val value = card.opt("value") as String
+            val suit = card.opt("suit") as String
+            val hidden = !(card.opt("show") as Boolean)
+            opCards.add(Card(value, suit, hidden))
+        }
+
+        model.opponentCards.postValue(cards)*/
     }
 
 
