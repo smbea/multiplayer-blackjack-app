@@ -44,10 +44,9 @@ class Login : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        //firebaseAuth = FirebaseAuth.getInstance()
-        //configureGoogleSignIn()
-        //setupUI()
-        updateInfo("username@gmail.com")
+        firebaseAuth = FirebaseAuth.getInstance()
+        configureGoogleSignIn()
+        setupUI()
     }
 
     private fun configureGoogleSignIn() {
@@ -112,8 +111,7 @@ class Login : Fragment() {
         super.onStart()
         val user = FirebaseAuth.getInstance().currentUser
         if (user != null) {
-            //updateInfo(user.email.toString())
-            FirebaseAuth.getInstance().signOut()
+            updateInfo(user.email.toString())
         }
     }
 }
