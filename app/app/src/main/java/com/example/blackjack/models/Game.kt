@@ -74,11 +74,17 @@ object Game {
         } else return "error"
     }
 
-
+    fun ready_up()
+    {
+        this.responseStatus = false
+        val msg =
+            JSONObject("""{"username":${myUsername},"action":"ready_up", "key":"$sessionKey", "room_id":$roomId}}""")
+        communicationManager.sendMessage(msg)
+    }
     fun ready(bet: Int) {
         this.responseStatus = false
         val msg =
-            JSONObject("""{"username":${myUsername},"action":"bet", "username":"$bet", "key":"$sessionKey", "value":$bet,"room_id":$roomId}}""")
+            JSONObject("""{"username":${myUsername},"action":"bet", "key":"$sessionKey", "value":$bet,"room_id":$roomId}}""")
         communicationManager.sendMessage(msg)
         tempBet = bet
     }

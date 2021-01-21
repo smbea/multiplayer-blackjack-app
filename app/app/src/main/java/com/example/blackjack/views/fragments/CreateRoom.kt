@@ -29,6 +29,7 @@ class CreateRoom:Fragment() {
         btn_join_room.setOnClickListener {
             try {
                 val intent = Intent(activity, PlayingRoom::class.java)
+                Game.ready_up()
                 startActivity(intent)
 
             }catch (e: NumberFormatException) { }

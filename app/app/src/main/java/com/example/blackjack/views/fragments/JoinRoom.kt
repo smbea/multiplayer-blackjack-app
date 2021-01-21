@@ -33,6 +33,7 @@ class JoinRoom : Fragment() {
             try {
                 val toInt = playroom_id_field.text.toString().toString().toInt()
                 val response = Game.joinRoom(toInt)
+                Game.ready_up()
                 if (response=="ok") {
                     val intent = Intent(activity, PlayingRoom::class.java)
                     startActivity(intent)
