@@ -209,7 +209,7 @@ wsServer.on('connection', (ws) => {
 
     ws.send(JSON.stringify(response))
     console.log(`Response: ${JSON.stringify(response)}`)
-
+    let game_start_info
 
     if (msg_data.action != 'create_room') {
       switch (room.state) {
@@ -225,7 +225,7 @@ wsServer.on('connection', (ws) => {
           if (room.checkAllReady()) {
             room.state = 'waitPlayers'
             console.log("All bets were made. Current turn:")
-            let game_start_info = room.getStartInfo()
+            game_start_info = room.getStartInfo()
 
             Array.from(wsServer.clients).forEach((socket) => {
               if (game_start_info[socket.id] != null) {
@@ -265,13 +265,24 @@ wsServer.on('connection', (ws) => {
                 current_turn == 0
               while (!room.getCurrentPlayer().hand.can_hit)
                 room.current_turn += 1
-              //getById(room.getCurrentPlayer().ws_id, wsServer.clients).send(JSON.stringify({ type: "your_turn" }))
+              getById(room.getCurrentPlayer().ws_id, wsServer.clients).send(JSON.stringify({ type: "your_turn" }))
             }
             else {
               room.state = 'endRound'
-              for (player in room.players) {
-                wsServer.getById(player.ws_id).send({ type: "round_end", new_balance: player.money })
-              }
+              const winner = room.checkWinner()
+              game_start_info = room.getStartInfo()
+              Array.from(wsServer.clients).forEach((socket) => {
+
+                if (game_start_info[socket.id] != null) {
+                  let message
+                  if (game_start_info[socket.id].username == winner)
+                    message = { type: "round_end",result:"win", new_balance: game_start_info[socket.id].balance }
+                  else
+                    message = { type: "round_end",result:"loss", new_balance: game_start_info[socket.id].balance }
+                  console.log('Message:' + message)
+                  socket.send(message)
+                }
+              });
               room.state = 'startGame'
               room.deck.resetDeck()
             }

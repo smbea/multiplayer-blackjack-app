@@ -6,7 +6,7 @@ I -> implemented
 LOGIN: {action: <login>}
 JOIN_ROOM: {action: "join_room", room_id:<room_id>} //doesnt need key, key is set up here
 CREATE_ROOM: {action: "create_room"} //doesnt need key, key is set up here
-READY_UP:{action: "ready_up}
+READY_UP:{action: "ready_up"}
 
 (These messages should also have the game id)
 
@@ -31,7 +31,7 @@ RES_BET: {type:"res_bet",status: success/fail, new_balance:<new_balance>}
 RES_EXIT: {type:"res_exit",status: success/fail}
 RES_READY: {type:"res_ready",status: success/fail}
 TIMEOUT: {type: "timeout"}
-ROUND_END: {type:"round_end",new_balance: <balance_of_player>}
+ROUND_END: {type:"round_end",result: "win/loss", new_balance: <balance_of_player>}
 DEAL_CARDS: {type:"deal_card", cards:{username1: <hand1>, username2: <hand2>}} <--Dictionary, key is username, value is a hand object with the player's cards
 GAME_START: {type:"game_start", players:[<list_of_players>]} //each player is a object -> {username: player.username, balance: player.money}
 BETS_OK: {type: "bets_ok"}

@@ -166,6 +166,21 @@ class Game {
         }
         return 1
     }
+
+    checkWinner(){
+        let username_winner
+        let hand_value
+        let best_value = 0
+        for(player in this.players){
+            hand_value = player.hand.getCount()
+            if(hand_value <= 21 && hand_value > best_value){
+                best_value = hand_value
+                username_winner = player.username
+            }
+        }
+        this.players[username_winner].money += this.current_pot
+        return username_winner
+    }
 }
 
 module.exports = Game
