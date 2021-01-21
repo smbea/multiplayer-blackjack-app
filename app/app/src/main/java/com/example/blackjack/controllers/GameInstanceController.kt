@@ -1,5 +1,6 @@
 package com.example.blackjack.controllers
 
+import android.os.SystemClock
 import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import com.example.blackjack.models.Card
@@ -128,6 +129,12 @@ class GameInstanceController(var model:GameInstance) {
         model.started = true
     }
 
+    fun finish(outcome: String, balance: Int) {
+        model.outcome = outcome
+        val finalBalance = Game.amountAvailable - balance
+        model.finalBalance = "${finalBalance}€"
+        model.finished.postValue(true)
+    }
 
 
 }

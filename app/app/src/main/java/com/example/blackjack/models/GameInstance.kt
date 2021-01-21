@@ -7,6 +7,7 @@ import kotlin.properties.Delegates
 
 data class GameInstance(val bet:Int,val opponentUsername: String) {
 
+    val finished: MutableLiveData<Boolean> = MutableLiveData(false)
     var finalBalance by Delegates.notNull<String>()
     val myPoints: MutableLiveData<Int> by lazy {
         MutableLiveData<Int>()

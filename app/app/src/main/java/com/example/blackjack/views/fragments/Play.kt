@@ -57,6 +57,15 @@ class Play : Fragment() {
         }
         Game.currentGame.value!!.myPoints.observe(viewLifecycleOwner, pointsObserver)
 
+        val endObserver = Observer<Boolean> { gameEnd ->
+            Log.i("endObserver", gameEnd.toString())
+
+            if(gameEnd){
+                findNavController().navigate(R.id.action_results)
+            }
+        }
+        Game.currentGame.value!!.finished.observe(viewLifecycleOwner, endObserver)
+
         val myCardsObserver = Observer<ArrayList<Card>> { _ ->
 
             myCardsAdapter = CardsAdapter(Game.currentGame.value!!.myCards.value!!, true)

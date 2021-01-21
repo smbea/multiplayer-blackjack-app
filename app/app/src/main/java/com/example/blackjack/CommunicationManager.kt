@@ -77,11 +77,7 @@ class CommunicationManager {
                 Game.responseStatus = true
             }
             "your_turn" -> {
-                Log.i("your_turn", "updateTurn")
-
                 Game.currentGameController.updateTurn(true)
-
-
             }
             "update_op" -> {
                 val handValue = msg.opt("hand_value") as String
@@ -108,6 +104,12 @@ class CommunicationManager {
             "deal_card" -> {
                  Game.currentGameController.dealCard(msg)
             }
+            "round_end" -> {
+                val outcome = msg.opt("outcome") as String
+                val balance =msg.opt("balance") as Int
+                Game.currentGameController.finish(outcome, balance)
+            }
+
 
         }
 
