@@ -229,7 +229,7 @@ wsServer.on('connection', (ws) => {
 
             Array.from(wsServer.clients).forEach((socket) => {
               if (game_start_info[socket.id] != null) {
-                msg = { type: "game_start", players: game_start_info[socket.id] }
+                msg = { type: "game_start", players: Object.values(game_start_info) }
                 console.log("Message:", msg)
                 socket.send(JSON.stringify(msg))
               }
