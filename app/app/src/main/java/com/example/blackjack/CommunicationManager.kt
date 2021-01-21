@@ -74,15 +74,10 @@ class CommunicationManager {
                 Game.responseStatus = true
             }
             "your_turn" -> {
-                Log.i("your_turn", "coisa")
+                Log.i("your_turn", "updateTurn")
 
-                try {
-                    Game.currentGameController.updateTurn(true)
-                    Game.currentGame.value!!.started = true
-                    Log.i("your_turn", "after")
-                }catch(e:Exception){
-                    Log.e("ex", e.toString())
-                }
+                Game.currentGameController.updateTurn(true)
+
 
             }
             "update_op" -> {
@@ -91,13 +86,11 @@ class CommunicationManager {
                 Game.currentGameController.updateOpponent(newCard, handValue)
             }
             "game_start" -> {
-                Log.i("game_start", "game_start")
 
                 //how it is in code
                 val player = msg.opt("players") as JSONObject
                 val balance = player.opt("balance") as Int
                 val opponentUsername = "temp"
-
                 //how it is in messages
                 /*val players = msg.opt("players") as Array<*>
                 val balance = (players[0] as JSONObject).opt("balance") as Int
@@ -105,10 +98,10 @@ class CommunicationManager {
 
                 Game.startGame(opponentUsername, balance)
             }
-            /*"deal_card" -> {
-                //if (Game.currentGame.value!!.started)
-                  //  Game.currentGameController.dealCard(msg)
-            }*/
+            "deal_card" -> {
+                 Game.currentGameController.dealCard(msg)
+
+            }
 
         }
 

@@ -48,8 +48,10 @@ class Play : Fragment() {
         Game.currentGame.value!!.myPoints.observe(viewLifecycleOwner, pointsObserver)
 
         val myCardsObserver = Observer<ArrayList<Card>> { _ ->
+
+            myCardsAdapter = CardsAdapter(Game.currentGame.value!!.myCards.value!!, true)
+            recycler_view_cards.adapter = myCardsAdapter
             recycler_view_cards.adapter!!.notifyDataSetChanged()
-            Log.i("myCardsObserver", "detected")
 
             if (Game.currentGame.value!!.started) {
                 btn_hit.isEnabled = true
@@ -66,7 +68,6 @@ class Play : Fragment() {
         Game.currentGame.value!!.opponentCards.observe(viewLifecycleOwner, opponentCardsObserver)
 
         val turnObserver = Observer<Boolean> { turn ->
-            Log.i("turnObserver", "detected")
 
             btn_hit.isEnabled = turn
             btn_stand.isEnabled = turn
@@ -87,8 +88,6 @@ class Play : Fragment() {
 
     private fun initCardsView() {
         val myRecyclerView = recycler_view_cards
-
-        Log.i("initview", Game.currentGame.value!!.myCards.value.toString())
 
         myCardsAdapter = CardsAdapter(Game.currentGame.value!!.myCards.value!!, true)
         myRecyclerView.layoutManager =
@@ -118,7 +117,7 @@ class Play : Fragment() {
 
         btn_fold.setOnClickListener {
             Game.currentGameController.fold()
-            findNavController().navigate(R.id.action_results)
+           findNavController().navigate(R.id.action_results)
         }
 
         btn_hit.setOnClickListener {
@@ -137,6 +136,7 @@ class Play : Fragment() {
         initCardsView()
         initViewValues()
         setListeners()
+
 
     }
 

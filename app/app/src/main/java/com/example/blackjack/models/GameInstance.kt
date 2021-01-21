@@ -23,17 +23,13 @@ data class GameInstance(val bet:Int,val opponentUsername: String) {
     var started = false
 
     init{
-        Log.i("init", "failed1")
-        val cards = ArrayList<Card>()
-        cards.add(Card("3","diamonds", false))
-        myCards.postValue(cards)
-        Log.i("init", "failed")
 
-    }
 
-    fun initGame(){
-
+        val tempCards = ArrayList<Card>()
+        myCards.postValue(tempCards)
+        opponentCards.postValue(tempCards)
         myPoints.postValue(0)
+
     }
 
 }
