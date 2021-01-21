@@ -2,7 +2,6 @@ package com.example.blackjack.views.fragments
 
 import android.content.Context
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -17,9 +16,7 @@ import kotlinx.android.synthetic.main.frag_bet.bet_amount
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 import androidx.lifecycle.Observer
-import com.example.blackjack.models.Card
 import kotlinx.android.synthetic.main.frag_bet.username
-import kotlinx.android.synthetic.main.frag_play.*
 import kotlinx.coroutines.runBlocking
 
 class Bet : Fragment() {
@@ -55,12 +52,9 @@ class Bet : Fragment() {
 
 
         val gameInstance = Observer<GameInstance> { _ ->
-            Log.i("initObservers", "oi")
             findNavController().navigateUp()
             findNavController().navigate(R.id.action_ready_to_play)
             loader.visibility = View.INVISIBLE
-
-            Log.i("initObservers", "oi")
         }
 
         Game.currentGame.observe(viewLifecycleOwner, gameInstance)
@@ -119,4 +113,24 @@ class Bet : Fragment() {
         username.text=Game.myUsername
 
     }
+
+    override fun onSaveInstanceState(outState: Bundle) {
+        super.onSaveInstanceState(outState)
+        outState.putInt("tempBetAmount", this.tempBetAmount)
+        outState.putInt("tempAmountAvailable", this.tempAmountAvailable)
+        outState.putInt("betViewVisibility", bet_view.visibility)
+        outState.putInt("loaderViewVisibility", loader.visibility)
+    }
+
+    override fun onViewStateRestored(savedInstanceState: Bundle?) {
+        super.onViewStateRestored(savedInstanceState)
+        if (savedInstanceState != null) {
+            bet_view.visibility = savedInstanceState.getInt("betViewVisibility")
+            loader.visibility = savedInstanceState.getInt("loaderViewVisibility")
+            this.tempBetAmount = savedInstanceState.getInt("tempBetAmount")
+            this.tempAmountAvailable = savedInstanceState.getInt("tempAmountAvailable")
+            bet_amount.text = (this.tempBetAmount.toString() + "€")
+        }
+    }
+
 }
