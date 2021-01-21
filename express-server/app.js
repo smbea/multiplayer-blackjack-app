@@ -192,20 +192,20 @@ wsServer.on('connection', (ws) => {
     let room = app.locals.game_manager.getRoom(msg_data.room_id)
     let response = handleMessages(msg_data, ws.id)
 
-    if (response.type == "res_bet") {
-      sleep(1000).then(() => {
-        ws.send(JSON.stringify({ type: "game_start", players: game_start_info[ws.id] }))
-        sleep(4000).then(() => {
-          ws.send(JSON.stringify({ type: "your_turn" }))
+    // if (response.type == "res_bet") {
+    //   sleep(1000).then(() => {
+    //     ws.send(JSON.stringify({ type: "game_start", players: game_start_info[ws.id] }))
+    //     sleep(4000).then(() => {
+    //       ws.send(JSON.stringify({ type: "your_turn" }))
 
-          sleep(1000).then(() => {
-            let cards = room.dealCards()
-            ws.send(JSON.stringify({ type: "deal_card", cards: cards }))
-          });
+    //       sleep(1000).then(() => {
+    //         let cards = room.dealCards()
+    //         ws.send(JSON.stringify({ type: "deal_card", cards: cards }))
+    //       });
 
-        });
-      });
-    }
+    //     });
+    //   });
+    // }
 
     ws.send(JSON.stringify(response))
     console.log(`Response: ${JSON.stringify(response)}`)
@@ -215,15 +215,6 @@ wsServer.on('connection', (ws) => {
       switch (room.state) {
         case 'waitRoom':
           if (room.checkAllReady()) {
-            let game_start_info = room.getStartInfo()
-
-            Array.from(wsServer.clients).forEach((socket) => {
-              
-              if (game_start_info[socket.id] != null)
-                msg = { type: "game_start", players: game_start_info[socket.id] }
-                console.log("Message:", msg)
-                socket.send(JSON.stringify(msg))
-            })
 
             room.state = 'startGame'
             console.log("All players ready. Waiting for bets...")
@@ -234,6 +225,15 @@ wsServer.on('connection', (ws) => {
           if (room.checkAllReady()) {
             room.state = 'waitPlayers'
             console.log("All bets were made. Current turn:")
+            let game_start_info = room.getStartInfo()
+
+            Array.from(wsServer.clients).forEach((socket) => {
+              if (game_start_info[socket.id] != null) {
+                msg = { type: "game_start", players: game_start_info[socket.id] }
+                console.log("Message:", msg)
+                socket.send(JSON.stringify(msg))
+              }
+            })
             let cards = room.dealCards()
             let player, socket
             for (player_id in room.players) {
@@ -246,7 +246,7 @@ wsServer.on('connection', (ws) => {
             let current_player_username = room.getUsernames()[room.current_turn]
             let current_player = room.players[current_player_username]
             room.resetReady()
-            //getById(current_player.ws_id, wsServer.clients).send(JSON.stringify({ type: "your_turn" }))
+            getById(current_player.ws_id, wsServer.clients).send(JSON.stringify({ type: "your_turn" }))
           }
           break;
         case 'waitPlayers':
