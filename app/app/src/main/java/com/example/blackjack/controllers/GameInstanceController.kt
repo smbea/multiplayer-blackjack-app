@@ -102,29 +102,22 @@ class GameInstanceController(var model:GameInstance) {
 
        model.myPoints.postValue(tempScore)
 
-       //temp
 
-        val opCards = ArrayList<Card>()
-        opCards.add(Card("2", "hearts", true))
-        opCards.add(Card("5", "hearts", false))
+        val opponentPlayer = (msg.opt("cards") as JSONObject).opt(model.opponentUsername) as JSONObject
 
-        model.opponentCards.postValue(opCards)
-
-        //
-
-        /*val opponentPlayer = msg.opt(model.opponentUsername) as JSONObject
-
-        val opCardsObject = player.opt("cards") as Array<JSONObject>
+        val opCardsObject = opponentPlayer.opt("cards") as JSONArray
         val opCards = ArrayList<Card>()
 
-        for(card in opCardsObject){
-            val value = card.opt("value") as String
-            val suit = card.opt("suit") as String
-            val hidden = !(card.opt("show") as Boolean)
+        for (i in 0 until opCardsObject.length()) {
+            val cardObject = cardsObject[i] as JSONObject
+            val value = cardObject.opt("value") as String
+            val suit = cardObject.opt("suit") as String
+            val hidden = !(cardObject.opt("show") as Boolean)
             opCards.add(Card(value, suit, hidden))
+            tempScore += value.toInt()
             model.opponentCards.postValue(cards)
         }
-*/
+
 
         model.started = true
     }

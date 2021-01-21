@@ -85,7 +85,7 @@ class CommunicationManager {
                 Game.currentGameController.updateOpponent(newCard, handValue)
             }
             "game_start" -> {
-                var opponentUsername = "username123"
+                var opponentUsername = String()
                 var balance=0
 
                 //how it is in code
@@ -96,7 +96,7 @@ class CommunicationManager {
                     if(playerUsername==Game.myUsername){
                         balance = player.opt("balance") as Int
                     } else {
-                        //opponentUsername = playerUsername
+                        opponentUsername = playerUsername
                     }
                 }
                 Game.startGame(opponentUsername, balance)
