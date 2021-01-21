@@ -47,7 +47,7 @@ class Game {
             c2 = this.deck.getTopDeck()
             let player_hand = new Hand([c1,c2])
 
-            this.players[player_id].hand = player_hand
+            this.players[player_id].giveHand(player_hand)
 
             ret[player_id] = player_hand
         }
@@ -83,13 +83,14 @@ class Game {
     }
 
     getCurrentPlayer(){
-        let current_username = this.players.keys()[this.current_turn]
+        let usernames = this.getUsernames()
+        let current_username = usernames[this.current_turn]
 
         return this.players[current_username]
     }
 
     checkTurn(username){
-        if(this.players.keys()[this.current_turn] == username)
+        if(Object.keys(this.players)[this.current_turn] == username)
             return true
         return false
     }
@@ -100,7 +101,6 @@ class Game {
         if (this.players[username] == null) {
             this.players[username] = new_player
             this.ready[username] = false
-            console.log(this.players)
             return [0, key]
         }
         else {
@@ -123,7 +123,7 @@ class Game {
     hitPlayer(username, key) {
         if (this.checkKey(username, key) && this.players[username].hand.can_hit && this.checkTurn(username)) {
             let new_card = this.deck.getTopDeck()
-            this.players[username].hand.addCardToHand(new_card)
+            this.players[username].hand.addCard(new_card)
             const hand_value = this.players[username].hand.getCount()
             if (hand_value > 21)
                 this.ready[username] = true
@@ -148,7 +148,6 @@ class Game {
                 this.players[username].money -= bet_value
                 this.ready[username] = true
                 this.current_pot += bet_value
-                console.log(this.players[username])
                 return [0, (this.players[username].money)]
             }
             return [2, -1]
@@ -168,17 +167,20 @@ class Game {
     }
 
     checkWinner(){
-        let username_winner
+        let username_winner = null
         let hand_value
         let best_value = 0
-        for(player in this.players){
+
+        for(let player_id in this.players){
+            let player = this.players[player_id]
             hand_value = player.hand.getCount()
             if(hand_value <= 21 && hand_value > best_value){
                 best_value = hand_value
                 username_winner = player.username
             }
         }
-        this.players[username_winner].money += this.current_pot
+        if (username_winner != null)
+            this.players[username_winner].money += this.current_pot
         return username_winner
     }
 }

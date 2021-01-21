@@ -148,7 +148,6 @@ function handleMessages(message, ws_id) {
         key = message.key
         value = message.value
         arr = room.makeBetPlayer(username, key, value)
-        console.log(arr)
         ret = arr[0]
         balance = arr[1]
         if (ret == 0) {
@@ -257,18 +256,23 @@ wsServer.on('connection', (ws) => {
           if (response.status == 'success') {
             if (response.type == 'res_hit') {
               let all_sockets = room.getSockets()
-              for (socket in all_sockets) {
-                getById(socket, wsServer.clients).send(JSON.stringify({
+              all_sockets.forEach(socket_id => {
+                
+
+                getById(socket_id, wsServer.clients).send(JSON.stringify({
                   type: "update_op", username: msg_data.username, new_card: response.new_card, hand_value: response.hand_value
                 }))
-              }
+              })
             }
             if (!room.checkAllReady()) {
               room.current_turn += 1
-              if (room.current_turn == length(room.players))
-                current_turn == 0
-              while (!room.getCurrentPlayer().hand.can_hit)
+              if (room.current_turn == Object.keys(room.players).length)
+                room.current_turn = 0
+              while (!(room.getCurrentPlayer().hand.can_hit)) {
                 room.current_turn += 1
+                if (room.current_turn == Object.keys(room.players).length)
+                  room.current_turn = 0
+              }
               getById(room.getCurrentPlayer().ws_id, wsServer.clients).send(JSON.stringify({ type: "your_turn" }))
             }
             else {
@@ -279,12 +283,12 @@ wsServer.on('connection', (ws) => {
 
                 if (game_start_info[socket.id] != null) {
                   let message
-                  if (game_start_info[socket.id].username == winner)
-                    message = { type: "round_end",result:"win", new_balance: game_start_info[socket.id].balance }
+                  if (winner != null && game_start_info[socket.id].username == winner)
+                    message = { type: "round_end", result: "win", new_balance: game_start_info[socket.id].balance }
                   else
-                    message = { type: "round_end",result:"loss", new_balance: game_start_info[socket.id].balance }
-                  console.log('Message:' + message)
-                  socket.send(message)
+                    message = { type: "round_end", result: "loss", new_balance: game_start_info[socket.id].balance }
+                  console.log('Message:', message)
+                  socket.send(JSON.stringify(message))
                 }
               });
               room.state = 'startGame'
