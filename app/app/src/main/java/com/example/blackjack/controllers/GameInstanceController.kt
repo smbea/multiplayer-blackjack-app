@@ -23,9 +23,8 @@ class GameInstanceController(var model:GameInstance) {
 
     fun hit(){
         val msg = JSONObject("""{"action":"hit", "username":"${Game.myUsername}", "key":"${Game.sessionKey}", "room_id":${Game.roomId}"}""")
-        //Game.communicationManager.sendMessage(msg)
+        Game.communicationManager.sendMessage(msg)
         updateTurn(false)
-
     }
 
 
@@ -60,8 +59,9 @@ class GameInstanceController(var model:GameInstance) {
 
     fun fold() {
         val msg = JSONObject("""{"action":"fold", "username":"${Game.myUsername}", "key":"${Game.sessionKey}", "room_id":${Game.roomId}"}""")
-        //Game.communicationManager.sendMessage(msg)
-        model.finalBalance = Game.amountAvailable
+        Game.communicationManager.sendMessage(msg)
+
+        model.finalBalance = "-${Game.amountAvailable}"
         model.outcome = "Folded"
     }
 
@@ -122,9 +122,9 @@ class GameInstanceController(var model:GameInstance) {
             val suit = card.opt("suit") as String
             val hidden = !(card.opt("show") as Boolean)
             opCards.add(Card(value, suit, hidden))
+            model.opponentCards.postValue(cards)
         }
-
-        model.opponentCards.postValue(cards)*/
+*/
 
         model.started = true
     }

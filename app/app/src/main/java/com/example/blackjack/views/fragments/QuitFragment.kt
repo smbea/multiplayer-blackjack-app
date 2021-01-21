@@ -25,7 +25,7 @@ class QuitFragment : DialogFragment() {
                         putExtra("beginning", "false")
                     }
                     startActivity(intent)
-                    Game.quit()
+                    //Game.quit()
                 }
                 .setNegativeButton("No",
                     DialogInterface.OnClickListener { dialog, _ ->
