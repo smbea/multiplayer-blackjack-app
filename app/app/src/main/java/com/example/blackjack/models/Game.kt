@@ -74,13 +74,13 @@ object Game {
         } else return "error"
     }
 
-    fun ready_up()
-    {
+    fun readyUp() {
         this.responseStatus = false
         val msg =
             JSONObject("""{"username":${myUsername},"action":"ready_up", "key":"$sessionKey", "room_id":$roomId}}""")
         communicationManager.sendMessage(msg)
     }
+
     fun ready(bet: Int) {
         this.responseStatus = false
         val msg =
