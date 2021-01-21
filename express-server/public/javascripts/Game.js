@@ -40,15 +40,17 @@ class Game {
     }
 
     dealCards(){
-        ret = {}
-        for(player in this.players){
-            c1 = deck.getTopDeck()
-            c2 = deck.getTopDeck()
+        let ret = {}
+        let c1, c2;
+        console.log("dc" + this.players)
+        for(let player_id in this.players){
+            c1 = this.deck.getTopDeck()
+            c2 = this.deck.getTopDeck()
             let player_hand = new Hand([c1,c2])
 
-            player.hand = player_hand
+            this.players[player_id].hand = player_hand
 
-            ret[username] = player_hand
+            ret[player_id] = player_hand
         }
         return ret
     }
@@ -61,14 +63,16 @@ class Game {
 
     getSockets(){
         let sockets = []
-        for(player in this.players)
-            sockets.push(player.ws_id)
+        for(let player_id in this.players)
+            sockets.push(this.players[player_id].ws_id)
         return sockets;
     }
 
     getStartInfo() {
         let game_info = {}
-        for (player in this.players) {
+        let player
+        for (let player_id in this.players) {
+            player = this.players[player_id]
             const pl_info = { username: player.username, balance: player.money }
             game_info[player.ws_id] = pl_info
         }
@@ -76,7 +80,7 @@ class Game {
     }
 
     getUsernames(){
-        return this.players.keys()
+        return Object.keys(this.players)
     }
 
     getCurrentPlayer(){
@@ -97,6 +101,7 @@ class Game {
         if (this.players[username] == null) {
             this.players[username] = new_player
             this.ready[username] = false
+            console.log(this.players)
             return [0, key]
         }
         else {
@@ -113,7 +118,10 @@ class Game {
     }
 
     checkKey(username, key) {
-        return key == this.players[username].key
+        console.log("given key:" + key)
+        console.log("true key:" + this.players[username].key)
+
+        return (key === this.players[username].key)
     }
 
     hitPlayer(username, key) {
@@ -139,12 +147,15 @@ class Game {
 
     makeBetPlayer(username, key, bet_value) {
         if (this.checkKey(username, key)) {
-            if (current_bet <= this.players[username].money) {
+            console.log("check pass")
+            if (bet_value <= this.players[username].money) {
+                console.log("value pass")
                 this.players[username].current_bet = bet_value
                 this.players[username].money -= bet_value
                 this.ready[username] = true
                 this.current_pot += bet_value
-                return [0, this.players[username].money]
+                console.log(this.players[username])
+                return [0, (this.players[username].money)]
             }
             return [2, -1]
         }
