@@ -47,6 +47,13 @@ class Play : Fragment() {
     private fun initObservers() {
         val pointsObserver = Observer<Int> { updatedPoints ->
             my_score.text = updatedPoints.toString()
+            if(updatedPoints>21){
+                opponent_turn.text = "BUSTED"
+                opponent_turn.visibility = View.VISIBLE
+            } else if(updatedPoints==21){
+                opponent_turn.text = "BLACKJACK"
+                opponent_turn.visibility = View.VISIBLE
+            }
         }
         Game.currentGame.value!!.myPoints.observe(viewLifecycleOwner, pointsObserver)
 

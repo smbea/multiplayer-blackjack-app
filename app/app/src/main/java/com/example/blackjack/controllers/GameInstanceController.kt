@@ -61,7 +61,7 @@ class GameInstanceController(var model:GameInstance) {
         val msg = JSONObject("""{"action":"fold", "username":"${Game.myUsername}", "key":"${Game.sessionKey}", "room_id":${Game.roomId}"}""")
         Game.communicationManager.sendMessage(msg)
 
-        model.finalBalance = "-${Game.amountAvailable}"
+        model.finalBalance = "-${Game.tempBet}€"
         model.outcome = "Folded"
     }
 
@@ -100,7 +100,6 @@ class GameInstanceController(var model:GameInstance) {
         }
 
        model.myPoints.postValue(tempScore)
-
 
        //temp
 
