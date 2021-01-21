@@ -90,17 +90,12 @@ class CommunicationManager {
                 //how it is in code
                 val player = msg.opt("players") as JSONObject
                 val balance = player.opt("balance") as Int
-                val opponentUsername = "temp"
-                //how it is in messages
-                /*val players = msg.opt("players") as Array<*>
-                val balance = (players[0] as JSONObject).opt("balance") as Int
-                val opponentUsername = (players[0] as JSONObject).opt("username") as Int*/
+                val opponentUsername = "username123"
 
                 Game.startGame(opponentUsername, balance)
             }
             "deal_card" -> {
                  Game.currentGameController.dealCard(msg)
-
             }
 
         }

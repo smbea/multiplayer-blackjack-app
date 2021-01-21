@@ -17,8 +17,11 @@ import com.example.blackjack.R
 import com.example.blackjack.SensorsManager
 import com.example.blackjack.models.Card
 import com.example.blackjack.models.Game
+import kotlinx.android.synthetic.main.frag_bet.*
 import kotlinx.android.synthetic.main.frag_play.*
 import kotlinx.android.synthetic.main.frag_play.balance
+import kotlinx.android.synthetic.main.frag_play.bet_amount
+import kotlinx.android.synthetic.main.frag_play.username
 
 
 class Play : Fragment() {
@@ -62,6 +65,8 @@ class Play : Fragment() {
         Game.currentGame.value!!.myCards.observe(viewLifecycleOwner, myCardsObserver)
 
         val opponentCardsObserver = Observer<ArrayList<Card>> { _ ->
+            opponentCardsAdapter = CardsAdapter(Game.currentGame.value!!.opponentCards.value!!, false)
+            recycler_view_cards_opponent.adapter = opponentCardsAdapter
             recycler_view_cards_opponent.adapter!!.notifyDataSetChanged()
         }
 
@@ -111,6 +116,8 @@ class Play : Fragment() {
         balance.text = (Game.amountAvailable.toString() + "€")
         bet_amount.text = (Game.currentGameController.getBet().toString() + "€")
         my_score.text = Game.currentGameController.getPoints().toString()
+        username.text = Game.myUsername
+        opponentUsername.text = Game.currentGame.value!!.opponentUsername
     }
 
     private fun setListeners() {
