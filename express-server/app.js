@@ -86,7 +86,7 @@ function handleMessages(message, ws_id) {
     room = app.locals.game_manager.getRoom(room_id)
   if (true) {
     let { username } = message
-    let res, game_id
+    let res, game_id, card
     let ret, key, arr, balance, value
     switch (action) {
 
@@ -123,7 +123,10 @@ function handleMessages(message, ws_id) {
 
       case "hit":
         key = message.key
-        [ret, card, value] = room.hitPlayer(username, key)
+        arr = room.hitPlayer(username, key)
+        ret = arr[0]
+        card = arr[1]
+        value = arr[2]
 
         if (ret == 0)
           res = { type: "res_hit", status: "success", new_card: card, hand_value: value }
