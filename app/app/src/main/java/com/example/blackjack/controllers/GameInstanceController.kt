@@ -55,6 +55,7 @@ class GameInstanceController(var model:GameInstance) {
 
 
     fun fold() {
+        val temp = model.myCards.value!!
         val msg = JSONObject("""{"action":"fold", "username":"${Game.myUsername}", "key":"${Game.sessionKey}, "room_id":${Game.roomId}"}""")
         Game.communicationManager.sendMessage(msg)
     }
@@ -80,15 +81,17 @@ class GameInstanceController(var model:GameInstance) {
 
         val cards = ArrayList<Card>()
 
+
         for (i in 0 until cardsObject.length()) {
-            val cardObjet = cardsObject[i] as JSONObject
-            Log.i("cardObjet", cardObjet.toString())
-            val value = cardObjet.opt("value") as String
-            val suit = cardObjet.opt("suit") as String
-            val hidden = !(cardObjet.opt("show") as Boolean)
+            val cardObject = cardsObject[i] as JSONObject
+            val value = cardObject.opt("value") as String
+            val suit = cardObject.opt("suit") as String
+            val hidden = !(cardObject.opt("show") as Boolean)
             cards.add(Card(value, suit, hidden))
+            Log.i("in loop", cards.size.toString())
+
         }
-        Log.i("dealCard", cards.toString())
+
         model.myCards.postValue(cards)
 
         /*val opponentPlayer = msg.opt(model.opponentUsername) as JSONObject

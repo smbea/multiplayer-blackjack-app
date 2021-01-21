@@ -24,21 +24,12 @@ data class GameInstance(val bet:Int,val opponentUsername: String) {
 
     init{
 
-        //testing
+
         val tempCards = ArrayList<Card>()
-        tempCards.add(Card("j", "spades", true))
-        tempCards.add(Card("j", "spades", false))
         myCards.postValue(tempCards)
-        //end testing
-
-        //change for new score
-        myPoints.postValue(10)
-
-    }
-
-    fun initGame(){
-
+        opponentCards.postValue(tempCards)
         myPoints.postValue(0)
+
     }
 
 }
