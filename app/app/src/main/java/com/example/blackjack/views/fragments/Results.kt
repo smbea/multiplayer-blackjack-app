@@ -27,6 +27,9 @@ class Results : Fragment() {
         lost_or_won.text = Game.currentGame.value!!.outcome
         value.text = Game.currentGame.value!!.finalBalance.toString()
 
+        if(Game.currentGame.value!!.outcome == "You won")
+            confetti.visibility = View.VISIBLE
+
         back_to_menu.setOnClickListener {
             val intent = Intent(activity, MainActivity::class.java)
             intent.putExtra("beginning", "false")
