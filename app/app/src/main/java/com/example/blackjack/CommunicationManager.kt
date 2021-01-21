@@ -17,16 +17,14 @@ class CommunicationManager {
         WebSocketFactory().verifyHostname = false
 
 
-
         // Register a listener to receive WebSocket events.
         ws.addListener(object : WebSocketAdapter() {
             override fun onTextMessage(websocket: WebSocket?, text: String?) {
                 super.onTextMessage(websocket, text)
-                Log.i("i", text.toString())
 
                 if (text != null) {
-                    parseMessage(text)
                     Log.v("WSS", text)
+                    parseMessage(text)
                 }
             }
 
@@ -39,62 +37,78 @@ class CommunicationManager {
         ws.connect()
     }
 
-    fun sendMessage(msg:JSONObject){
+    fun sendMessage(msg: JSONObject) {
         ws.sendText(msg.toString())
     }
 
-    fun parseMessage(message:String){
-
-        Log.i("parseMessage", message)
-
+    fun parseMessage(message: String) {
 
         val msg = JSONObject(message)
-        Log.i("parseMessage", msg.toString())
 
-        when(msg.opt("type")){
-            "res_hit"->{
+        when (msg.opt("type")) {
+            "res_hit" -> {
                 val status = msg.opt("status") as String
                 val newCard = JSONObject(msg.opt("new_card") as String)
                 val handValue = msg.opt("hand_value") as String
                 Game.currentGameController.updateHit(status, newCard, handValue)
             }
-            "res_fold"->{
+            "res_fold" -> {
                 val status = msg.opt("status") as String
             }
-            "res_bet"->{
+            "res_bet" -> {
                 val status = msg.opt("status") as String
+                Game.amountAvailable = (msg.opt("balance") as String).toInt()
             }
-            "res_stand"->{
+            "res_stand" -> {
                 val status = msg.opt("status") as String
                 Game.currentGameController.updateStand(status)
             }
-            "res_join_room"->{
+            "res_join_room" -> {
                 val status = msg.opt("status") as String
-                Game.responseStatus = true
                 Game.response = msg
-                Log.i("res_join_room", msg.toString())
+                Game.responseStatus = true
             }
-            "res_create_room"->{
+            "res_create_room" -> {
                 val status = msg.opt("status") as String
-                Game.responseStatus = true
                 Game.response = msg
-                Log.i("res_create_room", "ready")
+                Game.responseStatus = true
             }
-            "your_turn"->{
-                Game.currentGameController.updateTurn()
+            "your_turn" -> {
+                Log.i("your_turn", "coisa")
+
+                try {
+                    Game.currentGameController.updateTurn(true)
+                    Game.currentGame.value!!.started = true
+                    Log.i("your_turn", "after")
+                }catch(e:Exception){
+                    Log.e("ex", e.toString())
+                }
+
             }
-            "update_op"->{
+            "update_op" -> {
                 val handValue = msg.opt("hand_value") as String
                 val newCard = JSONObject(msg.opt("new_card") as String)
                 Game.currentGameController.updateOpponent(newCard, handValue)
             }
-            "game_start"->{
-                val opponentUsername = msg.opt("opponent_username") as String
-                Game.startGame(opponentUsername)
+            "game_start" -> {
+                Log.i("game_start", "game_start")
+
+                //how it is in code
+                val player = msg.opt("players") as JSONObject
+                val balance = player.opt("balance") as Int
+                val opponentUsername = "temp"
+
+                //how it is in messages
+                /*val players = msg.opt("players") as Array<*>
+                val balance = (players[0] as JSONObject).opt("balance") as Int
+                val opponentUsername = (players[0] as JSONObject).opt("username") as Int*/
+
+                Game.startGame(opponentUsername, balance)
             }
-            "deal_cards"->{
-                Game.currentGameController.dealCards(msg)
-            }
+            /*"deal_card" -> {
+                //if (Game.currentGame.value!!.started)
+                  //  Game.currentGameController.dealCard(msg)
+            }*/
 
         }
 
