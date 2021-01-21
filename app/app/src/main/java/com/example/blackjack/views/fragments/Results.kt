@@ -25,7 +25,7 @@ class Results : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         lost_or_won.text = Game.currentGame.value!!.outcome
-        value.text = Game.currentGame.value!!.finalBalance.toString()
+        value.text = Game.currentGame.value!!.finalBalance
 
         if(Game.currentGame.value!!.outcome == "You won")
             confetti.visibility = View.VISIBLE

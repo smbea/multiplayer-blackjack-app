@@ -39,11 +39,6 @@ object Game {
         }
     }
 
-    fun quit() {
-        currentGame.value!!.finalBalance = 500
-        currentGame.value!!.outcome = "folded"
-
-    }
 
 
     fun joinRoom(roomId: Int): String {
@@ -82,11 +77,18 @@ object Game {
         communicationManager.sendMessage(msg)
     }
 
-    fun ready(bet: Int) {
+    fun ready(bet: Int): String {
         val msg =
             JSONObject("""{"username":${myUsername},"action":"bet", "key":"$sessionKey", "value":$bet,"room_id":$roomId}}""")
         communicationManager.sendMessage(msg)
         tempBet = bet
+
+        while (!this.responseStatus) {
+        }
+
+        if (response.opt("status")!!.toString() == "success")
+            return "ok"
+         else return "error"
     }
 
 
