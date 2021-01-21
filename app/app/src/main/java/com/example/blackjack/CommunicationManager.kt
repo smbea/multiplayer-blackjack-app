@@ -58,6 +58,8 @@ class CommunicationManager {
             }
             "res_bet" -> {
                 val status = msg.opt("status") as String
+                Game.response = msg
+                Game.responseStatus = true
                 Game.amountAvailable = (msg.opt("balance") as String).toInt()
             }
             "res_stand" -> {

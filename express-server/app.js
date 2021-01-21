@@ -249,6 +249,7 @@ wsServer.on('connection', (ws) => {
             let current_player_username = room.getUsernames()[room.current_turn]
             let current_player = room.players[current_player_username]
             room.resetReady()
+            console.log("Message:", { type: "your_turn" })
             getById(current_player.ws_id, wsServer.clients).send(JSON.stringify({ type: "your_turn" }))
           }
           break;
