@@ -21,7 +21,6 @@ class SensorsManager(context: Context) : SensorEventListener {
     private var rightTilt = false
 
     init {
-        Log.v("aqui", "created")
         sensorManager.getDefaultSensor(Sensor.TYPE_GYROSCOPE)?.also { gyroscope ->
             sensorManager.registerListener(this, gyroscope, SensorManager.SENSOR_DELAY_FASTEST, 10000)
         }

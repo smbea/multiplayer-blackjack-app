@@ -20,7 +20,7 @@ class GameInstanceController(var model:GameInstance) {
     }
 
     fun hit(){
-        val msg = JSONObject("""{"action":"hit", "username":"${Game.myUsername}", "key":"${Game.sessionKey}, "room_id":${Game.roomId}"}""")
+        val msg = JSONObject("""{"action":"hit", "username":"${Game.myUsername}", "key":"${Game.sessionKey}", "room_id":${Game.roomId}"}""")
         Game.communicationManager.sendMessage(msg)
     }
 
@@ -89,10 +89,9 @@ class GameInstanceController(var model:GameInstance) {
             val hidden = !(cardObject.opt("show") as Boolean)
             cards.add(Card(value, suit, hidden))
             Log.i("in loop", cards.size.toString())
-
+            model.myCards.postValue(cards)
         }
 
-        model.myCards.postValue(cards)
 
         /*val opponentPlayer = msg.opt(model.opponentUsername) as JSONObject
 

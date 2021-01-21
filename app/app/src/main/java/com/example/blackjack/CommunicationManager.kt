@@ -74,12 +74,10 @@ class CommunicationManager {
                 Game.responseStatus = true
             }
             "your_turn" -> {
-                try {
-                    Game.currentGameController.updateTurn(true)
-                    Log.i("your_turn", "after")
-                }catch(e:Exception){
-                    Log.e("ex", e.toString())
-                }
+                Log.i("your_turn", "updateTurn")
+
+                Game.currentGameController.updateTurn(true)
+
 
             }
             "update_op" -> {
