@@ -91,16 +91,10 @@ object Game {
 
 
     fun startGame(opponentUsername: String) {
-
-        Log.i("game_start", "what")
-
-
         val game = GameInstance(tempBet, opponentUsername)
-        Log.i("game_start", "after game")
         game.initGame()
 
         currentGame.postValue(game)
-        Log.i("game_start", "post value")
 
         currentGameController = GameInstanceController(currentGame.value!!)
         responseStatus = true
