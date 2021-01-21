@@ -284,9 +284,9 @@ wsServer.on('connection', (ws) => {
                 if (game_start_info[socket.id] != null) {
                   let message
                   if (winner != null && game_start_info[socket.id].username == winner)
-                    message = { type: "round_end", result: "win", new_balance: game_start_info[socket.id].balance }
+                    message = { type: "round_end", outcome: "win", new_balance: game_start_info[socket.id].balance }
                   else
-                    message = { type: "round_end", result: "loss", new_balance: game_start_info[socket.id].balance }
+                    message = { type: "round_end", outcome: "loss", new_balance: game_start_info[socket.id].balance }
                   console.log('Message:', message)
                   socket.send(JSON.stringify(message))
                 }
