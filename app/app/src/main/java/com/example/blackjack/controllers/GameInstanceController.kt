@@ -5,6 +5,8 @@ import androidx.lifecycle.MutableLiveData
 import com.example.blackjack.models.Card
 import com.example.blackjack.models.Game
 import com.example.blackjack.models.GameInstance
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.launch
 import org.json.JSONArray
 import org.json.JSONObject
 
@@ -21,7 +23,9 @@ class GameInstanceController(var model:GameInstance) {
 
     fun hit(){
         val msg = JSONObject("""{"action":"hit", "username":"${Game.myUsername}", "key":"${Game.sessionKey}", "room_id":${Game.roomId}"}""")
-        Game.communicationManager.sendMessage(msg)
+        //Game.communicationManager.sendMessage(msg)
+        updateTurn(false)
+
     }
 
 
@@ -43,7 +47,7 @@ class GameInstanceController(var model:GameInstance) {
     }
 
     fun stand(){
-        val msg = JSONObject("""{"action":"hold", "username":"${Game.myUsername}", "key":"${Game.sessionKey}, "room_id":${Game.roomId}"}""")
+        val msg = JSONObject("""{"action":"hold", "username":"${Game.myUsername}", "key":"${Game.sessionKey}", "room_id":${Game.roomId}"}""")
         Game.communicationManager.sendMessage(msg)
     }
 
@@ -55,9 +59,10 @@ class GameInstanceController(var model:GameInstance) {
 
 
     fun fold() {
-        val temp = model.myCards.value!!
-        val msg = JSONObject("""{"action":"fold", "username":"${Game.myUsername}", "key":"${Game.sessionKey}, "room_id":${Game.roomId}"}""")
-        Game.communicationManager.sendMessage(msg)
+        val msg = JSONObject("""{"action":"fold", "username":"${Game.myUsername}", "key":"${Game.sessionKey}", "room_id":${Game.roomId}"}""")
+        //Game.communicationManager.sendMessage(msg)
+        model.finalBalance = Game.amountAvailable
+        model.outcome = "Folded"
     }
 
     fun updateTurn(value:Boolean) {
@@ -80,7 +85,7 @@ class GameInstanceController(var model:GameInstance) {
         val cardsObject = player.opt("cards") as JSONArray
 
         val cards = ArrayList<Card>()
-
+        var tempScore = model.myPoints.value!!
 
         for (i in 0 until cardsObject.length()) {
             val cardObject = cardsObject[i] as JSONObject
@@ -89,9 +94,23 @@ class GameInstanceController(var model:GameInstance) {
             val hidden = !(cardObject.opt("show") as Boolean)
             cards.add(Card(value, suit, hidden))
             Log.i("in loop", cards.size.toString())
+            tempScore += value.toInt()
+
             model.myCards.postValue(cards)
         }
 
+       model.myPoints.postValue(tempScore)
+
+
+       //temp
+
+        val opCards = ArrayList<Card>()
+        opCards.add(Card("2", "hearts", true))
+        opCards.add(Card("5", "hearts", false))
+
+        model.opponentCards.postValue(opCards)
+
+        //
 
         /*val opponentPlayer = msg.opt(model.opponentUsername) as JSONObject
 
@@ -106,6 +125,8 @@ class GameInstanceController(var model:GameInstance) {
         }
 
         model.opponentCards.postValue(cards)*/
+
+        model.started = true
     }
 
 
