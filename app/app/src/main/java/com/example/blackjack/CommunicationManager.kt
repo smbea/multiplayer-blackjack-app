@@ -6,6 +6,7 @@ import com.neovisionaries.ws.client.WebSocket
 import com.neovisionaries.ws.client.WebSocketAdapter
 import com.neovisionaries.ws.client.WebSocketFactory
 import com.neovisionaries.ws.client.WebSocketFrame
+import org.json.JSONArray
 import org.json.JSONObject
 
 class CommunicationManager {
@@ -86,12 +87,20 @@ class CommunicationManager {
                 Game.currentGameController.updateOpponent(newCard, handValue)
             }
             "game_start" -> {
+                var opponentUsername = "username123"
+                var balance=0
 
                 //how it is in code
-                val player = msg.opt("players") as JSONObject
-                val balance = player.opt("balance") as Int
-                val opponentUsername = "username123"
-
+                val players = msg.opt("players") as JSONArray
+                for (i in 0 until players.length()) {
+                    val player = players.getJSONObject(i)
+                    val playerUsername = player.opt("username") as String
+                    if(playerUsername==Game.myUsername){
+                        balance = player.opt("balance") as Int
+                    } else {
+                        //opponentUsername = playerUsername
+                    }
+                }
                 Game.startGame(opponentUsername, balance)
             }
             "deal_card" -> {

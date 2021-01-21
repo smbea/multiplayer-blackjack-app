@@ -23,7 +23,7 @@ class GameInstanceController(var model:GameInstance) {
 
     fun hit(){
         val msg = JSONObject("""{"action":"hit", "username":"${Game.myUsername}", "key":"${Game.sessionKey}", "room_id":${Game.roomId}"}""")
-        //Game.communicationManager.sendMessage(msg)
+        Game.communicationManager.sendMessage(msg)
         updateTurn(false)
 
     }

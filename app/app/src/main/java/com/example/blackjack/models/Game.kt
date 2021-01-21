@@ -91,6 +91,7 @@ object Game {
 
 
     fun startGame(opponentUsername: String, balance: Int) {
+        Log.i("i", "startgame")
         val game = GameInstance(tempBet, opponentUsername)
         amountAvailable = balance
         currentGameController = GameInstanceController(game)
