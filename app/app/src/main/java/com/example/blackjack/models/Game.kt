@@ -51,6 +51,7 @@ object Game {
 
         if (response.opt("status")!!.toString() == "success") {
             sessionKey = response.opt("key")!!.toString()
+            Game.roomId = response.opt("room_id")!!.toString().toInt()
             return "ok"
         } else return response.opt("error_message")!!.toString()
     }
