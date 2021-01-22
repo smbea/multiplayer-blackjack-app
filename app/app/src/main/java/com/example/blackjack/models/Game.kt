@@ -94,10 +94,15 @@ object Game {
 
     fun startGame(opponentUsername: String, balance: Int) {
         Log.i("i", "startgame")
-        val game = GameInstance(tempBet, opponentUsername)
-        amountAvailable = balance
-        currentGameController = GameInstanceController(game)
-        currentGame.postValue(game)
+        try {
+            val game = GameInstance(tempBet, opponentUsername)
+            amountAvailable = balance
+            currentGameController = GameInstanceController(game)
+            currentGame.postValue(game)
+        }catch (e:Exception){
+            Log.i("e", e.toString())
+
+        }
 
     }
 

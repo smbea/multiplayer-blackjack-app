@@ -48,9 +48,22 @@ class CommunicationManager {
 
         when (msg.opt("type")) {
             "res_hit" -> {
+                Log.i("i", "before")
+
                 val status = msg.opt("status") as String
-                val newCard = JSONObject(msg.opt("new_card") as String)
-                val handValue = msg.opt("hand_value") as String
+                Log.i("i", "after2")
+
+                val newCard = JSONObject(msg.opt("new_card")!!.toString())
+                Log.i("i", "after4")
+
+                var handValue = 0
+                try{
+                    handValue= msg.opt("hand_value") as Int
+                } catch(e:Exception){
+                    handValue= 11
+                }
+                Log.i("i", "after")
+
                 Game.currentGameController.updateHit(status, newCard, handValue)
             }
             "res_fold" -> {
@@ -78,6 +91,7 @@ class CommunicationManager {
             }
             "your_turn" -> {
                 Game.currentGameController.updateTurn(true)
+                Game.currentGame.value!!.action.postValue("turn")
             }
             "update_op" -> {
                 val handValue = msg.opt("hand_value") as String
@@ -105,8 +119,13 @@ class CommunicationManager {
                  Game.currentGameController.dealCard(msg)
             }
             "round_end" -> {
+                Log.i("oi", "aqui")
                 val outcome = msg.opt("outcome") as String
+                Log.i("oi", "aqui2")
+
                 val balance =msg.opt("balance") as Int
+                Log.i("oi", "aqu3")
+
                 Game.currentGameController.finish(outcome, balance)
             }
 

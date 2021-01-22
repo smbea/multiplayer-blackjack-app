@@ -53,8 +53,13 @@ class Bet : Fragment() {
 
 
         val gameInstance = Observer<GameInstance> { _ ->
-            findNavController().navigateUp()
-            findNavController().navigate(R.id.action_ready_to_play)
+            Log.i("i", "gameInstance")
+            try {
+                findNavController().navigateUp()
+                findNavController().navigate(R.id.action_ready_to_play)
+            }catch(e:Exception){
+                Log.i("e", e.toString())
+            }
             loader.visibility = View.INVISIBLE
         }
 

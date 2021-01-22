@@ -45,7 +45,53 @@ class Play : Fragment() {
 
 
     private fun initObservers() {
-        val pointsObserver = Observer<Int> { updatedPoints ->
+
+        val actionObserver = Observer<String> { _ ->
+
+            try {
+                Log.i("initObservers", "detected")
+
+                //update cards
+                //myCardsAdapter = CardsAdapter(Game.currentGame.value!!.myCards, true)
+                //recycler_view_cards.adapter = myCardsAdapter
+                recycler_view_cards.adapter!!.notifyDataSetChanged()
+
+                //update turn
+                val turn = Game.currentGame.value!!.turn
+                if (turn != null) {
+                    btn_hit.isEnabled = turn
+                    btn_stand.isEnabled = turn
+
+                    if (Game.currentGame.value!!.started) {
+
+                        if (turn)
+                            opponent_turn.visibility = View.INVISIBLE
+                        else
+                            opponent_turn.visibility = View.VISIBLE
+                    }
+                }
+
+
+                //update score
+                val newScore = Game.currentGame.value!!.myPoints
+                my_score.text = newScore.toString()
+                if (newScore > 21) {
+                    opponent_turn.text = "BUSTED"
+                    opponent_turn.visibility = View.VISIBLE
+                } else if (newScore == 21) {
+                    opponent_turn.text = "BLACKJACK"
+                    opponent_turn.visibility = View.VISIBLE
+                }
+
+
+            } catch (e: Exception) {
+                Log.i("observer", e.toString())
+            }
+        }
+        Game.currentGame.value!!.action.observe(viewLifecycleOwner, actionObserver)
+
+
+        /*val pointsObserver = Observer<Int> { updatedPoints ->
             my_score.text = updatedPoints.toString()
             if(updatedPoints>21){
                 opponent_turn.text = "BUSTED"
@@ -55,18 +101,18 @@ class Play : Fragment() {
                 opponent_turn.visibility = View.VISIBLE
             }
         }
-        Game.currentGame.value!!.myPoints.observe(viewLifecycleOwner, pointsObserver)
+        Game.currentGame.value!!.myPoints.observe(viewLifecycleOwner, pointsObserver)*/
 
         val endObserver = Observer<Boolean> { gameEnd ->
             Log.i("endObserver", gameEnd.toString())
 
-            if(gameEnd){
+            if (gameEnd) {
                 findNavController().navigate(R.id.action_results)
             }
         }
         Game.currentGame.value!!.finished.observe(viewLifecycleOwner, endObserver)
 
-        val myCardsObserver = Observer<ArrayList<Card>> { _ ->
+        /*val myCardsObserver = Observer<ArrayList<Card>> { _ ->
 
             myCardsAdapter = CardsAdapter(Game.currentGame.value!!.myCards.value!!, true)
             recycler_view_cards.adapter = myCardsAdapter
@@ -78,17 +124,18 @@ class Play : Fragment() {
             }
         }
 
-        Game.currentGame.value!!.myCards.observe(viewLifecycleOwner, myCardsObserver)
+        Game.currentGame.value!!.myCards.observe(viewLifecycleOwner, myCardsObserver)*/
 
-        val opponentCardsObserver = Observer<ArrayList<Card>> { _ ->
-            opponentCardsAdapter = CardsAdapter(Game.currentGame.value!!.opponentCards.value!!, false)
+        /*val opponentCardsObserver = Observer<ArrayList<Card>> { _ ->
+            opponentCardsAdapter =
+                CardsAdapter(Game.currentGame.value!!.opponentCards.value!!, false)
             recycler_view_cards_opponent.adapter = opponentCardsAdapter
             recycler_view_cards_opponent.adapter!!.notifyDataSetChanged()
         }
 
-        Game.currentGame.value!!.opponentCards.observe(viewLifecycleOwner, opponentCardsObserver)
+        Game.currentGame.value!!.opponentCards.observe(viewLifecycleOwner, opponentCardsObserver)*/
 
-        val turnObserver = Observer<Boolean> { turn ->
+        /*val turnObserver = Observer<Boolean> { turn ->
 
             btn_hit.isEnabled = turn
             btn_stand.isEnabled = turn
@@ -103,14 +150,14 @@ class Play : Fragment() {
 
         }
 
-        Game.currentGame.value!!.turn.observe(viewLifecycleOwner, turnObserver)
+        Game.currentGame.value!!.turn.observe(viewLifecycleOwner, turnObserver)*/
     }
 
 
     private fun initCardsView() {
         val myRecyclerView = recycler_view_cards
 
-        myCardsAdapter = CardsAdapter(Game.currentGame.value!!.myCards.value!!, true)
+        myCardsAdapter = CardsAdapter(Game.currentGame.value!!.myCards, true)
         myRecyclerView.layoutManager =
             LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
         myRecyclerView.itemAnimator = DefaultItemAnimator()
@@ -119,7 +166,7 @@ class Play : Fragment() {
         myCardsAdapter.notifyDataSetChanged()
 
         val opRecyclerView = recycler_view_cards_opponent
-        opponentCardsAdapter = CardsAdapter(Game.currentGame.value!!.opponentCards.value!!, false)
+        opponentCardsAdapter = CardsAdapter(Game.currentGame.value!!.opponentCards, false)
         opRecyclerView.layoutManager =
             LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
         opRecyclerView.itemAnimator = DefaultItemAnimator()
@@ -140,7 +187,7 @@ class Play : Fragment() {
 
         btn_fold.setOnClickListener {
             Game.currentGameController.fold()
-           findNavController().navigate(R.id.action_results)
+            findNavController().navigate(R.id.action_results)
         }
 
         btn_hit.setOnClickListener {
