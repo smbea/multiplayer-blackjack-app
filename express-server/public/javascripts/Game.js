@@ -49,7 +49,7 @@ class Game {
 
             this.players[player_id].giveHand(player_hand)
 
-            ret[player_id] = {hand: player_hand, hand_value = player_hand.getCount()}
+            ret[player_id] = {hand: player_hand, hand_value: player_hand.getCount()}
         }
         return ret
     }
