@@ -25,11 +25,12 @@ class GameInstanceController(var model:GameInstance) {
     fun hit(){
         val msg = JSONObject("""{"action":"hit", "username":"${Game.myUsername}", "key":"${Game.sessionKey}", "room_id":"${Game.roomId}"}""")
         Game.communicationManager.sendMessage(msg)
+        updateTurn(false)
+        model.action.postValue("hit")
     }
 
 
     fun updateHit(status: String, newCard: JSONObject, handValue: Int) {
-        Log.i("i", "success")
 
         try {
             if (status == "success") {
@@ -39,8 +40,7 @@ class GameInstanceController(var model:GameInstance) {
                 val cardHidden = (newCard.opt("value") as String) == "true"
                 model.myPoints = handValue
                 addCard(cardValue, cardType, cardHidden)
-                updateTurn(false)
-                model.action.postValue("hit")
+                model.action.postValue("updatehit")
             }
         }catch (e:Exception){
             Log.i("updateHit", e.toString())
@@ -54,13 +54,14 @@ class GameInstanceController(var model:GameInstance) {
     fun stand(){
         val msg = JSONObject("""{"action":"hold", "username":"${Game.myUsername}", "key":"${Game.sessionKey}", "room_id":"${Game.roomId}"}""")
         Game.communicationManager.sendMessage(msg)
+        updateTurn(false)
+        model.action.postValue("stand")
     }
 
 
     fun updateStand(status: String){
         if(status == "success") {
-            updateTurn(false)
-            model.action.postValue("stand")
+
         }
     }
 
@@ -84,7 +85,6 @@ class GameInstanceController(var model:GameInstance) {
         val cardHidden = (newCard.opt("value") as String) == "true"
         tempCards.add(Card(cardValue, cardType, cardHidden))
         model.opponentCards = tempCards
-        //model.opponentPoints.value = handValue.toInt()
         model.action.postValue("updateop")
     }
 
@@ -110,7 +110,6 @@ class GameInstanceController(var model:GameInstance) {
             opCards.add(Card("5", "hearts", false))
 
             model.opponentCards = opCards
-            Log.i("dealCard", "beforepost")
 
             model.action.postValue("deal")
         }catch (e:Exception){
@@ -125,7 +124,14 @@ class GameInstanceController(var model:GameInstance) {
         model.outcome = outcome
         val finalBalance = Game.amountAvailable - balance
         model.finalBalance = "${finalBalance}€"
-        model.finished.postValue(true)
+
+        try {
+            Thread.sleep(1000)
+
+            model.finished.postValue(true)
+        }catch (e:Exception){
+            Log.i("finish", e.toString())
+        }
     }
 
 

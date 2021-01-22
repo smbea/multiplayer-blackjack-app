@@ -52,23 +52,23 @@ class Play : Fragment() {
                 Log.i("initObservers", "detected")
 
                 //update cards
-                //myCardsAdapter = CardsAdapter(Game.currentGame.value!!.myCards, true)
-                //recycler_view_cards.adapter = myCardsAdapter
+                myCardsAdapter = CardsAdapter(Game.currentGame.value!!.myCards, true)
+                recycler_view_cards.adapter = myCardsAdapter
                 recycler_view_cards.adapter!!.notifyDataSetChanged()
 
                 //update turn
                 val turn = Game.currentGame.value!!.turn
-                if (turn != null) {
-                    btn_hit.isEnabled = turn
-                    btn_stand.isEnabled = turn
+                Log.i("initObservers", turn.toString())
 
-                    if (Game.currentGame.value!!.started) {
+                btn_hit.isEnabled = turn
+                btn_stand.isEnabled = turn
 
-                        if (turn)
-                            opponent_turn.visibility = View.INVISIBLE
-                        else
-                            opponent_turn.visibility = View.VISIBLE
-                    }
+                if (Game.currentGame.value!!.started) {
+
+                    if (turn)
+                        opponent_turn.visibility = View.INVISIBLE
+                    else
+                        opponent_turn.visibility = View.VISIBLE
                 }
 
 

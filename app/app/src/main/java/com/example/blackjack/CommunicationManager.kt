@@ -48,21 +48,16 @@ class CommunicationManager {
 
         when (msg.opt("type")) {
             "res_hit" -> {
-                Log.i("i", "before")
 
                 val status = msg.opt("status") as String
-                Log.i("i", "after2")
-
                 val newCard = JSONObject(msg.opt("new_card")!!.toString())
-                Log.i("i", "after4")
 
                 var handValue = 0
-                try{
-                    handValue= msg.opt("hand_value") as Int
-                } catch(e:Exception){
-                    handValue= 11
+                try {
+                    handValue = msg.opt("hand_value") as Int
+                } catch (e: Exception) {
+                    handValue = 11
                 }
-                Log.i("i", "after")
 
                 Game.currentGameController.updateHit(status, newCard, handValue)
             }
@@ -100,14 +95,14 @@ class CommunicationManager {
             }
             "game_start" -> {
                 var opponentUsername = "username123"
-                var balance=0
+                var balance = 0
 
                 //how it is in code
                 val players = msg.opt("players") as JSONArray
                 for (i in 0 until players.length()) {
                     val player = players.getJSONObject(i)
                     val playerUsername = player.opt("username") as String
-                    if(playerUsername==Game.myUsername){
+                    if (playerUsername == Game.myUsername) {
                         balance = player.opt("balance") as Int
                     } else {
                         //opponentUsername = playerUsername
@@ -116,16 +111,11 @@ class CommunicationManager {
                 Game.startGame(opponentUsername, balance)
             }
             "deal_card" -> {
-                 Game.currentGameController.dealCard(msg)
+                Game.currentGameController.dealCard(msg)
             }
             "round_end" -> {
-                Log.i("oi", "aqui")
                 val outcome = msg.opt("outcome") as String
-                Log.i("oi", "aqui2")
-
-                val balance =msg.opt("balance") as Int
-                Log.i("oi", "aqu3")
-
+                val balance = msg.opt("new_balance") as Int
                 Game.currentGameController.finish(outcome, balance)
             }
 
