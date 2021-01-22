@@ -53,7 +53,6 @@ class Bet : Fragment() {
 
 
         val gameInstance = Observer<GameInstance> { _ ->
-            Log.i("i", "gameInstance")
             try {
                 findNavController().navigateUp()
                 findNavController().navigate(R.id.action_ready_to_play)

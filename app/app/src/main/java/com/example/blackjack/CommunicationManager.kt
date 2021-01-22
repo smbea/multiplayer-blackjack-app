@@ -89,9 +89,13 @@ class CommunicationManager {
                 Game.currentGame.value!!.action.postValue("turn")
             }
             "update_op" -> {
-                val handValue = msg.opt("hand_value") as String
-                val newCard = JSONObject(msg.opt("new_card") as String)
-                Game.currentGameController.updateOpponent(newCard, handValue)
+                try {
+                    val handValue = msg.opt("hand_value") as Int
+                    val newCard = msg.opt("new_card") as JSONObject
+                    Game.currentGameController.updateOpponent(newCard, handValue)
+                }catch (e:Exception){
+                    Log.i("updae_op", e.toString())
+                }
             }
             "game_start" -> {
                 var opponentUsername = "username123"

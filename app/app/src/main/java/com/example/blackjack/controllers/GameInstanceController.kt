@@ -34,7 +34,6 @@ class GameInstanceController(var model:GameInstance) {
 
         try {
             if (status == "success") {
-                Log.i("i", "success")
                 val cardValue = newCard.opt("value") as String
                 val cardType = newCard.opt("value") as String
                 val cardHidden = (newCard.opt("value") as String) == "true"
@@ -76,16 +75,27 @@ class GameInstanceController(var model:GameInstance) {
     fun updateTurn(value:Boolean) {
         Log.i("updateTurn", "updateTurn")
         model.turn=value
+        Thread.sleep(1000)
     }
 
-    fun updateOpponent(newCard: JSONObject, handValue: String) {
-        val tempCards = model.opponentCards!!
-        val cardValue = newCard.opt("value") as String
-        val cardType = newCard.opt("value") as String
-        val cardHidden = (newCard.opt("value") as String) == "true"
-        tempCards.add(Card(cardValue, cardType, cardHidden))
-        model.opponentCards = tempCards
-        model.action.postValue("updateop")
+    fun updateOpponent(newCard: JSONObject, handValue: Int) {
+        try {
+            Log.i("up","here")
+
+            val tempCards = model.opponentCards
+            val cardValue = newCard.opt("value") as String
+            val cardType = newCard.opt("value") as String
+            val cardHidden = (newCard.opt("value") as String) == "true"
+            tempCards.add(Card(cardValue, cardType, cardHidden))
+            model.opponentCards = tempCards
+            Log.i("up","here2")
+
+            model.action.postValue("updateop")
+            Log.i("up","here3")
+
+        }catch (e:Exception){
+            Log.i("up", e.toString())
+        }
     }
 
     fun dealCard(msg: JSONObject) {

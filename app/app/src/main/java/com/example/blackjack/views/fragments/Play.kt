@@ -46,7 +46,7 @@ class Play : Fragment() {
 
     private fun initObservers() {
 
-        val actionObserver = Observer<String> { _ ->
+        val actionObserver = Observer<String> { action ->
 
             try {
                 Log.i("initObservers", "detected")
@@ -55,6 +55,13 @@ class Play : Fragment() {
                 myCardsAdapter = CardsAdapter(Game.currentGame.value!!.myCards, true)
                 recycler_view_cards.adapter = myCardsAdapter
                 recycler_view_cards.adapter!!.notifyDataSetChanged()
+
+
+                //update cards
+                opponentCardsAdapter = CardsAdapter(Game.currentGame.value!!.myCards, true)
+                recycler_view_cards_opponent.adapter = opponentCardsAdapter
+                recycler_view_cards_opponent.adapter!!.notifyDataSetChanged()
+                
 
                 //update turn
                 val turn = Game.currentGame.value!!.turn
