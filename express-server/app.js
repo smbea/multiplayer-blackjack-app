@@ -92,10 +92,11 @@ function handleMessages(message, ws_id) {
 
       case "join_room":
 
-        [ret, key] = room.addPlayer(username, ws_id)
-
+        arr = room.addNewPlayer(username, ws_id)
+        ret = arr[0]
+        key = arr[1]
         if (ret == 0)
-          res = { type: "res_join_room", status: "success", key: key }
+          res = { type: "res_join_room", status: "success", key: key, room_id: room_id}
         else if (ret == 1)
           res = { type: "res_join_room", status: "fail", error_message: "Username already taken" }
         return res;
@@ -255,13 +256,16 @@ wsServer.on('connection', (ws) => {
         case 'waitPlayers':
           if (response.status == 'success') {
             if (response.type == 'res_hit') {
+              let player_hit = room.players[msg_data.username]
+              let not_send = player_hit.ws_id
               let all_sockets = room.getSockets()
               all_sockets.forEach(socket_id => {
-                
 
-                getById(socket_id, wsServer.clients).send(JSON.stringify({
-                  type: "update_op", username: msg_data.username, new_card: response.new_card, hand_value: response.hand_value
-                }))
+                if (socket_id != not_send) {
+                  getById(socket_id, wsServer.clients).send(JSON.stringify({
+                    type: "update_op", username: msg_data.username, new_card: response.new_card, hand_value: response.hand_value
+                  }))
+                }
               })
             }
             if (!room.checkAllReady()) {
