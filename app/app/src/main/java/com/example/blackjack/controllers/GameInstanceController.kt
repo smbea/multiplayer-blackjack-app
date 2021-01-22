@@ -146,7 +146,12 @@ class GameInstanceController(var model:GameInstance) {
     fun finish(outcome: String, balance: Int) {
         model.outcome = outcome
         val finalBalance = Game.amountAvailable - balance
-        model.finalBalance = "${finalBalance}€"
+
+        if(finalBalance>0)
+            model.finalBalance = "+${finalBalance}€"
+        else if(finalBalance==0)
+            model.finalBalance = "${finalBalance}€"
+        else model.finalBalance = "-${finalBalance}€"
 
         try {
             Thread.sleep(1500)
