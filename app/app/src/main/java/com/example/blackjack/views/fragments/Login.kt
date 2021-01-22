@@ -23,6 +23,7 @@ import kotlinx.android.synthetic.main.frag_login_menu.*
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
+import kotlin.random.Random
 
 class Login : Fragment() {
 
@@ -44,9 +45,11 @@ class Login : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        firebaseAuth = FirebaseAuth.getInstance()
-        configureGoogleSignIn()
-        setupUI()
+       // firebaseAuth = FirebaseAuth.getInstance()
+       // configureGoogleSignIn()
+        //setupUI()
+        val n = Random.nextInt(0,100)
+        updateInfo("username"+n+"@gmail.com")
     }
 
     private fun configureGoogleSignIn() {
