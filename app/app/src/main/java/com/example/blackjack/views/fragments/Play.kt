@@ -61,7 +61,7 @@ class Play : Fragment() {
                 opponentCardsAdapter = CardsAdapter(Game.currentGame.value!!.myCards, true)
                 recycler_view_cards_opponent.adapter = opponentCardsAdapter
                 recycler_view_cards_opponent.adapter!!.notifyDataSetChanged()
-                
+
 
                 //update turn
                 val turn = Game.currentGame.value!!.turn

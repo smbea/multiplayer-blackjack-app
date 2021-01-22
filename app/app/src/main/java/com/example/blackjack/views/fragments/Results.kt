@@ -27,7 +27,7 @@ class Results : Fragment() {
         lost_or_won.text = Game.currentGame.value!!.outcome
         value.text = Game.currentGame.value!!.finalBalance
 
-        if(Game.currentGame.value!!.outcome == "Win")
+        if(Game.currentGame.value!!.outcome == "win")
             confetti.visibility = View.VISIBLE
 
         back_to_menu.setOnClickListener {
