@@ -35,8 +35,8 @@ class GameInstanceController(var model:GameInstance) {
         try {
             if (status == "success") {
                 val cardValue = newCard.opt("value") as String
-                val cardType = newCard.opt("value") as String
-                val cardHidden = (newCard.opt("value") as String) == "true"
+                val cardType = newCard.opt("suit") as String
+                val cardHidden = !(newCard.opt("show") as Boolean)
                 model.myPoints = handValue
                 addCard(cardValue, cardType, cardHidden)
                 model.action.postValue("updatehit")
@@ -75,7 +75,6 @@ class GameInstanceController(var model:GameInstance) {
     fun updateTurn(value:Boolean) {
         Log.i("updateTurn", "updateTurn")
         model.turn=value
-        Thread.sleep(1000)
     }
 
     fun updateOpponent(newCard: JSONObject, handValue: Int) {
@@ -84,8 +83,8 @@ class GameInstanceController(var model:GameInstance) {
 
             val tempCards = model.opponentCards
             val cardValue = newCard.opt("value") as String
-            val cardType = newCard.opt("value") as String
-            val cardHidden = (newCard.opt("value") as String) == "true"
+            val cardType = newCard.opt("suit") as String
+            val cardHidden = !(newCard.opt("show") as Boolean)
             tempCards.add(Card(cardValue, cardType, cardHidden))
             model.opponentCards = tempCards
             Log.i("up","here2")
@@ -136,7 +135,7 @@ class GameInstanceController(var model:GameInstance) {
         model.finalBalance = "${finalBalance}€"
 
         try {
-            Thread.sleep(1000)
+            Thread.sleep(1500)
 
             model.finished.postValue(true)
         }catch (e:Exception){

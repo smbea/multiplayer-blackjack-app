@@ -35,15 +35,20 @@ internal class CardsAdapter(private var cardsList: ArrayList<Card>, private var 
     }
     override fun onBindViewHolder(holder: MyViewHolder, position: Int) {
         val card = cardsList[position]
-        matchCardResource(holder, card)
+        val src = matchCardResource(holder, card)
+        Log.i("card", card.imageName)
+        Log.i("src", src.toString())
+        Log.i("position", position.toString())
     }
     override fun getItemCount(): Int {
         return cardsList.size
     }
 
-    private fun matchCardResource(holder: MyViewHolder, card:Card){
+
+    private fun matchCardResource(holder: MyViewHolder, card:Card): Int {
         val imageName = card.getCardImageName()
         val resource = context.resources.getIdentifier(imageName, "drawable", context.packageName)
         holder.image.setImageResource(resource)
+        return resource
     }
 }

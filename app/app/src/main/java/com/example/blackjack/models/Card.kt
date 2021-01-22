@@ -5,14 +5,14 @@ import androidx.core.content.ContentProviderCompat.requireContext
 import com.example.blackjack.R
 
 
-class Card (var value:String, type:String, hidden:Boolean) {
+class Card (value:String, type:String, hidden:Boolean) {
 
     var imageName:String
 
     init{
         if (hidden)
             imageName = "card_back"
-        else imageName = "_$value$type"
+        else imageName = "_${value}${type}"
     }
 
     fun getCardImageName(): String {
