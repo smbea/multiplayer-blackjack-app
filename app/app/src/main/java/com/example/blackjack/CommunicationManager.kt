@@ -8,10 +8,11 @@ import com.neovisionaries.ws.client.WebSocketFactory
 import com.neovisionaries.ws.client.WebSocketFrame
 import org.json.JSONArray
 import org.json.JSONObject
+import kotlin.random.Random
 
 class CommunicationManager {
 
-    private val ws = WebSocketFactory().createSocket("ws://10.0.2.2:8080", 5000)
+    private val ws = WebSocketFactory().createSocket("ws://192.168.1.76:8080", 5000)
 
     fun connect() {
         // Create a WebSocket with a socket connection timeout value.
