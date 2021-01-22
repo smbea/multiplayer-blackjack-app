@@ -109,7 +109,7 @@ class CommunicationManager {
                     if (playerUsername == Game.myUsername) {
                         balance = player.opt("balance") as Int
                     } else {
-                        //opponentUsername = playerUsername
+                        opponentUsername = playerUsername
                     }
                 }
                 Game.startGame(opponentUsername, balance)

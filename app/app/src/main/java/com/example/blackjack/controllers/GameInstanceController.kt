@@ -75,6 +75,7 @@ class GameInstanceController(var model:GameInstance) {
     fun updateTurn(value:Boolean) {
         Log.i("updateTurn", "updateTurn")
         model.turn=value
+        Thread.sleep(300)
     }
 
     fun updateOpponent(newCard: JSONObject, handValue: Int) {
@@ -120,7 +121,20 @@ class GameInstanceController(var model:GameInstance) {
 
             model.opponentCards = opCards
 
+            //opponent
+            val opplayer = allCards.opt(Game.currentGame.value!!.opponentUsername) as JSONObject
+            val opCardsObject = (opplayer.opt("hand") as JSONObject).opt("cards") as JSONArray
+
+            for (i in 0 until opCardsObject.length()) {
+                val cardObject = opCardsObject[i] as JSONObject
+                val value = cardObject.opt("value") as String
+                val suit = cardObject.opt("suit") as String
+                val hidden = !(cardObject.opt("show") as Boolean)
+                model.opponentCards.add(Card(value, suit, hidden))
+            }
+
             model.action.postValue("deal")
+
         }catch (e:Exception){
             Log.i("dealCard", e.toString())
 
