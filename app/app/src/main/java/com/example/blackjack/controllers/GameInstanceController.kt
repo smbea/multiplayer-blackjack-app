@@ -115,11 +115,11 @@ class GameInstanceController(var model:GameInstance) {
             }
             model.myPoints = player.opt("hand_value") as Int
 
-            val opCards = ArrayList<Card>()
+            /*val opCards = ArrayList<Card>()
             opCards.add(Card("2", "hearts", true))
             opCards.add(Card("5", "hearts", false))
 
-            model.opponentCards = opCards
+            model.opponentCards = opCards*/
 
             //opponent
             val opplayer = allCards.opt(Game.currentGame.value!!.opponentUsername) as JSONObject
