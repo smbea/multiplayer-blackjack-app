@@ -1,4 +1,4 @@
-# macc-blackjack
+# Blackjack Mobile App
 
 Project developed for the Mobile Applications and Cloud Computing course at Sapienza University of Rome
 
